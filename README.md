@@ -1,18 +1,50 @@
-# Simulador PK/PD de Antimicrobianos v1.1
+<p align="center">
+  <img src="icons/icon-192.png" alt="PKPD Simulator Logo" width="96">
+</p>
 
-Simulador farmacocinético interativo de antimicrobianos hospitalares, desenvolvido como ferramenta educacional para médicos, farmacêuticos e residentes.
+<h1 align="center">Simulador PK/PD de Antimicrobianos</h1>
+
+<p align="center">
+  <strong>Ferramenta educacional interativa para simulação farmacocinética de antimicrobianos hospitalares</strong>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.2-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/antimicrobianos-18-orange?style=flat-square" alt="Drugs">
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/PWA-offline--ready-blueviolet?style=flat-square" alt="PWA">
+  <img src="https://img.shields.io/badge/demo-live-brightgreen?style=flat-square" alt="Live Demo">
+</p>
+
+<p align="center">
+  <a href="https://rodrigoplcosta.github.io/PKPD_simulator/"><strong>🔗 Acessar o Simulador (Live Demo)</strong></a>
+</p>
+
+---
+
+<!--
+  📸 SCREENSHOT: Substitua a linha abaixo por um screenshot real do simulador.
+  Para gerar: abra o simulador no navegador, selecione Meropenem com IE 3h,
+  tire um print da tela inteira e salve como "screenshot.png" na raiz do repo.
+  Depois faça commit e push do arquivo.
+-->
+<p align="center">
+  <img src="screenshot.png" alt="Screenshot do Simulador PK/PD" width="800">
+</p>
+
+---
+
+## Sobre o projeto
+
+Simulador farmacocinético interativo de antimicrobianos hospitalares, desenvolvido como ferramenta educacional para médicos, farmacêuticos, residentes e estudantes da área de saúde.
+
+Calcula e exibe graficamente a curva de concentração sérica ao longo do tempo para **18 antimicrobianos** de **9 classes**, usando um modelo farmacocinético monocompartimental IV. Permite visualizar em tempo real como alterações na dose, intervalo, tempo de infusão e função renal impactam os parâmetros PK/PD preditores de eficácia clínica.
 
 **Autor:** Rodrigo Pinheiro Leal Costa · 2026
 
 ---
 
-## O que faz
-
-O simulador calcula e exibe graficamente a curva de concentração sérica ao longo do tempo para 18 antimicrobianos hospitalares, usando um modelo farmacocinético monocompartimental IV. Permite visualizar em tempo real como alterações na dose, intervalo, tempo de infusão e função renal impactam os parâmetros PK/PD que predizem eficácia clínica.
-
-## Como funciona
-
-### Modelo farmacocinético
+## Modelo farmacocinético
 
 O motor de simulação utiliza um modelo monocompartimental de infusão IV intermitente:
 
@@ -24,12 +56,16 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 
 ### Parâmetros PK/PD calculados
 
-- **fT > MIC (SS):** fração do intervalo posológico no steady-state em que a concentração livre supera o MIC — alvo primário para beta-lactâmicos
-- **AUC₂₄/MIC:** razão da área sob a curva em 24h pelo MIC — alvo para vancomicina (400-600, IDSA 2020), linezolida e polimixina B
-- **fCmax/MIC:** razão do pico de concentração livre pelo MIC — alvo para aminoglicosídeos (≥8-10)
-- **Cmin (vale):** concentração mínima no steady-state — alvo primário para teicoplanina (15-30 mg/L)
+| Parâmetro | Descrição | Alvo clínico |
+|-----------|-----------|---------------|
+| **fT > MIC (SS)** | Fração do intervalo posológico no steady-state em que a concentração livre supera o MIC | Alvo primário para beta-lactâmicos |
+| **AUC₂₄/MIC** | Razão da área sob a curva em 24h pelo MIC | Vancomicina 400–600 (IDSA 2020), linezolida, polimixina B |
+| **fCmax/MIC** | Razão do pico de concentração livre pelo MIC | Aminoglicosídeos ≥8–10 |
+| **Cmin (vale)** | Concentração mínima no steady-state | Teicoplanina 15–30 mg/L |
 
-### Antimicrobianos disponíveis (18 drogas, 9 classes)
+---
+
+## Antimicrobianos disponíveis (18 drogas, 9 classes)
 
 | Classe | Fármacos |
 |--------|----------|
@@ -43,32 +79,35 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 | Polimixina | Polimixina B |
 | Nitroimidazol | Metronidazol |
 
-### Funcionalidades
+---
+
+## Funcionalidades
 
 - **Seleção rápida de dose:** botões com apresentações comerciais (ex: Pipe/Tazo 2.25g, 3.375g, 4.5g)
 - **Intervalos discretos:** botões de intervalo posológico relevantes para cada droga (ex: q4h, q6h, q8h)
 - **Presets de infusão:** bolus, infusão estendida e contínua, contextuais por fármaco
-- **Dose por peso:** drogas dosadas por mg/kg (vancomicina, aminoglicosídeos, daptomicina, polimixina B, teicoplanina) recalculam a dose automaticamente ao alterar o peso
-- **Dose de ataque:** seção colapsável (opcional), expande automaticamente para drogas que usam loading dose (teicoplanina)
-- **Ajuste renal:** classificação automática da TFG (ARC, Normal, DRC G2-G5, Diálise) com recomendações contextuais
-- **Cenários clínicos:** presets rápidos por fármaco (ex: Mero IE 3h, Vanco ataque, Sepse + ARC)
+- **Dose por peso:** drogas dosadas por mg/kg (vancomicina, aminoglicosídeos, daptomicina, polimixina B, teicoplanina) recalculam automaticamente ao alterar o peso
+- **Dose de ataque:** seção colapsável (opcional), expande automaticamente para drogas que usam loading dose
+- **Ajuste renal:** classificação automática da TFG (ARC, Normal, DRC G2–G5, Diálise) com recomendações contextuais
+- **Cenários clínicos:** presets rápidos (ex: Mero IE 3h, Vanco ataque, Sepse + ARC)
 - **Comparação de regimes:** salve uma curva como referência e compare visualmente com o regime atual
 - **Gráfico interativo:** Chart.js com labels de Cmax/Cmin, destaque fT>MIC, AUC shading, dose markers
-- **Card PK:** parâmetros farmacocinéticos (Vd, t½, ligação proteica, eliminação renal) e referências bibliográficas
-
-### Referências bibliográficas
-
-Parâmetros populacionais validados contra literatura: Mouton 1995, Nicolau 2008, Rybak/ASHP/IDSA 2020, Hanai 2022, Wilson 2000, Pais 2022, Sandri 2013, Dvorchik 2003, Stalker 2003, Barclay 1999, Taccone 2010, entre outras citadas no app.
+- **Card PK:** parâmetros farmacocinéticos (Vd, t½, ligação proteica, eliminação renal) e referências
+- **Painel educacional:** informações clínicas, efeitos adversos e limitações do modelo por droga
+- **Tema claro/escuro:** alternância de tema com um clique
 
 ---
 
 ## Tecnologia
 
-- **Single-file app:** HTML + CSS + JS em um único arquivo (`index.html`)
-- **Chart.js 4.4.1** para renderização do gráfico (CDN)
-- **Google Fonts:** DM Sans + JetBrains Mono
-- **PWA:** Progressive Web App com Service Worker para uso offline
-- **Responsivo:** layout desktop (sidebar + gráfico) e mobile (stacked)
+| Componente | Detalhes |
+|------------|----------|
+| **Arquitetura** | Single-file app (HTML + CSS + JS) |
+| **Gráficos** | Chart.js 4.4.1 (CDN) |
+| **Tipografia** | Google Fonts — DM Sans + JetBrains Mono |
+| **PWA** | Service Worker para uso offline |
+| **Responsivo** | Desktop (sidebar + gráfico) e mobile (stacked) |
+| **Acessibilidade** | Modo de fonte ampliada |
 
 ## Estrutura de arquivos
 
@@ -78,28 +117,73 @@ PKPD_simulator/
 ├── manifest.json       ← Metadados da PWA
 ├── sw.js               ← Service Worker (cache offline)
 ├── README.md           ← Este arquivo
+├── LICENSE             ← Licença MIT
+├── screenshot.png      ← Screenshot para o README
 └── icons/
     ├── apple-touch-icon.png
     ├── favicon-32.png
     └── icon-{72,96,128,144,152,180,192,384,512}.png
 ```
 
-## Deploy no GitHub Pages
-
-1. Vá em **Settings** → **Pages**
-2. Source: **Deploy from a branch** → Branch: **main**, pasta: **/ (root)**
-3. URL: `https://SEU-USUARIO.github.io/PKPD_simulator/`
+---
 
 ## Instalação como PWA
 
-### iPhone (Safari)
-Abra o site → botão Compartilhar → "Adicionar à Tela de Início"
+**iPhone (Safari):** Abra o site → botão Compartilhar → "Adicionar à Tela de Início"
 
-### Android (Chrome)
-Abra o site → banner automático ou menu ⋮ → "Instalar aplicativo"
+**Android (Chrome):** Abra o site → banner automático ou menu ⋮ → "Instalar aplicativo"
 
 Após instalação, o app funciona offline.
 
 ---
 
-**Aviso:** Simulador educacional — não substitui avaliação clínica individualizada e monitoramento terapêutico de drogas (TDM).
+## Referências bibliográficas
+
+Parâmetros farmacocinéticos populacionais validados contra literatura:
+
+- Craig WA. Pharmacokinetic/pharmacodynamic parameters: rationale for antibacterial dosing of mice and men. *Clin Infect Dis*. 1998;26(1):1-10.
+- Drusano GL. Antimicrobial pharmacodynamics: critical interactions of 'bug and drug'. *Nat Rev Microbiol*. 2004;2(4):289-300.
+- Roberts JA, Lipman J. Pharmacokinetic issues for antibiotics in the critically ill patient. *Clin Pharmacokinet*. 2009;48(2):89-124.
+- Mouton JW, Vinks AA. Pharmacokinetic/pharmacodynamic modelling of antibacterials in vitro and in vivo using bacterial growth and kill kinetics. *Clin Pharmacokinet*. 2005;44(2):201-210.
+- Nicolau DP. Optimizing outcomes with antimicrobial therapy through pharmacodynamic profiling. *J Infect Chemother*. 2003;9(4):292-296.
+- Rybak MJ et al. Therapeutic monitoring of vancomycin for serious methicillin-resistant *Staphylococcus aureus* infections: a revised consensus guideline. *Am J Health-Syst Pharm*. 2020;77(11):835-864.
+- Hanai Y et al. Optimal trough concentration of teicoplanin for the treatment of MRSA infections. *J Antimicrob Chemother*. 2022.
+- Wilson AP. Clinical pharmacokinetics of teicoplanin. *Clin Pharmacokinet*. 2000;39(3):167-183.
+- Pais GM et al. Polymyxin B dosing in renal impairment. *Pharmacotherapy*. 2022.
+- Sandri AM et al. Population pharmacokinetics of intravenous polymyxin B. *Clin Infect Dis*. 2013;57(4):524-531.
+- Dvorchik B et al. Daptomycin pharmacokinetics and safety following administration of escalating doses once daily. *J Clin Pharmacol*. 2003;43(6):612-620.
+- Stalker DJ, Jungbluth GL. Clinical pharmacokinetics of linezolid. *Clin Pharmacokinet*. 2003;42(13):1129-1140.
+- Barclay ML et al. Adaptive resistance to tobramycin in *Pseudomonas aeruginosa*. *J Antimicrob Chemother*. 1996;37(2):253-263.
+- Taccone FS et al. Revisiting the loading dose of amikacin for patients with severe sepsis and septic shock. *Crit Care*. 2010;14(2):R53.
+
+---
+
+## Como citar
+
+Se você utilizar este simulador em atividades acadêmicas ou educacionais, por favor cite:
+
+```bibtex
+@software{costa2026pkpd,
+  author    = {Costa, Rodrigo Pinheiro Leal},
+  title     = {Simulador PK/PD de Antimicrobianos: ferramenta interativa para simulação farmacocinética hospitalar},
+  version   = {1.2},
+  year      = {2026},
+  url       = {https://rodrigoplcosta.github.io/PKPD_simulator/},
+  note      = {Ferramenta educacional — não substitui avaliação clínica individualizada}
+}
+```
+
+**ABNT:**
+COSTA, Rodrigo Pinheiro Leal. **Simulador PK/PD de Antimicrobianos**: ferramenta interativa para simulação farmacocinética hospitalar. Versão 1.2. 2026. Disponível em: https://rodrigoplcosta.github.io/PKPD_simulator/
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  <strong>⚠️ Aviso:</strong> Simulador educacional — não substitui avaliação clínica individualizada e monitoramento terapêutico de drogas (TDM).
+</p>
