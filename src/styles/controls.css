@@ -1,0 +1,186 @@
+/* ═══ CONTROLS — Sidebar controls, drug buttons, dose/interval/infusion, GFR, mobile drawer ═══ */
+
+/* CLASS TABS */
+.ct{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.ct button{padding:3px 9px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--tx3);font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;transition:.12s}
+.ct button:hover{border-color:var(--ac);color:var(--tx)}
+.ct button.on{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+
+/* DRUG GRID */
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px}
+.db{padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:transparent;color:var(--tx2);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;transition:.12s;text-align:left;line-height:1.3}
+.db:hover{border-color:var(--ac);color:var(--tx);background:var(--acd)}
+.db.on{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+.db .dc{font-size:9px;color:var(--tx3);display:block;margin-top:1px}.db.on .dc{color:rgba(116,169,251,.5)}
+
+/* STANDARD DOSE REF */
+.std-ref{font-size:10px;color:var(--tx3);padding:5px 8px;background:var(--bg3);border-radius:5px;margin-bottom:8px;display:none;line-height:1.5}
+.std-ref b{color:var(--tx2);font-weight:500}
+
+/* CONTROLS */
+.cr{margin-bottom:10px}
+.ch{display:flex;align-items:center;gap:5px;margin-bottom:3px;min-width:0;overflow:hidden}
+.cl{font-size:12px;color:var(--tx2);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;color:var(--tx);background:#141c2a;border:1px solid rgba(130,150,185,.18);border-radius:4px;padding:4px 5px;width:68px;min-width:50px;flex-shrink:0;text-align:right;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.ci:focus{border-color:var(--ac);background:#182030}
+.ci::-webkit-inner-spin-button,.ci::-webkit-outer-spin-button{opacity:.3}
+.cu{font-size:10px;color:var(--tx3);flex-shrink:0;white-space:nowrap}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--bg4);outline:none;margin-top:2px;touch-action:manipulation}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ac);cursor:pointer;border:2px solid var(--bg2);margin-top:-8px}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--bg4)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--ac);cursor:pointer;border:2px solid var(--bg2)}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--bg4)}
+
+/* GFR */
+.gb{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:600;letter-spacing:.3px}
+
+/* RENAL REC */
+.rr{font-size:10px;color:var(--am);background:var(--amb);border:1px solid rgba(232,160,40,.12);border-radius:5px;padding:6px 8px;margin-top:6px;line-height:1.5;display:none}
+
+/* LOADING DOSE COLLAPSIBLE */
+.ld-section{margin-top:6px}
+.ld-toggle{font-size:11px;color:var(--tx3);cursor:pointer;padding:5px 8px;border:1px solid var(--bd);border-radius:5px;background:var(--bg3);transition:all .15s;user-select:none;display:flex;align-items:center;gap:6px}
+.ld-toggle:hover{border-color:var(--ac);color:var(--tx)}
+.ld-toggle.open{color:var(--tx2);border-color:rgba(130,150,185,.18);margin-bottom:8px}
+.ld-toggle .ld-arrow{display:inline-block;transition:transform .2s;font-size:9px}
+.ld-toggle.open .ld-arrow{transform:rotate(90deg)}
+.ld-content{padding:0}
+
+/* INTERVAL BUTTONS */
+.int-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.int-btn{padding:5px 12px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--tx2);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .12s;min-width:44px;text-align:center}
+.int-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--acd)}
+.int-btn.on{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+
+/* DOSE QUICK BUTTONS */
+.dose-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.dose-btn{padding:4px 10px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--tx2);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;text-align:center}
+.dose-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--acd)}
+.dose-btn.on{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+.dose-btn .dose-sub{font-size:8px;color:var(--tx3);display:block;margin-top:-1px;font-family:'DM Sans',sans-serif}
+
+/* INFUSION PRESETS */
+.inf-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.inf-btn{padding:4px 10px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--tx2);font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;transition:all .12s}
+.inf-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--acd)}
+.inf-btn.on{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+
+/* MGKG BADGE */
+.mgkg-badge{font-size:9px;color:var(--tx3);font-family:'JetBrains Mono',monospace;margin-left:auto;white-space:nowrap}
+
+/* SCENARIOS */
+.sc-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.sc-btn{padding:3px 8px;border:1px solid var(--bd);border-radius:5px;background:transparent;color:var(--tx3);font-family:'DM Sans',sans-serif;font-size:9.5px;cursor:pointer;transition:all .15s}
+.sc-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--acd)}
+.sc-btn.active{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+
+/* ═══ MOBILE DRAWER ═══ */
+.sb-overlay{display:none}
+.fab-params{display:none}
+
+@media(max-width:768px){
+  .sb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;display:none;opacity:0;transition:opacity .25s}
+  .sb-overlay.show{display:block;opacity:1}
+  body.light .sb-overlay{background:rgba(0,0,0,.3)}
+
+  .ly{grid-template-columns:1fr;grid-template-rows:1fr}
+  .sb{position:fixed;bottom:0;left:0;right:0;z-index:100;max-height:82vh;height:auto;
+    border-right:none;border-top:1px solid var(--bd);border-radius:16px 16px 0 0;
+    padding:8px 16px 20px;overflow-y:auto;overflow-x:hidden;
+    transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);
+    box-shadow:0 -8px 30px rgba(0,0,0,.25);-webkit-overflow-scrolling:touch}
+  .sb.drawer-open{transform:translateY(0)}
+  .sb::before{content:'';display:block;width:36px;height:4px;border-radius:2px;background:var(--tx3);margin:0 auto 10px;opacity:.4;flex-shrink:0}
+  body.light .sb{box-shadow:0 -8px 30px rgba(0,0,0,.12)}
+
+  .fab-params{display:flex;align-items:center;gap:6px;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:80;
+    padding:10px 20px;border:1px solid var(--ac);border-radius:24px;
+    background:var(--bg2);color:var(--ac2);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+    cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:all .2s}
+  .fab-params:hover{background:var(--acd);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+  body.light .fab-params{box-shadow:0 4px 16px rgba(0,0,0,.12)}
+  .fab-params.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(10px)}
+
+  .ct-a{padding:12px 10px;gap:10px;min-height:calc(100vh - 50px)}
+  .cp{padding:10px;min-height:320px}
+  .cw{height:300px}
+}
+
+/* Drawer mobile overrides */
+@media(max-width:768px){
+  .hd{padding:8px 12px}
+  .hd .sub{display:none}
+  .dg{grid-template-columns:1fr 1fr 1fr;gap:3px}
+  .db{padding:5px 6px;font-size:10px}
+  .db .dc{display:none}
+  input[type=range]{height:5px}
+  input[type=range]::-webkit-slider-thumb{width:20px;height:20px;margin-top:-7px}
+  .ms{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scroll-snap-type:x mandatory}
+  .mc{min-width:100px;flex-shrink:0;scroll-snap-align:start}
+  .mc .mv{font-size:14px}
+  .clg{font-size:9px;gap:6px}
+  .ct{gap:3px}
+  .ct button{font-size:9px;padding:3px 7px}
+  .sc-btn{font-size:9px;padding:2px 6px}
+  .cr{margin-bottom:8px}
+  .ch{gap:3px}
+  .cl{font-size:11px}
+  .ci{font-size:14px;width:54px;min-width:44px;padding:3px 4px}
+  .pk{font-size:10px;padding:8px 10px}
+  .pk-grid{grid-template-columns:1fr 1fr;gap:3px}
+  .pk-cell .pk-v{font-size:10px}
+  .al{font-size:11px;padding:8px 10px}
+  .ft{font-size:9px;padding:10px 12px}
+  .tb button{font-size:9px;padding:3px 8px}
+  .std-ref{font-size:9px}
+  .rr{font-size:9px;padding:5px 7px}
+  .gb{font-size:8px;padding:1px 4px}
+  #mic-dn,#mic-up{width:22px!important;height:22px!important;font-size:12px!important}
+  .ctp{flex-direction:column;align-items:flex-start;gap:4px}
+  .int-btn{padding:4px 10px;font-size:11px;min-width:38px}
+  .ld-toggle{font-size:10px;padding:4px 7px}
+  .dose-btn{padding:3px 8px;font-size:10px}
+  .inf-btn{padding:3px 8px;font-size:9px}
+  .pk-below{font-size:9px;padding:8px 10px}
+  .pk-below-toggle{font-size:10px}
+  .mgkg-badge{font-size:8px}
+}
+@media(max-width:400px){
+  .dg{grid-template-columns:1fr 1fr;gap:3px}
+  .cw{height:260px}
+  .mc{min-width:85px}
+  .mc .mv{font-size:13px}
+  .hd h1{font-size:14px}
+  .ci{width:48px;min-width:40px;font-size:13px}
+  .ct-a{padding:8px 6px}
+  .cp{padding:8px}
+  .cl{font-size:10px}
+  .ch{gap:2px}
+  #mic-dn,#mic-up{width:20px!important;height:20px!important;font-size:11px!important}
+}
+
+/* body.mob override — drawer version */
+body.mob .ly{grid-template-columns:1fr}
+body.mob .sb{position:fixed;bottom:0;left:0;right:0;z-index:100;max-height:82vh;
+  border-right:none;border-top:1px solid var(--bd);border-radius:16px 16px 0 0;
+  padding:8px 16px 20px;overflow-y:auto;overflow-x:hidden;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 -8px 30px rgba(0,0,0,.25)}
+body.mob .sb.drawer-open{transform:translateY(0)}
+body.mob .fab-params{display:flex}
+body.mob .sb-overlay.show{display:block;opacity:1}
+body.mob .hd{padding:8px 12px}
+body.mob .hd .sub{display:none}
+body.mob .dg{grid-template-columns:1fr 1fr 1fr;gap:3px}
+body.mob .db{padding:5px 6px;font-size:10px}
+body.mob .db .dc{display:none}
+body.mob input[type=range]{height:5px}
+body.mob input[type=range]::-webkit-slider-thumb{width:20px;height:20px;margin-top:-7px}
+body.mob .ms{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scroll-snap-type:x mandatory}
+body.mob .mc{min-width:100px;flex-shrink:0}
+body.mob .mc .mv{font-size:14px}
+body.mob .ct-a{padding:10px 8px;gap:10px}
+body.mob .cp{padding:10px;min-height:280px}
+body.mob .cw{height:260px}
+body.mob .clg{font-size:9px;gap:6px}
+body.mob .ci{font-size:14px;width:54px;min-width:44px}

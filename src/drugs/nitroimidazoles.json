@@ -1,0 +1,29 @@
+{
+  "metronidazole": {
+    "l": "Metronidazol",
+    "cat": "Nitroimidazol",
+    "dose": 500,
+    "int": 8,
+    "inf": 30,
+    "mic": 4,
+    "vdkg": 0.75,
+    "hl": 8,
+    "fr": 0.10,
+    "pb": 0.15,
+    "pk": "Conc.-dep.",
+    "tgt": "Cmax/MIC + AUC/MIC",
+    "tl": null,
+    "tt": "cmax",
+    "col": "#eab308",
+    "dMin": 250,
+    "dMax": 1000,
+    "dStep": 250,
+    "ints": [6, 8, 12],
+    "doses": [250, 500],
+    "infP": [{"l": "30min", "v": 30}, {"l": "60min", "v": 60}],
+    "std": "500mg 8/8h IV 30min",
+    "ren": [{"g": 0, "r": "Sem ajuste renal (metabolismo hepático >90%)"}],
+    "info": "Vd ≈ 0.75 L/kg · t½ ≈ 8h · Lig. prot. ~15% · Metabolismo hepático >90%<br><i>Lamp, Clin Pharmacokinet 1999</i>",
+    "warn": ""
+  }
+}

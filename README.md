@@ -9,8 +9,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.2-blue?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/antimicrobianos-18-orange?style=flat-square" alt="Drugs">
+  <img src="https://img.shields.io/badge/version-1.3-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/antimicrobianos-23-orange?style=flat-square" alt="Drugs">
+  <img src="https://img.shields.io/badge/classes-11-teal?style=flat-square" alt="Classes">
+  <img src="https://img.shields.io/badge/testes-90-success?style=flat-square" alt="Tests">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
   <img src="https://img.shields.io/badge/PWA-offline--ready-blueviolet?style=flat-square" alt="PWA">
   <img src="https://img.shields.io/badge/demo-live-brightgreen?style=flat-square" alt="Live Demo">
@@ -22,21 +24,11 @@
 
 ---
 
-<!--
-  📸 SCREENSHOT: Para adicionar um screenshot, abra o simulador no navegador,
-  selecione Meropenem com IE 3h, tire um print da tela inteira, salve como
-  "screenshot.png" na raiz do repo e descomente a tag <img> abaixo.
--->
-<!-- <p align="center"><img src="screenshot.png" alt="Screenshot do Simulador PK/PD" width="800"></p> -->
-<p align="center"><em>📸 Screenshot em breve — contribuições são bem-vindas! Veja <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>.</em></p>
-
----
-
 ## Sobre o projeto
 
 Simulador farmacocinético interativo de antimicrobianos hospitalares, desenvolvido como ferramenta educacional para médicos, farmacêuticos, residentes e estudantes da área de saúde.
 
-Calcula e exibe graficamente a curva de concentração sérica ao longo do tempo para **18 antimicrobianos** de **9 classes**, usando um modelo farmacocinético monocompartimental IV. Permite visualizar em tempo real como alterações na dose, intervalo, tempo de infusão e função renal impactam os parâmetros PK/PD preditores de eficácia clínica.
+Calcula e exibe graficamente a curva de concentração sérica ao longo do tempo para **23 antimicrobianos** de **11 classes**, usando um modelo farmacocinético monocompartimental IV. Permite visualizar em tempo real como alterações na dose, intervalo, tempo de infusão e função renal impactam os parâmetros PK/PD preditores de eficácia clínica.
 
 **Autor:** Rodrigo Pinheiro Leal Costa · 2026
 
@@ -63,7 +55,7 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 
 ---
 
-## Antimicrobianos disponíveis (18 drogas, 9 classes)
+## Antimicrobianos disponíveis (23 drogas, 11 classes)
 
 | Classe | Fármacos |
 |--------|----------|
@@ -76,6 +68,8 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 | Oxazolidinona | Linezolida |
 | Polimixina | Polimixina B |
 | Nitroimidazol | Metronidazol |
+| Fluoroquinolonas | Levofloxacino, Ciprofloxacino |
+| Antifúngicos | Anfotericina B Lipossomal, Voriconazol, Fluconazol |
 
 ---
 
@@ -93,6 +87,7 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 - **Card PK:** parâmetros farmacocinéticos (Vd, t½, ligação proteica, eliminação renal) e referências
 - **Painel educacional:** informações clínicas, efeitos adversos e limitações do modelo por droga
 - **Tema claro/escuro:** alternância de tema com um clique
+- **Undo (Ctrl+Z):** desfazer última alteração de parâmetro
 
 ---
 
@@ -100,27 +95,91 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 
 | Componente | Detalhes |
 |------------|----------|
-| **Arquitetura** | Single-file app (HTML + CSS + JS) |
+| **Arquitetura** | Modular ES Modules (Vite 6) |
 | **Gráficos** | Chart.js 4.4.1 (CDN) |
 | **Tipografia** | Google Fonts — DM Sans + JetBrains Mono |
+| **Testes** | Vitest — 90 testes (35 unitários + 55 integração) |
+| **CI/CD** | GitHub Actions — test → build → deploy GitHub Pages |
 | **PWA** | Service Worker para uso offline |
 | **Responsivo** | Desktop (sidebar + gráfico) e mobile (stacked) |
-| **Acessibilidade** | Modo de fonte ampliada |
 
-## Estrutura de arquivos
+---
+
+## Estrutura do projeto
 
 ```
 PKPD_simulator/
-├── index.html          ← App principal (HTML + CSS + JS)
-├── manifest.json       ← Metadados da PWA
-├── sw.js               ← Service Worker (cache offline)
-├── README.md           ← Este arquivo
-├── LICENSE             ← Licença MIT
-├── screenshot.png      ← Screenshot para o README (a ser adicionado)
-└── icons/
-    ├── apple-touch-icon.png
-    ├── favicon-32.png
-    └── icon-{72,96,128,144,152,180,192,384,512}.png
+├── index.html                  ← HTML principal (Vite entry point)
+├── vite.config.js              ← Configuração do Vite
+├── package.json                ← Dependências e scripts
+├── .gitignore
+├── README.md
+├── LICENSE
+├── public/                     ← Arquivos estáticos (copiados sem hash)
+│   ├── manifest.json
+│   ├── sw.js
+│   └── icons/
+├── src/
+│   ├── main.js                 ← Entry point — importa CSS e inicializa módulos
+│   ├── drugs/
+│   │   ├── index.js            ← Monta D (23 drogas), SCENARIOS, ADV
+│   │   ├── educContent.js      ← Conteúdo educacional por droga e classe
+│   │   ├── carbapenems.json
+│   │   ├── cephalosporins.json
+│   │   ├── penicillins.json
+│   │   ├── glycopeptides.json
+│   │   ├── aminoglycosides.json
+│   │   ├── lipopeptides.json
+│   │   ├── oxazolidinones.json
+│   │   ├── polymyxins.json
+│   │   ├── nitroimidazoles.json
+│   │   ├── fluoroquinolones.json
+│   │   └── antifungals.json
+│   ├── engine/
+│   │   ├── pkEngine.js         ← Motor PK monocompartimental
+│   │   ├── pkpdTargets.js      ← Alertas e alvos PK/PD
+│   │   └── renalAdjust.js      ← Classificação GFR e ajustes renais
+│   ├── ui/
+│   │   ├── controls.js         ← Lógica de UI e binding de controles
+│   │   ├── chart.js            ← Configuração e atualização do gráfico
+│   │   ├── theme.js            ← Toggle tema claro/escuro
+│   │   └── educPanel.js        ← Painel educacional expansível
+│   └── styles/
+│       ├── theme.css           ← Variáveis CSS (claro/escuro)
+│       ├── base.css            ← Layout, tipografia, responsivo
+│       ├── chart.css           ← Estilização do gráfico
+│       └── controls.css        ← Sidebar, botões, sliders
+├── tests/
+│   ├── pkEngine.test.js        ← 35 testes unitários do motor PK
+│   └── integration.test.js     ← 55 testes de integração
+└── .github/
+    └── workflows/
+        └── deploy.yml          ← CI/CD: test → build → deploy
+```
+
+---
+
+## Desenvolvimento local
+
+```bash
+# Clonar o repositório
+git clone https://github.com/RodrigoPLCosta/PKPD_simulator.git
+cd PKPD_simulator
+
+# Instalar dependências
+npm install
+
+# Servidor de desenvolvimento (hot reload)
+npm run dev
+
+# Rodar testes
+npm test
+
+# Build de produção
+npm run build
+
+# Preview do build
+npm run preview
 ```
 
 ---
@@ -153,6 +212,8 @@ Parâmetros farmacocinéticos populacionais validados contra literatura:
 - Stalker DJ, Jungbluth GL. Clinical pharmacokinetics of linezolid. *Clin Pharmacokinet*. 2003;42(13):1129-1140.
 - Barclay ML et al. Adaptive resistance to tobramycin in *Pseudomonas aeruginosa*. *J Antimicrob Chemother*. 1996;37(2):253-263.
 - Taccone FS et al. Revisiting the loading dose of amikacin for patients with severe sepsis and septic shock. *Crit Care*. 2010;14(2):R53.
+- Forrest A et al. Pharmacodynamics of intravenous ciprofloxacin in seriously ill patients. *Antimicrob Agents Chemother*. 1993;37(5):1073-1081.
+- Lepak AJ, Andes DR. Antifungal pharmacokinetics and pharmacodynamics. *Cold Spring Harb Perspect Med*. 2015;5(5):a019653.
 
 ---
 
@@ -164,7 +225,7 @@ Se você utilizar este simulador em atividades acadêmicas ou educacionais, por 
 @software{costa2026pkpd,
   author    = {Costa, Rodrigo Pinheiro Leal},
   title     = {Simulador PK/PD de Antimicrobianos: ferramenta interativa para simulação farmacocinética hospitalar},
-  version   = {1.2},
+  version   = {1.3},
   year      = {2026},
   url       = {https://rodrigoplcosta.github.io/PKPD_simulator/},
   note      = {Ferramenta educacional — não substitui avaliação clínica individualizada}
@@ -172,7 +233,7 @@ Se você utilizar este simulador em atividades acadêmicas ou educacionais, por 
 ```
 
 **ABNT:**
-COSTA, Rodrigo Pinheiro Leal. **Simulador PK/PD de Antimicrobianos**: ferramenta interativa para simulação farmacocinética hospitalar. Versão 1.2. 2026. Disponível em: https://rodrigoplcosta.github.io/PKPD_simulator/
+COSTA, Rodrigo Pinheiro Leal. **Simulador PK/PD de Antimicrobianos**: ferramenta interativa para simulação farmacocinética hospitalar. Versão 1.3. 2026. Disponível em: https://rodrigoplcosta.github.io/PKPD_simulator/
 
 ---
 

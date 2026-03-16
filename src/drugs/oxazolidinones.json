@@ -1,0 +1,29 @@
+{
+  "linezolid": {
+    "l": "Linezolida",
+    "cat": "Oxazolidinona",
+    "dose": 600,
+    "int": 12,
+    "inf": 60,
+    "mic": 2,
+    "vdkg": 0.6,
+    "hl": 5,
+    "fr": 0.30,
+    "pb": 0.31,
+    "pk": "AUC-dep.",
+    "tgt": "AUC/MIC ≥ 80-120",
+    "tl": null,
+    "tt": "auc",
+    "col": "#06b6d4",
+    "dMin": 200,
+    "dMax": 900,
+    "dStep": 100,
+    "ints": [8, 12],
+    "doses": [300, 600],
+    "infP": [{"l": "60min", "v": 60}, {"l": "2h", "v": 120}],
+    "std": "600mg 12/12h IV 60min ou VO",
+    "ren": [{"g": 0, "r": "Sem ajuste renal (eliminação 70% metabólica)"}],
+    "info": "Vd ≈ 0.6 L/kg · t½ ≈ 5h · Lig. prot. ~31% · Elim. 30% renal, 70% metabólica<br><i>Stalker 2003</i>",
+    "warn": ""
+  }
+}

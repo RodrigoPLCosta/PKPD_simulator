@@ -1,0 +1,30 @@
+{
+  "daptomycin": {
+    "l": "Daptomicina",
+    "cat": "Lipopeptídeo",
+    "dose": 700,
+    "int": 24,
+    "inf": 30,
+    "mic": 1,
+    "vdkg": 0.1,
+    "hl": 8,
+    "fr": 0.52,
+    "pb": 0.92,
+    "pk": "Conc.-dep.",
+    "tgt": "AUC/MIC + Cmax/MIC",
+    "tl": null,
+    "tt": "cmax",
+    "col": "#0ea5e9",
+    "dMin": 200,
+    "dMax": 1000,
+    "dStep": 50,
+    "ints": [24, 48],
+    "doses": [350, 500, 700],
+    "infP": [{"l": "30min", "v": 30}],
+    "mgkg": 10,
+    "std": "6-10 mg/kg 24/24h IV 30min · Bacteremia: 8-10 mg/kg",
+    "ren": [{"g": 30, "r": "Dose padrão"}, {"g": 0, "r": "Dose padrão q48h"}],
+    "info": "Vd ≈ 0.1 L/kg · t½ ≈ 8h · Lig. prot. ~92% · Elim. renal ~52%<br><b>INATIVADA por surfactante — NÃO usar em pneumonia!</b><br><i>Dvorchik 2003</i>",
+    "warn": ""
+  }
+}

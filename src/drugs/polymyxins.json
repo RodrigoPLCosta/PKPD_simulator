@@ -1,0 +1,30 @@
+{
+  "polymyxinB": {
+    "l": "Polimixina B",
+    "cat": "Polimixina",
+    "dose": 150,
+    "int": 12,
+    "inf": 60,
+    "mic": 1,
+    "vdkg": 0.5,
+    "hl": 13,
+    "fr": 0.10,
+    "pb": 0.58,
+    "pk": "AUC-dep.",
+    "tgt": "AUCss 50-100 mg·h/L",
+    "tl": null,
+    "tt": "auc",
+    "col": "#22d3ee",
+    "dMin": 25,
+    "dMax": 300,
+    "dStep": 25,
+    "ints": [12],
+    "doses": [50, 75, 100, 150, 200],
+    "infP": [{"l": "60min", "v": 60}],
+    "mgkg": 1.25,
+    "std": "1.5-2.5 mg/kg/dia div. 12/12h · Loading: 2-2.5 mg/kg",
+    "ren": [{"g": 0, "r": "NÃO ajustar pela TFG — eliminação NÃO-renal"}],
+    "info": "Vd ≈ 0.5 L/kg · t½ ≈ 11-15h · Lig. prot. ~58% · <b>Eliminação NÃO-RENAL</b><br><i>Sandri et al. AAC 2013</i>",
+    "warn": "NÃO ajustar pela TFG."
+  }
+}
