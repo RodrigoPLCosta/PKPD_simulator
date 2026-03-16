@@ -23,14 +23,12 @@
 ---
 
 <!--
-  📸 SCREENSHOT: Substitua a linha abaixo por um screenshot real do simulador.
-  Para gerar: abra o simulador no navegador, selecione Meropenem com IE 3h,
-  tire um print da tela inteira e salve como "screenshot.png" na raiz do repo.
-  Depois faça commit e push do arquivo.
+  📸 SCREENSHOT: Para adicionar um screenshot, abra o simulador no navegador,
+  selecione Meropenem com IE 3h, tire um print da tela inteira, salve como
+  "screenshot.png" na raiz do repo e descomente a tag <img> abaixo.
 -->
-<p align="center">
-  <img src="screenshot.png" alt="Screenshot do Simulador PK/PD" width="800">
-</p>
+<!-- <p align="center"><img src="screenshot.png" alt="Screenshot do Simulador PK/PD" width="800"></p> -->
+<p align="center"><em>📸 Screenshot em breve — contribuições são bem-vindas! Veja <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>.</em></p>
 
 ---
 
@@ -118,7 +116,7 @@ PKPD_simulator/
 ├── sw.js               ← Service Worker (cache offline)
 ├── README.md           ← Este arquivo
 ├── LICENSE             ← Licença MIT
-├── screenshot.png      ← Screenshot para o README
+├── screenshot.png      ← Screenshot para o README (a ser adicionado)
 └── icons/
     ├── apple-touch-icon.png
     ├── favicon-32.png
@@ -175,6 +173,28 @@ Se você utilizar este simulador em atividades acadêmicas ou educacionais, por 
 
 **ABNT:**
 COSTA, Rodrigo Pinheiro Leal. **Simulador PK/PD de Antimicrobianos**: ferramenta interativa para simulação farmacocinética hospitalar. Versão 1.2. 2026. Disponível em: https://rodrigoplcosta.github.io/PKPD_simulator/
+
+---
+
+## Limitações do modelo
+
+> **⚠️ Este simulador é uma ferramenta EDUCACIONAL e NÃO substitui avaliação clínica individualizada nem monitoramento terapêutico de drogas (TDM).**
+
+O motor de simulação utiliza um **modelo monocompartimental** de infusão IV intermitente com parâmetros populacionais de adultos. Isso implica limitações relevantes:
+
+- **Volume de distribuição (Vd) fixo:** O simulador utiliza um Vd populacional único (L/kg), mas na prática clínica o Vd varia amplamente entre pacientes. Em pacientes críticos (sepse, queimados, cirurgia cardíaca com CEC, ECMO), o Vd pode aumentar 50–100% devido a expansão do terceiro espaço, ressuscitação volêmica agressiva e aumento da permeabilidade capilar (Roberts JA, Lipman J. *Clin Pharmacokinet*. 2009;48(2):89-124). Isso resulta em concentrações séricas reais **significativamente menores** que as estimadas pelo simulador, especialmente para drogas hidrofílicas (beta-lactâmicos, aminoglicosídeos, vancomicina, polimixina B).
+
+- **Fase de distribuição (α) não modelada:** Para drogas bicompartimentais (vancomicina, teicoplanina, aminoglicosídeos), o Cmax pós-infusão pode ser superestimado em 30–50%. O AUC e o vale são mais confiáveis neste simulador que o Cmax.
+
+- **Ligação proteica constante:** O modelo assume ligação proteica fixa, mas em hipoalbuminemia (comum em UTI, cirrose, síndrome nefrótica) a fração livre de drogas altamente ligadas (ertapenem, ceftriaxona, oxacilina, daptomicina, teicoplanina) pode aumentar 2–4×, alterando eficácia e toxicidade reais.
+
+- **Clearance aumentado (ARC):** Pacientes jovens, politraumatizados ou com sepse hiperdinâmica podem apresentar ARC (Augmented Renal Clearance, TFG > 130 mL/min), levando a subdosagem de antimicrobianos com eliminação renal predominante. O simulador permite ajuste de GFR, mas não modela a variabilidade intra-individual ao longo do tempo.
+
+- **Obesidade:** O simulador não calcula peso ajustado (ABW = IBW + 0.4 × [TBW − IBW]) para aminoglicosídeos nem peso ideal para outras classes. Em obesos mórbidos, o Vd por kg de peso total é diferente do Vd por kg de peso ideal, e as curvas simuladas podem divergir significativamente da realidade.
+
+- **Populações especiais:** Não validado para neonatos, crianças, gestantes, pacientes em ECMO, CRRT (hemodiafiltração contínua) ou diálise intermitente. A farmacocinética dessas populações difere substancialmente dos parâmetros populacionais adultos utilizados.
+
+Para decisões clínicas, recomenda-se **TDM com software Bayesiano** (PrecisePK, DoseMeRx, InsightRx) e avaliação individualizada por farmacêutico clínico ou equipe de stewardship.
 
 ---
 
