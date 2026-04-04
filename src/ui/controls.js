@@ -8,6 +8,7 @@ import { classifyGFR, renalRec } from '../engine/renalAdjust.js';
 import { getAlerts } from '../engine/pkpdTargets.js';
 import { updateChart } from './chart.js';
 import { updateEduPanel } from './educPanel.js';
+import { getContinuousInfusionMinutes, getWeightBasedDose } from './controlLogic.js';
 
 let sel = 'meropenem';
 let cmpData = null;
@@ -27,6 +28,7 @@ const scEl = document.getElementById('scenarios');
 
 // Dose formatting
 function formatDose(mg) { return mg >= 1000 ? (mg / 1000) + 'g' : mg + 'mg'; }
+function formatMgKgBadge(dose, wt) { return Math.round(dose / wt * 10) / 10 + ' mg/kg'; }
 
 // ─── Sync helpers ───
 function syncDoseBtns() {
@@ -82,15 +84,16 @@ function renderIntButtons(ints, current) {
     b.textContent = v + 'h';
     b.dataset.v = v;
     b.addEventListener('click', function () {
+      const oldInt = parseFloat(document.getElementById('int-n').value) || 8;
+      const curInf = parseFloat(document.getElementById('inf-n').value) || 30;
       document.getElementById('int').value = v;
       document.getElementById('int-n').value = v;
       container.querySelectorAll('.int-btn').forEach(function (x) { x.classList.remove('on'); });
       b.classList.add('on');
-      const curInf = parseFloat(document.getElementById('inf-n').value) || 30;
-      const oldInt = parseFloat(document.getElementById('int-n').value) || 8;
-      if (curInf === oldInt * 60) {
-        document.getElementById('inf-n').value = v * 60;
-        document.getElementById('inf').value = Math.min(480, v * 60);
+      const nextInf = getContinuousInfusionMinutes(curInf, oldInt, v);
+      if (nextInf !== curInf) {
+        document.getElementById('inf-n').value = nextInf;
+        document.getElementById('inf').value = Math.min(480, nextInf);
         syncInfBtns();
       }
       update();
@@ -129,12 +132,11 @@ function updateMgKgDose() {
   const drug = D[sel];
   if (!drug.mgkg) return;
   const wt = parseFloat(document.getElementById('wt-n').value) || 70;
-  let newDose = Math.round(drug.mgkg * wt / drug.dStep) * drug.dStep;
-  newDose = Math.max(drug.dMin, Math.min(drug.dMax, newDose));
+  const newDose = getWeightBasedDose(drug, wt);
   document.getElementById('dose').value = newDose;
   document.getElementById('dose-n').value = newDose;
   syncDoseBtns();
-  document.getElementById('mgkg-badge').textContent = Math.round(newDose / wt * 10) / 10 + ' mg/kg';
+  document.getElementById('mgkg-badge').textContent = formatMgKgBadge(newDose, wt);
 }
 
 // ─── Select drug ───
@@ -145,11 +147,12 @@ function selectDrug(k) {
   const doseNum = document.getElementById('dose-n');
   doseSlider.min = d.dMin || 50; doseSlider.max = d.dMax || 6000; doseSlider.step = d.dStep || 50;
   doseNum.min = d.dMin || 50; doseNum.max = d.dMax || 6000; doseNum.step = d.dStep || 50;
-  doseSlider.value = d.dose; doseNum.value = d.dose;
-  renderDoseButtons(d, d.dose);
   const mgkgEl = document.getElementById('mgkg-badge');
   const wt = parseFloat(document.getElementById('wt-n').value) || 70;
-  if (d.mgkg) { mgkgEl.textContent = Math.round(d.dose / wt * 10) / 10 + ' mg/kg'; }
+  const initialDose = d.mgkg ? getWeightBasedDose(d, wt) : d.dose;
+  doseSlider.value = initialDose; doseNum.value = initialDose;
+  renderDoseButtons(d, initialDose);
+  if (d.mgkg) { mgkgEl.textContent = formatMgKgBadge(initialDose, wt); }
   else { mgkgEl.textContent = ''; }
   document.getElementById('int').value = d.int; document.getElementById('int-n').value = d.int;
   renderIntButtons(d.ints || [d.int], d.int);
@@ -405,12 +408,12 @@ export function initControls() {
   document.getElementById('dose-n').addEventListener('input', function () {
     const drug = D[sel]; if (!drug.mgkg) return;
     const wt = parseFloat(document.getElementById('wt-n').value) || 70;
-    document.getElementById('mgkg-badge').textContent = Math.round(parseFloat(this.value) / wt * 10) / 10 + ' mg/kg';
+    document.getElementById('mgkg-badge').textContent = formatMgKgBadge(parseFloat(this.value), wt);
   });
   document.getElementById('dose').addEventListener('input', function () {
     const drug = D[sel]; if (!drug.mgkg) return;
     const wt = parseFloat(document.getElementById('wt-n').value) || 70;
-    document.getElementById('mgkg-badge').textContent = Math.round(parseFloat(this.value) / wt * 10) / 10 + ' mg/kg';
+    document.getElementById('mgkg-badge').textContent = formatMgKgBadge(parseFloat(this.value), wt);
   });
 
   // Sync button highlights

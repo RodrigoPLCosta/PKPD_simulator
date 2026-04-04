@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/version-1.3-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/antimicrobianos-23-orange?style=flat-square" alt="Drugs">
   <img src="https://img.shields.io/badge/classes-11-teal?style=flat-square" alt="Classes">
-  <img src="https://img.shields.io/badge/testes-90-success?style=flat-square" alt="Tests">
+  <img src="https://img.shields.io/badge/testes-vitest-success?style=flat-square" alt="Tests">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
   <img src="https://img.shields.io/badge/PWA-offline--ready-blueviolet?style=flat-square" alt="PWA">
   <img src="https://img.shields.io/badge/demo-live-brightgreen?style=flat-square" alt="Live Demo">
@@ -98,7 +98,7 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 | **Arquitetura** | Modular ES Modules (Vite 6) |
 | **Gráficos** | Chart.js 4.4.1 (CDN) |
 | **Tipografia** | Google Fonts — DM Sans + JetBrains Mono |
-| **Testes** | Vitest — 90 testes (35 unitários + 55 integração) |
+| **Testes** | Vitest — suíte unitária e de integração |
 | **CI/CD** | GitHub Actions — test → build → deploy GitHub Pages |
 | **PWA** | Service Worker para uso offline |
 | **Responsivo** | Desktop (sidebar + gráfico) e mobile (stacked) |
@@ -150,8 +150,8 @@ PKPD_simulator/
 │       ├── chart.css           ← Estilização do gráfico
 │       └── controls.css        ← Sidebar, botões, sliders
 ├── tests/
-│   ├── pkEngine.test.js        ← 35 testes unitários do motor PK
-│   └── integration.test.js     ← 55 testes de integração
+│   ├── pkpd.test.js            ← Testes unitários do motor PK e helpers puros
+│   └── integration.test.js     ← Testes de integração
 └── .github/
     └── workflows/
         └── deploy.yml          ← CI/CD: test → build → deploy

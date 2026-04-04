@@ -1,7 +1,7 @@
 {
   "name": "Simulador PK/PD de Antimicrobianos",
   "short_name": "PK/PD Sim",
-  "description": "Simulador farmacocinético interativo de antimicrobianos hospitalares. Modelo monocompartimental com 18 drogas, ajuste renal, dose de ataque e cenários clínicos.",
+  "description": "Simulador farmacocinético interativo de antimicrobianos hospitalares com 23 drogas de 11 classes, ajuste renal, dose de ataque, cenários clínicos e comparação de regimes.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",

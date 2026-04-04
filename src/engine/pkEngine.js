@@ -47,21 +47,38 @@ export function adjustedHalfLife(t12base, renalFraction, GFR) {
 }
 
 /**
- * Calculate AUC over 24h using trapezoidal rule from time-concentration points.
- * Uses the last 24h of the provided points array.
+ * Calculate AUC over 24h using the trapezoidal rule.
+ * Uses the last 24h of the provided points array. The interval argument is legacy
+ * and kept only for API compatibility.
  * @param {Array<{x: number, y: number}>} points - Time-concentration points
  * @param {number} interval - Dosing interval (hours) — unused but kept for API consistency
  * @returns {number} AUC24 (mg·h/L)
  */
 export function calcAUC24(points, interval) {
+  void interval;
+  if (!points.length) return 0;
+  if (points.length === 1) return 0;
   const totalH = points[points.length - 1].x;
+  const aucStart = totalH - 24;
   let auc = 0;
-  const dt = points.length > 1 ? points[1].x - points[0].x : 0.05;
-  for (let i = 0; i < points.length; i++) {
-    if (points[i].x >= totalH - 24) {
-      auc += points[i].y * dt;
-    }
+
+  for (let i = 1; i < points.length; i++) {
+    const prev = points[i - 1];
+    const curr = points[i];
+    if (curr.x <= aucStart) continue;
+
+    const segStart = Math.max(prev.x, aucStart);
+    const segEnd = curr.x;
+    if (segEnd <= segStart) continue;
+
+    const totalDt = curr.x - prev.x;
+    if (totalDt <= 0) continue;
+
+    const startRatio = (segStart - prev.x) / totalDt;
+    const startY = prev.y + (curr.y - prev.y) * startRatio;
+    auc += ((startY + curr.y) / 2) * (segEnd - segStart);
   }
+
   return Math.round(auc);
 }
 
