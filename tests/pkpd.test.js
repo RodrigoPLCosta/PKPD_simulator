@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { D } from '../src/drugs/index.js';
 import { adjustedHalfLife, calcAUC24, calcFtMIC, simulate } from '../src/engine/pkEngine.js';
-import { getContinuousInfusionMinutes, getWeightBasedDose } from '../src/ui/controlLogic.js';
+import { clampInfusionMinutes, getContinuousInfusionMinutes, getWeightBasedDose } from '../src/ui/controlLogic.js';
 
 function analyticalCmax(dose, infMin, drug, wt, gfr) {
   const ah = adjustedHalfLife(drug.hl, drug.fr, gfr);
@@ -121,6 +121,12 @@ describe('simulate', () => {
     expect(result.aucMic).toBe(0);
     expect(result.cmaxMic).toBe(0);
   });
+
+  it('keeps simulate AUC24 aligned with the trapezoidal helper for long-horizon drugs', () => {
+    const result = simulate(400, 24, 30, D.teicoplanin, 120, 2, 70, 0, 0, 12, 'teicoplanin');
+    expect(result.auc24).toBe(calcAUC24(result.pts, result.intH));
+    expect(result.aucMic).toBe(Math.round(result.auc24 / 2));
+  });
 });
 
 describe('engine helpers', () => {
@@ -166,5 +172,10 @@ describe('controlLogic helpers', () => {
 
   it('keeps infusion duration unchanged when the regimen is not continuous-like', () => {
     expect(getContinuousInfusionMinutes(180, 8, 12)).toBe(180);
+  });
+
+  it('clamps continuous-infusion-like duration to the supported maximum', () => {
+    expect(getContinuousInfusionMinutes(1440, 24, 48)).toBe(1440);
+    expect(clampInfusionMinutes(2880)).toBe(1440);
   });
 });

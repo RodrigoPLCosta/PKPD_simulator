@@ -149,7 +149,6 @@ export function simulate(dose, intH, infMin, drug, gfr, micV, wt, ldose = 0, ldC
   const pts = [];
   const fpts = [];
   let cmax = 0, cmin = Infinity;
-  let auc24 = 0;
 
   let lastMaintStart = schedule.length > 0 ? schedule[schedule.length - 1].t : 0;
   const maintDoses = schedule.filter(function (s) { return s.d === dose; });
@@ -180,9 +179,9 @@ export function simulate(dose, intH, infMin, drug, gfr, micV, wt, ldose = 0, ldC
     if (c > cmax) cmax = c;
     if (t >= ssStart && t < ssEnd && c < cmin) cmin = c;
     if (t >= ssStart && t < ssEnd) { if (cf >= micV) tAboveSS += dt; }
-    if (t >= totalH - 24) auc24 += c * dt;
   }
 
+  const auc24 = calcAUC24(pts, intH);
   const pctSS = intH > 0 ? Math.min(100, Math.round((tAboveSS / intH) * 100)) : 0;
   return {
     pts, fpts,

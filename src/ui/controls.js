@@ -8,7 +8,7 @@ import { classifyGFR, renalRec } from '../engine/renalAdjust.js';
 import { getAlerts } from '../engine/pkpdTargets.js';
 import { updateChart } from './chart.js';
 import { updateEduPanel } from './educPanel.js';
-import { getContinuousInfusionMinutes, getWeightBasedDose } from './controlLogic.js';
+import { clampInfusionMinutes, getContinuousInfusionMinutes, getWeightBasedDose } from './controlLogic.js';
 
 let sel = 'meropenem';
 let cmpData = null;
@@ -29,6 +29,15 @@ const scEl = document.getElementById('scenarios');
 // Dose formatting
 function formatDose(mg) { return mg >= 1000 ? (mg / 1000) + 'g' : mg + 'mg'; }
 function formatMgKgBadge(dose, wt) { return Math.round(dose / wt * 10) / 10 + ' mg/kg'; }
+function getInfusionMaxMinutes() {
+  return parseFloat(document.getElementById('inf-n').max) || 1440;
+}
+function setInfusionMinutes(minutes) {
+  const nextInf = clampInfusionMinutes(minutes, getInfusionMaxMinutes());
+  document.getElementById('inf-n').value = nextInf;
+  document.getElementById('inf').value = nextInf;
+  return nextInf;
+}
 
 // ─── Sync helpers ───
 function syncDoseBtns() {
@@ -90,10 +99,9 @@ function renderIntButtons(ints, current) {
       document.getElementById('int-n').value = v;
       container.querySelectorAll('.int-btn').forEach(function (x) { x.classList.remove('on'); });
       b.classList.add('on');
-      const nextInf = getContinuousInfusionMinutes(curInf, oldInt, v);
+      const nextInf = getContinuousInfusionMinutes(curInf, oldInt, v, getInfusionMaxMinutes());
       if (nextInf !== curInf) {
-        document.getElementById('inf-n').value = nextInf;
-        document.getElementById('inf').value = Math.min(480, nextInf);
+        setInfusionMinutes(nextInf);
         syncInfBtns();
       }
       update();
@@ -117,8 +125,7 @@ function renderInfPresets(drug, currentInf) {
         const intV = parseFloat(document.getElementById('int-n').value) || 8;
         val = intV * 60;
       }
-      document.getElementById('inf-n').value = val;
-      document.getElementById('inf').value = Math.min(480, val);
+      setInfusionMinutes(val);
       container.querySelectorAll('.inf-btn').forEach(function (x) { x.classList.remove('on'); });
       b.classList.add('on');
       update();
@@ -156,7 +163,7 @@ function selectDrug(k) {
   else { mgkgEl.textContent = ''; }
   document.getElementById('int').value = d.int; document.getElementById('int-n').value = d.int;
   renderIntButtons(d.ints || [d.int], d.int);
-  document.getElementById('inf').value = d.inf; document.getElementById('inf-n').value = d.inf;
+  setInfusionMinutes(d.inf);
   renderInfPresets(d, d.inf);
   document.getElementById('mic').value = sliderFromMic(d.mic); document.getElementById('mic-n').value = d.mic;
 
@@ -298,7 +305,7 @@ function popUndo() {
   if (st.sel !== sel) selectDrug(st.sel);
   document.getElementById('dose').value = st.dose; document.getElementById('dose-n').value = st.dose;
   document.getElementById('int').value = st.int; document.getElementById('int-n').value = st.int;
-  document.getElementById('inf-n').value = st.inf; document.getElementById('inf').value = Math.min(480, parseInt(st.inf));
+  setInfusionMinutes(parseInt(st.inf));
   document.getElementById('mic').value = st.mic; document.getElementById('mic-n').value = micFromSlider(st.mic);
   document.getElementById('gfr').value = Math.min(180, parseInt(st.gfr)); document.getElementById('gfr-n').value = st.gfr;
   document.getElementById('wt').value = st.wt; document.getElementById('wt-n').value = st.wt;
@@ -381,7 +388,12 @@ export function initControls() {
     sl.addEventListener('input', function () { nm.value = sl.value; update(); });
     nm.addEventListener('input', function () {
       const v = parseFloat(nm.value);
-      if (!isNaN(v)) { sl.value = Math.max(parseFloat(sl.min), Math.min(parseFloat(sl.max), v)); update(); }
+      if (!isNaN(v)) {
+        const clamped = Math.max(parseFloat(sl.min), Math.min(parseFloat(sl.max), v));
+        sl.value = clamped;
+        nm.value = clamped;
+        update();
+      }
     });
     nm.addEventListener('change', function () { update(); });
   });
