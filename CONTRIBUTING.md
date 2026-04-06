@@ -1,12 +1,12 @@
 # Contribuindo para o Simulador PK/PD
 
-Obrigado pelo interesse em contribuir! Este projeto é uma ferramenta educacional e toda ajuda é bem-vinda, seja propondo novos fármacos, corrigindo parâmetros PK, melhorando a interface ou reportando bugs.
+Obrigado pelo interesse em contribuir. Este projeto é uma ferramenta educacional e toda ajuda é bem-vinda, seja propondo novos fármacos, corrigindo parâmetros PK, melhorando a interface, expandindo a suíte de testes ou reportando bugs.
 
 ## Como contribuir
 
 ### 1. Propor um novo antimicrobiano
 
-Para adicionar um novo fármaco ao simulador, você precisará reunir os seguintes parâmetros farmacocinéticos populacionais de adultos com função hepática normal:
+Para adicionar um novo fármaco ao simulador, reúna parâmetros farmacocinéticos populacionais de adultos com função hepática normal:
 
 | Parâmetro | Descrição | Exemplo (meropenem) |
 |-----------|-----------|---------------------|
@@ -20,45 +20,46 @@ Para adicionar um novo fármaco ao simulador, você precisará reunir os seguint
 | `mic` | MIC de referência (mg/L) | 2 |
 | `tt` | Tipo de alvo PK/PD: `tmic`, `auc`, `cmax`, `trough` | `tmic` |
 
-**Fontes aceitas:** artigos indexados no PubMed, bulas aprovadas por agências reguladoras (ANVISA, FDA, EMA), ou guidelines de sociedades médicas (IDSA, ESCMID, ASHP).
+**Fontes aceitas:** artigos indexados no PubMed, bulas aprovadas por agências reguladoras (ANVISA, FDA, EMA) ou guidelines de sociedades médicas (IDSA, ESCMID, ASHP).
 
 #### Passo a passo
 
-1. Faça um fork do repositório
-2. Crie uma branch: `git checkout -b feat/novo-farmaco-nome`
-3. Adicione o objeto do fármaco no dicionário `D` dentro de `index.html` (siga o padrão dos existentes)
-4. Adicione os dados de efeitos adversos no objeto `ADV`
-5. Se o fármaco usa dosagem por mg/kg, adicione o campo `mgkg`
-6. Adicione pelo menos um cenário clínico relevante ao array `SCENARIOS`
-7. Adicione testes unitários para o novo fármaco em `tests/pkpd.test.js`
-8. Abra um Pull Request seguindo o template abaixo
+1. Faça um fork do repositório.
+2. Crie uma branch: `git checkout -b feat/novo-farmaco-nome`.
+3. Adicione os dados do fármaco nas fontes de `src/drugs/` e atualize `src/drugs/index.js` se necessário.
+4. Adicione conteúdo educacional ou referências em `src/drugs/educContent.js` quando fizer sentido.
+5. Se o fármaco usa dosagem por `mg/kg`, garanta que a UI continue sincronizando dose, presets e badge de peso.
+6. Adicione pelo menos um cenário clínico relevante ao array `SCENARIOS`.
+7. Atualize testes de domínio em `tests/pkpd.test.js` e, se houver efeito de interface, os testes em `tests/ui/`.
+8. Atualize a documentação relevante (`README.md`, `CHANGELOG.md`) ao abrir o PR.
 
 ### 2. Corrigir parâmetros PK existentes
 
 Se encontrou um parâmetro incorreto ou desatualizado:
 
-1. Identifique o fármaco e o parâmetro a ser corrigido
-2. Apresente a referência bibliográfica que suporta a correção
-3. Abra um Pull Request com a justificativa
+1. Identifique o fármaco e o parâmetro a ser corrigido.
+2. Apresente a referência bibliográfica que suporta a correção.
+3. Abra um Pull Request com a justificativa.
+4. Atualize ou adicione testes que cubram o comportamento impactado.
 
-### 3. Reportar um bug
+### 3. Melhorar a interface
+
+A interface está em migração incremental para Material Design 3.
+
+1. Preserve o shell e os contratos semânticos já existentes, a menos que o trabalho faça parte explícita de um sprint posterior.
+2. Reutilize os tokens de `src/styles/tokens.css` e aliases de `src/styles/theme.css` em vez de introduzir novas cores hardcoded.
+3. Sempre que mudar comportamento de UI, atualize ou adicione testes em `tests/ui/`.
+4. Não altere cálculo PK/PD como efeito colateral de mudança visual.
+
+### 4. Reportar um bug
 
 Abra uma [Issue](https://github.com/RodrigoPLCosta/PKPD_simulator/issues/new) incluindo:
 
-- Descrição do comportamento observado vs. esperado
-- Fármaco e parâmetros utilizados (dose, intervalo, GFR, peso)
-- Navegador e sistema operacional
-- Screenshot, se aplicável
-
-### 4. Adicionar screenshot
-
-O repositório ainda não tem um `screenshot.png`. Para contribuir:
-
-1. Abra o simulador no navegador (preferencialmente desktop, tema escuro)
-2. Selecione Meropenem com infusão estendida de 3h
-3. Tire um print da tela inteira (1200×800px ou maior)
-4. Salve como `screenshot.png` na raiz do repositório
-5. Abra um Pull Request
+- Descrição do comportamento observado vs. esperado.
+- Fármaco e parâmetros utilizados (dose, intervalo, GFR, peso).
+- Navegador e sistema operacional.
+- Screenshot, se aplicável.
+- Se o bug é visual, informe também o tema usado e se ocorreu em desktop ou mobile.
 
 ## Template de Pull Request
 
@@ -71,6 +72,7 @@ Ao abrir um PR, use o seguinte template no corpo:
 - [ ] Correção de parâmetro PK
 - [ ] Correção de bug
 - [ ] Melhoria de interface
+- [ ] Testes
 - [ ] Documentação
 - [ ] Outro: ___________
 
@@ -88,46 +90,57 @@ Ao abrir um PR, use o seguinte template no corpo:
 | Parâmetro | Valor | Fonte |
 |-----------|-------|-------|
 | Vd (L/kg) | | |
-| t½ (h) | | |
+| t1/2 (h) | | |
 | Fração renal | | |
 | Ligação proteica | | |
 
 ## Checklist
 
-- [ ] Testei localmente (abri o `index.html` e verifiquei o gráfico)
-- [ ] Adicionei/atualizei testes em `tests/pkpd.test.js`
-- [ ] Os testes passam (`npm test`)
-- [ ] Parâmetros baseados em artigo indexado no PubMed
-- [ ] Adicionei efeitos adversos e limitações do modelo (objeto `ADV`)
+- [ ] Rodei `npm test`
+- [ ] Rodei `npm run build`
+- [ ] Atualizei testes de domínio e/ou UI quando necessário
+- [ ] Atualizei a documentação afetada
 - [ ] Não quebrei funcionalidades existentes
+- [ ] Não alterei o motor PK/PD sem justificativa explícita
 ```
 
 ## Ambiente de desenvolvimento
 
-O simulador é um single-file app (`index.html`), sem build necessário. Para desenvolver:
+O projeto usa Vite e módulos ES.
 
 ```bash
 # Clone o repositório
 git clone https://github.com/RodrigoPLCosta/PKPD_simulator.git
 cd PKPD_simulator
 
-# Instale dependências de teste
+# Instale dependências
 npm install
 
-# Abra o simulador no navegador
-open index.html   # macOS
-xdg-open index.html  # Linux
+# Servidor local
+npm run dev
 
-# Execute os testes
+# Testes
 npm test
+
+# Build de produção
+npm run build
 ```
+
+## Estrutura relevante para contribuições
+
+- `src/drugs/`: dados farmacológicos, cenários e conteúdo educacional.
+- `src/engine/`: motor PK, alvos PK/PD e ajuste renal.
+- `src/ui/`: lógica de binding dos controles, gráfico e tema.
+- `src/styles/`: tokens MD3, tema semântico e estilos do shell atual.
+- `tests/ui/`: smoke tests e contratos de UI em `jsdom`.
 
 ## Padrões de código
 
-- O JavaScript está inline no `index.html` (single-file architecture)
-- Nomes de variáveis seguem o padrão do código existente (abreviados por concisão)
-- Novos fármacos devem seguir exatamente a mesma estrutura do objeto `D`
-- Valores de parâmetros PK devem ser arredondados de forma consistente com os existentes
+- O app usa arquitetura modular com ES Modules; não adicione JavaScript inline ao `index.html`.
+- Reutilize tokens e aliases de tema existentes antes de criar novas variáveis CSS.
+- Mantenha nomes e arredondamentos consistentes com o código existente.
+- Ao mexer em comportamento visual, prefira primeiro escrever ou ajustar o teste correspondente.
+- Não misture refatoração visual ampla com alteração de lógica clínica no mesmo PR.
 
 ## Licença
 

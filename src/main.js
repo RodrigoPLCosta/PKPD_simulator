@@ -3,6 +3,7 @@
  */
 
 /* ── Styles ── */
+import './styles/tokens.css';
 import './styles/theme.css';
 import './styles/base.css';
 import './styles/chart.css';
@@ -18,9 +19,9 @@ if (typeof Chart === 'undefined') {
   document.getElementById('pkC').parentElement.innerHTML =
     '<p style="color:#f06060;padding:20px;text-align:center">Chart.js não carregou. Conecte-se à internet e recarregue a página.</p>';
 } else {
-  initControls();          // wires every control, runs first simulation
-  initEducPanel();         // edu accordion click handler
-  initTheme(getChartRef()); // light/dark toggle bound to chart instance
+  initControls();
+  initEducPanel();
+  initTheme(getChartRef());
 }
 
 /* ── Service Worker registration ── */

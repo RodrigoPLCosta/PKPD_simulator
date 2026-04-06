@@ -1,16 +1,55 @@
-/* ═══ THEME — CSS variables, dark (default) + light via body.light ═══ */
+/* ═══ THEME — MD3 token mapping + app aliases ═══ */
 
-:root{--bg:#090d14;--bg2:#0f1520;--bg3:#151d2e;--bg4:#1e2a40;--bgi:#0c1119;--tx:#e4e9f2;--tx2:#8896b0;--tx3:#536078;--ac:#4b8df8;--ac2:#74a9fb;--acd:rgba(75,141,248,.10);--rd:#f06060;--rdb:rgba(240,96,96,.10);--gn:#34c77b;--gnb:rgba(52,199,123,.08);--am:#e8a028;--amb:rgba(232,160,40,.08);--bd:rgba(130,150,185,.10);--r:8px;--rl:12px}
+body {
+  --bg: var(--md-sys-color-surface);
+  --bg2: var(--md-sys-color-surface-container-low);
+  --bg3: var(--md-sys-color-surface-container);
+  --bg4: var(--md-sys-color-surface-container-high);
+  --bgi: var(--md-sys-color-surface-container-highest);
+  --tx: var(--md-sys-color-on-surface);
+  --tx2: var(--md-sys-color-on-surface-variant);
+  --tx3: var(--md-sys-color-outline);
+  --ac: var(--md-sys-color-primary);
+  --ac2: var(--md-sys-color-on-primary-container);
+  --acd: var(--md-sys-color-primary-container);
+  --rd: var(--md-sys-color-error);
+  --rdb: var(--md-sys-color-error-container);
+  --gn: #7bdba2;
+  --gnb: #183b26;
+  --am: var(--md-sys-color-tertiary);
+  --amb: var(--md-sys-color-tertiary-container);
+  --bd: var(--md-sys-color-outline-variant);
+  --chart-grid: rgba(138, 154, 175, 0.12);
+  --chart-border: rgba(138, 154, 175, 0.22);
+  --chart-tooltip-background: var(--md-sys-color-surface-container-high);
+  --chart-tooltip-border: var(--md-sys-color-outline-variant);
+  --chart-tooltip-title: var(--md-sys-color-on-surface);
+  --chart-tooltip-body: var(--md-sys-color-on-surface-variant);
+  --chart-narrative-surface: rgba(16, 22, 31, 0.88);
+  --chart-warning-surface: #36250a;
+  --chart-warning-outline: #b98928;
+  --chart-warning-text: #ffd48d;
+  --overlay-scrim: rgba(0, 0, 0, 0.5);
+  --elevation-shadow-1: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --elevation-shadow-2: 0 -8px 30px rgba(0, 0, 0, 0.25);
+  --r: 12px;
+  --rl: 18px;
+}
 
-/* ═══ LIGHT THEME ═══ */
-body.light{--bg:#f5f7fa;--bg2:#ffffff;--bg3:#edf0f5;--bg4:#dde2ea;--bgi:#f0f2f6;--tx:#1a2030;--tx2:#4a5568;--tx3:#718096;--ac:#2b6cb0;--ac2:#2c5282;--acd:rgba(43,108,176,.10);--rd:#c53030;--rdb:rgba(197,48,48,.08);--gn:#276749;--gnb:rgba(39,103,73,.08);--am:#b7791f;--amb:rgba(183,121,31,.08);--bd:rgba(0,0,0,.10)}
-body.light{color-scheme:light}
-body.light .ci{background:#f7fafc;border-color:rgba(0,0,0,.15);color:var(--tx)}
-body.light .ci:focus{background:#edf2f7;border-color:var(--ac)}
-body.light input[type=range]::-webkit-slider-thumb{border-color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-body.light input[type=range]::-webkit-slider-runnable-track{background:#cbd5e0}
-body.light input[type=range]::-moz-range-track{background:#cbd5e0}
-body.light .mc .tip{background:#fff;border-color:rgba(0,0,0,.12);color:#4a5568;box-shadow:0 4px 12px rgba(0,0,0,.1)}
-body.light .mc .tip::after{border-top-color:#fff}
-body.light .pk-cell{background:#edf0f5}
-body.light .db.on .dc{color:rgba(44,82,130,.5)}
+body[data-theme="light"] {
+  --gn: #156d31;
+  --gnb: #d6f8df;
+  --chart-grid: rgba(91, 104, 120, 0.14);
+  --chart-border: rgba(91, 104, 120, 0.24);
+  --chart-tooltip-background: var(--md-sys-color-surface-container-lowest);
+  --chart-tooltip-border: var(--md-sys-color-outline-variant);
+  --chart-tooltip-title: var(--md-sys-color-on-surface);
+  --chart-tooltip-body: var(--md-sys-color-on-surface-variant);
+  --chart-narrative-surface: rgba(255, 255, 255, 0.92);
+  --chart-warning-surface: #fff2d2;
+  --chart-warning-outline: #a86e00;
+  --chart-warning-text: #704900;
+  --overlay-scrim: rgba(0, 0, 0, 0.3);
+  --elevation-shadow-1: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --elevation-shadow-2: 0 -8px 30px rgba(0, 0, 0, 0.12);
+}
