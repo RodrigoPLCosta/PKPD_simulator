@@ -3,6 +3,15 @@
  */
 import { UNCERTAINTY_DRUGS } from '../engine/pkpdTargets.js';
 
+function getVisibleYMax(sel, drug, r, micv, cmpData) {
+  const uncertainty = UNCERTAINTY_DRUGS[sel];
+  const uncertaintyMax = uncertainty ? r.cmax * uncertainty.hi : 0;
+  const comparisonMax = cmpData ? (cmpData.cmax || 0) : 0;
+  const targetMax = drug.tl ? drug.tl.hi : 0;
+  const concentrationMax = Math.max(r.cmax, comparisonMax, uncertaintyMax, micv, targetMax, 5);
+  return Math.max(concentrationMax * 1.2, micv * 2, targetMax * 1.3, 5);
+}
+
 /**
  * Build Chart.js datasets from simulation results.
  */
@@ -32,7 +41,7 @@ export function buildDatasets(sel, drug, r, micv, intv, cmpData) {
   }
 
   // Dose markers
-  const yMax = Math.max(r.cmax * 1.2, micv * 2, drug.tl ? drug.tl.hi * 1.3 : 0, 5);
+  const yMax = getVisibleYMax(sel, drug, r, micv, cmpData);
   const markedTimes = {};
   for (let i = 0; i < r.schedule.length; i++) {
     const st = r.schedule[i].t;
@@ -259,3 +268,4 @@ export function updateChart(chartRef, sel, drug, r, micv, intv, cmpData) {
     chartRef.chart._pkAnnotations = annotations;
   }
 }
+
