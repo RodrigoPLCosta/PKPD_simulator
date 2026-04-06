@@ -4,6 +4,15 @@
 import { UNCERTAINTY_DRUGS } from '../engine/pkpdTargets.js';
 import { readThemeTokens } from './theme.js';
 
+function getVisibleYMax(sel, drug, r, micv, cmpData) {
+  const uncertainty = UNCERTAINTY_DRUGS[sel];
+  const uncertaintyMax = uncertainty ? r.cmax * uncertainty.hi : 0;
+  const comparisonMax = cmpData ? (cmpData.cmax || 0) : 0;
+  const targetMax = drug.tl ? drug.tl.hi : 0;
+  const concentrationMax = Math.max(r.cmax, comparisonMax, uncertaintyMax, micv, targetMax, 5);
+  return Math.max(concentrationMax * 1.2, micv * 2, targetMax * 1.3, 5);
+}
+
 /**
  * Build Chart.js datasets from simulation results.
  */
@@ -30,7 +39,7 @@ export function buildDatasets(sel, drug, r, micv, intv, cmpData) {
     ds.push({ label: 'Hi', data: [{ x: 0, y: drug.tl.hi }, { x: maxT, y: drug.tl.hi }], borderColor: theme.success, borderWidth: 1, borderDash: [4, 3], pointRadius: 0, fill: '+1', backgroundColor: theme.success + '18', order: 3 });
   }
 
-  const yMax = Math.max(r.cmax * 1.2, micv * 2, drug.tl ? drug.tl.hi * 1.3 : 0, 5);
+  const yMax = getVisibleYMax(sel, drug, r, micv, cmpData);
   const markedTimes = {};
   for (let i = 0; i < r.schedule.length; i++) {
     const st = r.schedule[i].t;
@@ -248,3 +257,4 @@ export function updateChart(chartRef, sel, drug, r, micv, intv, cmpData) {
     chartRef.chart._pkAnnotations = annotations;
   }
 }
+
