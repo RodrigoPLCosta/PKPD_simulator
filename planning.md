@@ -15,6 +15,12 @@ Este plano assume a adoção integral das opções selecionadas:
 9. `9a` Mobile com modal bottom sheet MD3.
 10. `10a` Tema Material You com tokens tonais e seed color.
 
+## Status de execução
+
+- Sprint 0 concluido no codigo: harness de UI com vitest + jsdom, fixture do shell real e smoke tests de app shell, tema e navegacao mobile.
+- Sprint 1 concluido no codigo: tokens MD3, tipografia base, contrato de tema claro/escuro por tokens e integracao do grafico ao tema.
+- Porte adicional vindo de main: caminhos relativos de assets, correcao do yMax do grafico para comparacao/incerteza/alvos e resincronizacao visual ao aplicar cenarios clinicos.
+
 ## Premissas
 
 - Não alterar cálculo PK/PD nem contrato clínico do simulador.
@@ -432,3 +438,4 @@ Consolidar a migração e reduzir regressão acumulada.
 ## Próximo passo após aprovação deste plano
 
 Executar o Sprint 0 primeiro. Não começar a migração visual antes de fechar o harness de testes de UI.
+

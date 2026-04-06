@@ -12,14 +12,14 @@
   <img src="https://img.shields.io/badge/version-1.3-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/antimicrobianos-23-orange?style=flat-square" alt="Drugs">
   <img src="https://img.shields.io/badge/classes-11-teal?style=flat-square" alt="Classes">
-  <img src="https://img.shields.io/badge/testes-vitest-success?style=flat-square" alt="Tests">
+  <img src="https://img.shields.io/badge/testes-vitest%20%2B%20jsdom-success?style=flat-square" alt="Tests">
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
   <img src="https://img.shields.io/badge/PWA-offline--ready-blueviolet?style=flat-square" alt="PWA">
   <img src="https://img.shields.io/badge/demo-live-brightgreen?style=flat-square" alt="Live Demo">
 </p>
 
 <p align="center">
-  <a href="https://rodrigoplcosta.github.io/PKPD_simulator/"><strong>🔗 Acessar o Simulador (Live Demo)</strong></a>
+  <a href="https://rodrigoplcosta.github.io/PKPD_simulator/"><strong>Acessar o Simulador (Live Demo)</strong></a>
 </p>
 
 ---
@@ -34,13 +34,23 @@ Calcula e exibe graficamente a curva de concentração sérica ao longo do tempo
 
 ---
 
+## Estado atual da interface
+
+A migração visual para Material Design 3 está em andamento.
+
+- **Sprint 0 concluído:** harness de testes de UI com `vitest` + `jsdom`, boot da aplicação real em ambiente DOM simulado e smoke tests do shell atual.
+- **Sprint 1 concluído:** fundação MD3 com tokens tonais, tema claro/escuro baseado em contrato semântico, escala tipográfica revisada e integração do gráfico ao novo tema.
+- **Ainda não implementado:** shell MD3 completo, chips/listas MD3, reorganização da narrativa clínica e bottom sheet mobile dedicado.
+
+---
+
 ## Modelo farmacocinético
 
 O motor de simulação utiliza um modelo monocompartimental de infusão IV intermitente:
 
-- **Fase de infusão:** C(t) = (R₀ / ke·Vd) × (1 - e^(-ke·t)), onde R₀ = dose/tempo de infusão
+- **Fase de infusão:** C(t) = (R0 / ke·Vd) × (1 - e^(-ke·t)), onde R0 = dose/tempo de infusão
 - **Fase pós-infusão:** C(t) = C(end) × e^(-ke·(t - tInf))
-- **Ajuste renal:** a meia-vida é recalculada pela fração de eliminação renal e a TFG do paciente: t½adj = ln2 / (ke × (fr × GFR/120 + (1 - fr)))
+- **Ajuste renal:** a meia-vida é recalculada pela fração de eliminação renal e a TFG do paciente: t1/2adj = ln2 / (ke × (fr × GFR/120 + (1 - fr)))
 
 A simulação gera pontos de concentração total e livre (fração não-ligada = 1 - ligação proteica) a cada 0.05h (ou 0.25h para teicoplanina), ao longo de 48h (168h para teicoplanina).
 
@@ -49,8 +59,8 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 | Parâmetro | Descrição | Alvo clínico |
 |-----------|-----------|---------------|
 | **fT > MIC (SS)** | Fração do intervalo posológico no steady-state em que a concentração livre supera o MIC | Alvo primário para beta-lactâmicos |
-| **AUC₂₄/MIC** | Razão da área sob a curva em 24h pelo MIC | Vancomicina 400–600 (IDSA 2020), linezolida, polimixina B |
-| **fCmax/MIC** | Razão do pico de concentração livre pelo MIC | Aminoglicosídeos ≥8–10 |
+| **AUC24/MIC** | Razão da área sob a curva em 24h pelo MIC | Vancomicina 400–600 (IDSA 2020), linezolida, polimixina B |
+| **fCmax/MIC** | Razão do pico de concentração livre pelo MIC | Aminoglicosídeos >= 8–10 |
 | **Cmin (vale)** | Concentração mínima no steady-state | Teicoplanina 15–30 mg/L |
 
 ---
@@ -75,19 +85,20 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 
 ## Funcionalidades
 
-- **Seleção rápida de dose:** botões com apresentações comerciais (ex: Pipe/Tazo 2.25g, 3.375g, 4.5g)
-- **Intervalos discretos:** botões de intervalo posológico relevantes para cada droga (ex: q4h, q6h, q8h)
-- **Presets de infusão:** bolus, infusão estendida e contínua, contextuais por fármaco
-- **Dose por peso:** drogas dosadas por mg/kg (vancomicina, aminoglicosídeos, daptomicina, polimixina B, teicoplanina) recalculam automaticamente ao alterar o peso
-- **Dose de ataque:** seção colapsável (opcional), expande automaticamente para drogas que usam loading dose
-- **Ajuste renal:** classificação automática da TFG (ARC, Normal, DRC G2–G5, Diálise) com recomendações contextuais
-- **Cenários clínicos:** presets rápidos (ex: Mero IE 3h, Vanco ataque, Sepse + ARC)
-- **Comparação de regimes:** salve uma curva como referência e compare visualmente com o regime atual
-- **Gráfico interativo:** Chart.js com labels de Cmax/Cmin, destaque fT>MIC, AUC shading, dose markers
-- **Card PK:** parâmetros farmacocinéticos (Vd, t½, ligação proteica, eliminação renal) e referências
-- **Painel educacional:** informações clínicas, efeitos adversos e limitações do modelo por droga
-- **Tema claro/escuro:** alternância de tema com um clique
-- **Undo (Ctrl+Z):** desfazer última alteração de parâmetro
+- **Seleção rápida de dose:** botões com apresentações comerciais relevantes por fármaco.
+- **Intervalos discretos:** botões de intervalo posológico contextuais (ex: q4h, q6h, q8h).
+- **Presets de infusão:** bolus, infusão estendida e contínua, contextuais por droga.
+- **Dose por peso:** drogas dosadas por mg/kg recalculam automaticamente ao alterar o peso, com sincronização visual após cenários clínicos.
+- **Dose de ataque:** seção colapsável opcional, expandida automaticamente quando a droga usa loading dose.
+- **Ajuste renal:** classificação automática da TFG (ARC, Normal, DRC G2–G5, Diálise) com recomendações contextuais.
+- **Cenários clínicos:** presets rápidos de regimes relevantes.
+- **Comparação de regimes:** salve uma curva como referência e compare visualmente com o regime atual.
+- **Gráfico interativo:** Chart.js com labels de Cmax/Cmin, destaque fT>MIC, shading de AUC, dose markers e eixo Y ajustado para comparação, incerteza e target lines.
+- **Painel educacional:** informações clínicas, limitações do modelo e referências contextuais por droga/classe.
+- **Tema claro/escuro:** alternância de tema com contrato MD3 consistente entre UI e gráfico.
+- **Fundação MD3:** tokens tonais, superfícies semânticas e escala tipográfica base para as próximas etapas da migração.
+- **Undo (Ctrl+Z):** desfazer a última alteração de parâmetro.
+- **PWA offline:** manifest e service worker prontos para instalação local.
 
 ---
 
@@ -95,66 +106,72 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 
 | Componente | Detalhes |
 |------------|----------|
-| **Arquitetura** | Modular ES Modules (Vite 6) |
+| **Arquitetura** | ES Modules com Vite 6 |
 | **Gráficos** | Chart.js 4.4.1 (CDN) |
+| **Tema** | Tokens CSS semânticos em Material Design 3 (`tokens.css` + `theme.css`) |
 | **Tipografia** | Google Fonts — DM Sans + JetBrains Mono |
-| **Testes** | Vitest — suíte unitária e de integração |
-| **CI/CD** | GitHub Actions — test → build → deploy GitHub Pages |
+| **Testes** | Vitest para domínio, integração e UI DOM com `jsdom` + Testing Library |
+| **CI/CD** | GitHub Actions — test -> build -> deploy GitHub Pages |
 | **PWA** | Service Worker para uso offline |
-| **Responsivo** | Desktop (sidebar + gráfico) e mobile (stacked) |
+| **Responsivo** | Desktop (sidebar + gráfico) e mobile (drawer inferior) |
 
 ---
 
 ## Estrutura do projeto
 
-```
+```text
 PKPD_simulator/
-├── index.html                  ← HTML principal (Vite entry point)
-├── vite.config.js              ← Configuração do Vite
-├── package.json                ← Dependências e scripts
-├── .gitignore
+├── index.html
+├── vite.config.js
+├── vitest.config.js
+├── package.json
+├── package-lock.json
 ├── README.md
-├── LICENSE
-├── public/                     ← Arquivos estáticos (copiados sem hash)
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── planning.md
+├── public/
 │   ├── manifest.json
 │   ├── sw.js
 │   └── icons/
 ├── src/
-│   ├── main.js                 ← Entry point — importa CSS e inicializa módulos
+│   ├── main.js
 │   ├── drugs/
-│   │   ├── index.js            ← Monta D (23 drogas), SCENARIOS, ADV
-│   │   ├── educContent.js      ← Conteúdo educacional por droga e classe
-│   │   ├── carbapenems.json
-│   │   ├── cephalosporins.json
-│   │   ├── penicillins.json
-│   │   ├── glycopeptides.json
-│   │   ├── aminoglycosides.json
-│   │   ├── lipopeptides.json
-│   │   ├── oxazolidinones.json
-│   │   ├── polymyxins.json
-│   │   ├── nitroimidazoles.json
-│   │   ├── fluoroquinolones.json
-│   │   └── antifungals.json
+│   │   ├── index.js
+│   │   ├── educContent.js
+│   │   └── *.json
 │   ├── engine/
-│   │   ├── pkEngine.js         ← Motor PK monocompartimental
-│   │   ├── pkpdTargets.js      ← Alertas e alvos PK/PD
-│   │   └── renalAdjust.js      ← Classificação GFR e ajustes renais
+│   │   ├── pkEngine.js
+│   │   ├── pkpdTargets.js
+│   │   └── renalAdjust.js
 │   ├── ui/
-│   │   ├── controls.js         ← Lógica de UI e binding de controles
-│   │   ├── chart.js            ← Configuração e atualização do gráfico
-│   │   ├── theme.js            ← Toggle tema claro/escuro
-│   │   └── educPanel.js        ← Painel educacional expansível
+│   │   ├── controls.js
+│   │   ├── chart.js
+│   │   ├── theme.js
+│   │   └── educPanel.js
 │   └── styles/
-│       ├── theme.css           ← Variáveis CSS (claro/escuro)
-│       ├── base.css            ← Layout, tipografia, responsivo
-│       ├── chart.css           ← Estilização do gráfico
-│       └── controls.css        ← Sidebar, botões, sliders
+│       ├── tokens.css
+│       ├── theme.css
+│       ├── base.css
+│       ├── chart.css
+│       └── controls.css
 ├── tests/
-│   ├── pkpd.test.js            ← Testes unitários do motor PK e helpers puros
-│   └── integration.test.js     ← Testes de integração
+│   ├── pkpd.test.js
+│   ├── integration.test.js
+│   ├── setup/
+│   │   └── setupTests.js
+│   └── ui/
+│       ├── app-shell.test.js
+│       ├── navigation-smoke.test.js
+│       ├── theme.test.js
+│       ├── theme-contract.test.js
+│       ├── tokens.test.js
+│       ├── typography.test.js
+│       └── helpers/
+│           └── renderApp.js
 └── .github/
     └── workflows/
-        └── deploy.yml          ← CI/CD: test → build → deploy
+        └── deploy.yml
 ```
 
 ---
@@ -169,10 +186,10 @@ cd PKPD_simulator
 # Instalar dependências
 npm install
 
-# Servidor de desenvolvimento (hot reload)
+# Servidor de desenvolvimento
 npm run dev
 
-# Rodar testes
+# Rodar toda a suíte
 npm test
 
 # Build de produção
@@ -182,15 +199,28 @@ npm run build
 npm run preview
 ```
 
+### Testes de UI
+
+A suíte de UI monta o shell real da aplicação em `jsdom` e usa Testing Library para validar contratos de apresentação e interações básicas.
+
+Cobertura atual:
+
+- `tests/ui/app-shell.test.js`: smoke test do shell atual.
+- `tests/ui/navigation-smoke.test.js`: abertura e fechamento do drawer mobile atual.
+- `tests/ui/theme.test.js`: alternância de tema e atualização de `meta[name="theme-color"]`.
+- `tests/ui/theme-contract.test.js`: propagação do tema para o gráfico sem quebrar o shell.
+- `tests/ui/tokens.test.js`: presença dos tokens obrigatórios claro/escuro.
+- `tests/ui/typography.test.js`: aplicação da escala tipográfica nas regiões críticas.
+
 ---
 
 ## Instalação como PWA
 
-**iPhone (Safari):** Abra o site → botão Compartilhar → "Adicionar à Tela de Início"
+**iPhone (Safari):** abra o site -> Compartilhar -> "Adicionar à Tela de Início"
 
-**Android (Chrome):** Abra o site → banner automático ou menu ⋮ → "Instalar aplicativo"
+**Android (Chrome):** abra o site -> banner automático ou menu -> "Instalar aplicativo"
 
-Após instalação, o app funciona offline.
+Após a instalação, o app pode funcionar offline com os assets locais e o service worker.
 
 ---
 
@@ -239,23 +269,18 @@ COSTA, Rodrigo Pinheiro Leal. **Simulador PK/PD de Antimicrobianos**: ferramenta
 
 ## Limitações do modelo
 
-> **⚠️ Este simulador é uma ferramenta EDUCACIONAL e NÃO substitui avaliação clínica individualizada nem monitoramento terapêutico de drogas (TDM).**
+> **Este simulador é uma ferramenta educacional e não substitui avaliação clínica individualizada nem monitoramento terapêutico de drogas (TDM).**
 
 O motor de simulação utiliza um **modelo monocompartimental** de infusão IV intermitente com parâmetros populacionais de adultos. Isso implica limitações relevantes:
 
-- **Volume de distribuição (Vd) fixo:** O simulador utiliza um Vd populacional único (L/kg), mas na prática clínica o Vd varia amplamente entre pacientes. Em pacientes críticos (sepse, queimados, cirurgia cardíaca com CEC, ECMO), o Vd pode aumentar 50–100% devido a expansão do terceiro espaço, ressuscitação volêmica agressiva e aumento da permeabilidade capilar (Roberts JA, Lipman J. *Clin Pharmacokinet*. 2009;48(2):89-124). Isso resulta em concentrações séricas reais **significativamente menores** que as estimadas pelo simulador, especialmente para drogas hidrofílicas (beta-lactâmicos, aminoglicosídeos, vancomicina, polimixina B).
+- **Volume de distribuição (Vd) fixo:** o simulador utiliza um Vd populacional único (L/kg), mas na prática clínica o Vd varia amplamente entre pacientes.
+- **Fase de distribuição (alfa) não modelada:** para drogas bicompartimentais, o Cmax pós-infusão pode ser superestimado.
+- **Ligação proteica constante:** o modelo assume ligação proteica fixa, o que pode divergir de contextos de hipoalbuminemia.
+- **Clearance aumentado (ARC):** o simulador permite ajuste de GFR, mas não modela a variabilidade intra-individual ao longo do tempo.
+- **Obesidade:** não calcula peso ajustado para aminoglicosídeos nem peso ideal para outras classes.
+- **Populações especiais:** não validado para neonatos, crianças, gestantes, ECMO, CRRT ou diálise intermitente.
 
-- **Fase de distribuição (α) não modelada:** Para drogas bicompartimentais (vancomicina, teicoplanina, aminoglicosídeos), o Cmax pós-infusão pode ser superestimado em 30–50%. O AUC e o vale são mais confiáveis neste simulador que o Cmax.
-
-- **Ligação proteica constante:** O modelo assume ligação proteica fixa, mas em hipoalbuminemia (comum em UTI, cirrose, síndrome nefrótica) a fração livre de drogas altamente ligadas (ertapenem, ceftriaxona, oxacilina, daptomicina, teicoplanina) pode aumentar 2–4×, alterando eficácia e toxicidade reais.
-
-- **Clearance aumentado (ARC):** Pacientes jovens, politraumatizados ou com sepse hiperdinâmica podem apresentar ARC (Augmented Renal Clearance, TFG > 130 mL/min), levando a subdosagem de antimicrobianos com eliminação renal predominante. O simulador permite ajuste de GFR, mas não modela a variabilidade intra-individual ao longo do tempo.
-
-- **Obesidade:** O simulador não calcula peso ajustado (ABW = IBW + 0.4 × [TBW − IBW]) para aminoglicosídeos nem peso ideal para outras classes. Em obesos mórbidos, o Vd por kg de peso total é diferente do Vd por kg de peso ideal, e as curvas simuladas podem divergir significativamente da realidade.
-
-- **Populações especiais:** Não validado para neonatos, crianças, gestantes, pacientes em ECMO, CRRT (hemodiafiltração contínua) ou diálise intermitente. A farmacocinética dessas populações difere substancialmente dos parâmetros populacionais adultos utilizados.
-
-Para decisões clínicas, recomenda-se **TDM com software Bayesiano** (PrecisePK, DoseMeRx, InsightRx) e avaliação individualizada por farmacêutico clínico ou equipe de stewardship.
+Para decisões clínicas, recomenda-se TDM com software Bayesiano e avaliação individualizada por farmacêutico clínico ou equipe de stewardship.
 
 ---
 
@@ -266,5 +291,5 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 ---
 
 <p align="center">
-  <strong>⚠️ Aviso:</strong> Simulador educacional — não substitui avaliação clínica individualizada e monitoramento terapêutico de drogas (TDM).
+  <strong>Aviso:</strong> Simulador educacional — não substitui avaliação clínica individualizada e monitoramento terapêutico de drogas (TDM).
 </p>

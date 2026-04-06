@@ -5,6 +5,29 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [Unreleased]
+
+### Adicionado
+
+- Harness de testes de UI com `vitest`, `jsdom`, `@testing-library/dom`, `@testing-library/user-event` e `@testing-library/jest-dom`.
+- Configuração dedicada de testes em `vitest.config.js` e setup compartilhado em `tests/setup/setupTests.js`.
+- Helper `tests/ui/helpers/renderApp.js` para montar o shell real da aplicação em DOM simulado.
+- Testes de UI para shell, navegação mobile, tema, contrato de tema, tokens e tipografia.
+- Arquivo `src/styles/tokens.css` com tokens semânticos MD3 para tema claro/escuro.
+
+### Alterado
+
+- Tema da aplicação migrado para contrato semântico com `body[data-theme]` e integração do gráfico ao tema atual.
+- `README.md` e `CONTRIBUTING.md` alinhados com a arquitetura modular atual, fluxo com Vite e suíte de UI.
+- Tipografia e superfícies base reorganizadas para refletir a fundação MD3 sem alterar o shell completo.
+- Caminhos de assets no `index.html` convertidos para relativos para melhorar build e publicação estática.
+
+### Corrigido
+
+- Escala do eixo Y do gráfico agora considera comparação salva, faixa de incerteza e target lines.
+- Aplicação de cenários clínicos agora resincroniza estados visuais de dose, intervalo, infusão e badge `mg/kg`.
+- Compatibilidade da suíte DOM com o ambiente atual fixando `jsdom` em versão compatível.
+
 ## [1.3.0] - 2026-04-04
 
 ### Corrigido
@@ -50,6 +73,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Interface responsiva.
 - PWA com suporte offline.
 
+[Unreleased]: https://github.com/RodrigoPLCosta/PKPD_simulator/compare/v1.3.0...HEAD
 [1.3.0]: https://github.com/RodrigoPLCosta/PKPD_simulator/releases/tag/v1.3.0
 [1.2.0]: https://github.com/RodrigoPLCosta/PKPD_simulator/releases/tag/v1.2.0
 [1.0.0]: https://github.com/RodrigoPLCosta/PKPD_simulator/releases/tag/v1.0.0
