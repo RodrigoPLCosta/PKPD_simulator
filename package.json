@@ -12,6 +12,10 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "jsdom": "^26.1.0",
     "vite": "^6.0.0",
     "vitest": "^3.0.0"
   },
