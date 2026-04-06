@@ -38,6 +38,17 @@ function setInfusionMinutes(minutes) {
   document.getElementById('inf').value = nextInf;
   return nextInf;
 }
+function syncMgKgBadge() {
+  const drug = D[sel];
+  const badge = document.getElementById('mgkg-badge');
+  if (!drug.mgkg) {
+    badge.textContent = '';
+    return;
+  }
+  const wt = parseFloat(document.getElementById('wt-n').value) || 70;
+  const dose = parseFloat(document.getElementById('dose-n').value) || 0;
+  badge.textContent = formatMgKgBadge(dose, wt);
+}
 
 // ─── Sync helpers ───
 function syncDoseBtns() {
@@ -372,6 +383,10 @@ export function initControls() {
       const scInt = s.p.int || s.p['int'];
       if (scInt) { document.getElementById('int-btns').querySelectorAll('.int-btn').forEach(function (b2) { b2.classList.toggle('on', parseInt(b2.dataset.v) === scInt); }); }
       if (s.p.ld && s.p.ld > 0) { ldContent.style.display = 'block'; ldToggle.classList.add('open'); }
+      syncDoseBtns();
+      syncIntBtns();
+      syncInfBtns();
+      syncMgKgBadge();
       update();
     });
     scEl.appendChild(b);
@@ -529,3 +544,4 @@ export function initControls() {
 }
 
 export function getSel() { return sel; }
+
