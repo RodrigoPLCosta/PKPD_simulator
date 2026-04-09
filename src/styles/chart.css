@@ -74,7 +74,7 @@
 .edu-text p:first-child{margin-top:10px}
 .edu-text strong{color:var(--tx);font-weight:600}
 .edu-text .edu-ref{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--tx3);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
-.edu-text .edu-tip{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--ac2);background:var(--acd);padding:6px 10px;border-radius:var(--shape-sm);margin-top:8px;line-height:1.5}
+.edu-text .edu-tip{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--md-sys-color-on-secondary-container);background:var(--md-sys-color-secondary-container);padding:8px 12px;border-radius:var(--shape-md);margin-top:8px;line-height:1.5;opacity:0.9}
 @media(max-width:768px){
   .edu-summary{font-size:11px}
   .edu-text{font-size:11px;padding:0 10px 10px}

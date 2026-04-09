@@ -541,6 +541,17 @@ export function initControls() {
   // PK-below toggle
   document.getElementById('pk-below').addEventListener('click', function () { this.classList.toggle('open'); });
 
+  // Drug selection toggle
+  const btnSelectDrug = document.getElementById('btn-select-drug');
+  if(btnSelectDrug) {
+      btnSelectDrug.addEventListener('click', function() {
+          const content = document.getElementById('drug-selection-content');
+          const isHidden = content.style.display === 'none';
+          content.style.display = isHidden ? 'block' : 'none';
+          this.classList.toggle('open', isHidden);
+      });
+  }
+
   // Initial drug selection
   selectDrug('meropenem');
 }
