@@ -30,10 +30,16 @@ body {
   --chart-warning-outline: #b98928;
   --chart-warning-text: #ffd48d;
   --overlay-scrim: rgba(0, 0, 0, 0.5);
-  --elevation-shadow-1: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --elevation-shadow-2: 0 -8px 30px rgba(0, 0, 0, 0.25);
-  --r: 12px;
-  --rl: 18px;
+  --elevation-shadow-1: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --elevation-shadow-2: 0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shape-xs: 4px;
+  --shape-sm: 8px;
+  --shape-md: 12px;
+  --shape-lg: 16px;
+  --shape-xl: 28px;
+  --shape-full: 9999px;
+  --r: var(--shape-md);
+  --rl: var(--shape-lg);
 }
 
 body[data-theme="light"] {
@@ -50,6 +56,6 @@ body[data-theme="light"] {
   --chart-warning-outline: #a86e00;
   --chart-warning-text: #704900;
   --overlay-scrim: rgba(0, 0, 0, 0.3);
-  --elevation-shadow-1: 0 4px 16px rgba(0, 0, 0, 0.12);
-  --elevation-shadow-2: 0 -8px 30px rgba(0, 0, 0, 0.12);
+  --elevation-shadow-1: 0 1px 3px 1px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --elevation-shadow-2: 0 2px 6px 2px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
