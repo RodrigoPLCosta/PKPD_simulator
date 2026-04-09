@@ -3,8 +3,8 @@
 /* CLASS TABS */
 .ct{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
 .ct button{padding:4px 10px;border:1px solid var(--bd);border-radius:999px;background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);font-weight:var(--md-sys-typescale-label-medium-weight);line-height:var(--md-sys-typescale-label-medium-line-height);letter-spacing:var(--md-sys-typescale-label-medium-tracking);cursor:pointer;transition:.12s}
-.ct button:hover{border-color:var(--ac);color:var(--tx)}
-.ct button.on{background:var(--acd);border-color:var(--ac);color:var(--ac2)}
+.ct button:hover{background:var(--md-sys-color-surface-container-high);color:var(--tx)}
+.ct button.on{background:var(--acd);border-color:transparent;color:var(--ac2)}
 
 /* DRUG GRID */
 .dg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px}
