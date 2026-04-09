@@ -9,17 +9,14 @@ import { getAlerts } from '../engine/pkpdTargets.js';
 import { updateChart } from './chart.js';
 import { updateEduPanel } from './educPanel.js';
 import { clampInfusionMinutes, getContinuousInfusionMinutes, getWeightBasedDose } from './controlLogic.js';
+import { getDefaultDrugState } from './drugState.js';
+import { MIC_STEPS, micFromSlider, sliderFromMic } from './micScale.js';
+import { applyScenarioPatch } from './scenarioState.js';
+import { cloneUIState, uiStatesEqual } from './uiState.js';
+import { buildAlertViewModel, buildPkInfoViewModel, renderAlertHtml, renderPkInfoHtml } from './viewModels.js';
 
 let sel = 'meropenem';
 let cmpData = null;
-
-// MIC log2 scale
-const MIC_STEPS = [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256];
-function micFromSlider(idx) { return MIC_STEPS[Math.max(0, Math.min(MIC_STEPS.length - 1, Math.round(idx)))]; }
-function sliderFromMic(val) {
-  for (let i = 0; i < MIC_STEPS.length; i++) { if (MIC_STEPS[i] >= val - 0.001) return i; }
-  return MIC_STEPS.length - 1;
-}
 
 // DOM references
 const ldToggle = document.getElementById('ld-toggle');
@@ -37,6 +34,49 @@ function setInfusionMinutes(minutes) {
   document.getElementById('inf-n').value = nextInf;
   document.getElementById('inf').value = nextInf;
   return nextInf;
+}
+function setLoadingDoseVisibility(isOpen) {
+  ldContent.style.display = isOpen ? 'block' : 'none';
+  ldToggle.classList.toggle('open', isOpen);
+}
+function getCurrentUIState() {
+  return {
+    sel,
+    dose: parseFloat(document.getElementById('dose-n').value) || 0,
+    int: parseFloat(document.getElementById('int-n').value) || 0,
+    inf: parseFloat(document.getElementById('inf-n').value) || 0,
+    mic: micFromSlider(document.getElementById('mic').value),
+    gfr: parseFloat(document.getElementById('gfr-n').value) || 120,
+    wt: parseFloat(document.getElementById('wt-n').value) || 70,
+    ld: parseFloat(document.getElementById('ld-n').value) || 0,
+    ldc: parseInt(document.getElementById('ldc-n').value) || 0,
+    ldi: parseFloat(document.getElementById('ldi-n').value) || 12,
+    ldOpen: ldContent.style.display !== 'none'
+  };
+}
+function applyUIState(state) {
+  document.getElementById('dose').value = state.dose;
+  document.getElementById('dose-n').value = state.dose;
+  document.getElementById('int').value = state.int;
+  document.getElementById('int-n').value = state.int;
+  setInfusionMinutes(state.inf);
+  document.getElementById('mic').value = sliderFromMic(state.mic);
+  document.getElementById('mic-n').value = state.mic;
+  document.getElementById('gfr').value = Math.min(180, state.gfr);
+  document.getElementById('gfr-n').value = state.gfr;
+  document.getElementById('wt').value = state.wt;
+  document.getElementById('wt-n').value = state.wt;
+  document.getElementById('ld').value = state.ld;
+  document.getElementById('ld-n').value = state.ld;
+  document.getElementById('ldc').value = state.ldc;
+  document.getElementById('ldc-n').value = state.ldc;
+  document.getElementById('ldi').value = state.ldi;
+  document.getElementById('ldi-n').value = state.ldi;
+  setLoadingDoseVisibility(state.ldOpen);
+  syncDoseBtns();
+  syncIntBtns();
+  syncInfBtns();
+  syncMgKgBadge();
 }
 function syncMgKgBadge() {
   const drug = D[sel];
@@ -82,9 +122,10 @@ function renderDoseButtons(drug, currentDose) {
   (drug.doses || []).forEach(function (v) {
     const b = document.createElement('button');
     b.className = 'dose-btn' + (v === currentDose ? ' on' : '');
-    b.innerHTML = formatDose(v);
+    b.textContent = formatDose(v);
     b.dataset.v = v;
     b.addEventListener('click', function () {
+      if (!_restoringUndo) pushUndo();
       document.getElementById('dose').value = v;
       document.getElementById('dose-n').value = v;
       container.querySelectorAll('.dose-btn').forEach(function (x) { x.classList.remove('on'); });
@@ -104,6 +145,7 @@ function renderIntButtons(ints, current) {
     b.textContent = v + 'h';
     b.dataset.v = v;
     b.addEventListener('click', function () {
+      if (!_restoringUndo) pushUndo();
       const oldInt = parseFloat(document.getElementById('int-n').value) || 8;
       const curInf = parseFloat(document.getElementById('inf-n').value) || 30;
       document.getElementById('int').value = v;
@@ -132,6 +174,7 @@ function renderInfPresets(drug, currentInf) {
     b.textContent = p.l;
     b.dataset.v = isCI ? 'ci' : p.v;
     b.addEventListener('click', function () {
+      if (!_restoringUndo) pushUndo();
       if (isCI) {
         const intV = parseFloat(document.getElementById('int-n').value) || 8;
         val = intV * 60;
@@ -161,22 +204,18 @@ function updateMgKgDose() {
 function selectDrug(k) {
   sel = k;
   const d = D[k];
+  const currentState = getCurrentUIState();
+  const nextState = getDefaultDrugState(k, d, currentState.wt, { gfr: currentState.gfr });
   const doseSlider = document.getElementById('dose');
   const doseNum = document.getElementById('dose-n');
   doseSlider.min = d.dMin || 50; doseSlider.max = d.dMax || 6000; doseSlider.step = d.dStep || 50;
   doseNum.min = d.dMin || 50; doseNum.max = d.dMax || 6000; doseNum.step = d.dStep || 50;
   const mgkgEl = document.getElementById('mgkg-badge');
-  const wt = parseFloat(document.getElementById('wt-n').value) || 70;
-  const initialDose = d.mgkg ? getWeightBasedDose(d, wt) : d.dose;
-  doseSlider.value = initialDose; doseNum.value = initialDose;
-  renderDoseButtons(d, initialDose);
-  if (d.mgkg) { mgkgEl.textContent = formatMgKgBadge(initialDose, wt); }
+  renderDoseButtons(d, nextState.dose);
+  if (d.mgkg) { mgkgEl.textContent = formatMgKgBadge(nextState.dose, nextState.wt); }
   else { mgkgEl.textContent = ''; }
-  document.getElementById('int').value = d.int; document.getElementById('int-n').value = d.int;
-  renderIntButtons(d.ints || [d.int], d.int);
-  setInfusionMinutes(d.inf);
-  renderInfPresets(d, d.inf);
-  document.getElementById('mic').value = sliderFromMic(d.mic); document.getElementById('mic-n').value = d.mic;
+  renderIntButtons(d.ints || [d.int], nextState.int);
+  renderInfPresets(d, nextState.inf);
 
   // Filter scenarios
   let hasScenarios = false;
@@ -191,15 +230,9 @@ function selectDrug(k) {
   if (scHeader && scHeader.classList.contains('st')) scHeader.style.display = hasScenarios ? '' : 'none';
 
   // Loading dose defaults
-  const defLd = d.defLd || 0, defLdInt = d.defLdInt || 12;
   const ldSlider = document.getElementById('ld'); const ldNum = document.getElementById('ld-n');
   ldSlider.max = d.dMax || 6000; ldSlider.step = d.dStep || 50;
   ldNum.max = d.dMax || 6000; ldNum.step = d.dStep || 50;
-  ldSlider.value = 0; ldNum.value = 0;
-  document.getElementById('ldc').value = defLd; document.getElementById('ldc-n').value = defLd;
-  document.getElementById('ldi').value = defLdInt; document.getElementById('ldi-n').value = defLdInt;
-  if (defLd > 0) { ldContent.style.display = 'block'; ldToggle.classList.add('open'); }
-  else { ldContent.style.display = 'none'; ldToggle.classList.remove('open'); }
 
   document.getElementById('lg-c').style.background = d.col;
   document.getElementById('ch-t').textContent = d.l;
@@ -207,6 +240,7 @@ function selectDrug(k) {
   document.getElementById('std-ref').style.display = 'block';
   document.getElementById('std-ref').innerHTML = '<b>Posologia padrão:</b> ' + d.std;
   document.getElementById('dg').querySelectorAll('.db').forEach(function (b) { b.classList.toggle('on', b.dataset.k === k); });
+  applyUIState(nextState);
   update();
 }
 
@@ -257,28 +291,18 @@ function update() {
   else if (drug.tt === 'trough') document.getElementById('mc-cmin').classList.add('primary');
 
   // PK Info card
-  const vdL = Math.round(drug.vdkg * wt);
-  let pkH = '<div class="pk-title">' + drug.l + '</div>';
-  pkH += '<div class="pk-grid">';
-  pkH += '<div class="pk-cell"><div class="pk-k">Vd</div><div class="pk-v">' + vdL + ' L (' + drug.vdkg + ' L/kg × ' + wt + 'kg)</div></div>';
-  pkH += '<div class="pk-cell"><div class="pk-k">t½ ajust.</div><div class="pk-v">' + r.adjHL + ' h</div></div>';
-  pkH += '<div class="pk-cell"><div class="pk-k">Lig. proteica</div><div class="pk-v">' + Math.round(drug.pb * 100) + '%</div></div>';
-  pkH += '<div class="pk-cell"><div class="pk-k">Elim. renal</div><div class="pk-v">' + Math.round(drug.fr * 100) + '%</div></div>';
-  pkH += '</div>';
-  pkH += '<div class="pk-tgt">Alvo: ' + drug.tgt + '</div>';
-  pkH += '<div class="pk-ref">' + drug.info + '</div>';
-  if (drug.warn) pkH += '<div class="warn-model">' + drug.warn + '</div>';
-  document.getElementById('pk-info').innerHTML = pkH;
+  const pkInfoViewModel = buildPkInfoViewModel(drug, r, wt);
+  document.getElementById('pk-info').innerHTML = renderPkInfoHtml(pkInfoViewModel);
   document.getElementById('pk-below-title').textContent = 'Parâmetros PK — ' + drug.l;
 
   // Flash animation
   document.querySelectorAll('.mv').forEach(function (el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
 
   // Alerts
-  const al = getAlerts(sel, drug, r, gfr, ADV);
+  const al = buildAlertViewModel(getAlerts(sel, drug, r, gfr, ADV));
   const ab = document.getElementById('al');
-  ab.className = 'al ' + al.lv;
-  ab.innerHTML = al.ms.join('<div class="al-sep"></div>');
+  ab.className = 'al ' + al.level;
+  ab.innerHTML = renderAlertHtml(al);
 
   // Educational panel
   updateEduPanel(sel, drug, r, micv);
@@ -294,17 +318,11 @@ let _restoringUndo = false;
 const undoBtn = document.getElementById('btn-undo');
 
 function captureState() {
-  return {
-    sel, dose: document.getElementById('dose-n').value, int: document.getElementById('int-n').value,
-    inf: document.getElementById('inf-n').value, mic: document.getElementById('mic').value,
-    gfr: document.getElementById('gfr-n').value, wt: document.getElementById('wt-n').value,
-    ld: document.getElementById('ld-n').value, ldc: document.getElementById('ldc-n').value,
-    ldi: document.getElementById('ldi-n').value, ldOpen: ldContent.style.display !== 'none'
-  };
+  return cloneUIState(getCurrentUIState());
 }
 function pushUndo() {
   const st = captureState();
-  if (undoStack.length > 0 && JSON.stringify(undoStack[undoStack.length - 1]) === JSON.stringify(st)) return;
+  if (undoStack.length > 0 && uiStatesEqual(undoStack[undoStack.length - 1], st)) return;
   undoStack.push(st);
   if (undoStack.length > MAX_UNDO) undoStack.shift();
   undoBtn.disabled = false; undoBtn.style.opacity = '1';
@@ -313,19 +331,10 @@ function popUndo() {
   if (undoStack.length === 0) return;
   const st = undoStack.pop();
   _restoringUndo = true;
-  if (st.sel !== sel) selectDrug(st.sel);
-  document.getElementById('dose').value = st.dose; document.getElementById('dose-n').value = st.dose;
-  document.getElementById('int').value = st.int; document.getElementById('int-n').value = st.int;
-  setInfusionMinutes(parseInt(st.inf));
-  document.getElementById('mic').value = st.mic; document.getElementById('mic-n').value = micFromSlider(st.mic);
-  document.getElementById('gfr').value = Math.min(180, parseInt(st.gfr)); document.getElementById('gfr-n').value = st.gfr;
-  document.getElementById('wt').value = st.wt; document.getElementById('wt-n').value = st.wt;
-  document.getElementById('ld-n').value = st.ld; document.getElementById('ld').value = st.ld;
-  document.getElementById('ldc-n').value = st.ldc; document.getElementById('ldc').value = st.ldc;
-  document.getElementById('ldi-n').value = st.ldi; document.getElementById('ldi').value = st.ldi;
-  if (st.ldOpen) { ldContent.style.display = 'block'; ldToggle.classList.add('open'); }
-  else { ldContent.style.display = 'none'; ldToggle.classList.remove('open'); }
-  syncDoseBtns(); syncIntBtns(); syncInfBtns();
+  if (st.sel !== sel) {
+    selectDrug(st.sel);
+  }
+  applyUIState(st);
   update();
   _restoringUndo = false;
   if (undoStack.length === 0) { undoBtn.disabled = true; undoBtn.style.opacity = '.4'; }
@@ -371,22 +380,13 @@ export function initControls() {
     b.className = 'sc-btn'; b.textContent = s.l; b.title = s.desc; b.dataset.drug = s.d;
     b.addEventListener('click', function () {
       if (!_restoringUndo) pushUndo();
+      const currentState = getCurrentUIState();
+      const defaultState = getDefaultDrugState(s.d, D[s.d], currentState.wt, { gfr: currentState.gfr });
+      const scenarioState = applyScenarioPatch(defaultState, s.p);
+      selectDrug(s.d);
+      applyUIState(scenarioState);
       scEl.querySelectorAll('.sc-btn').forEach(function (x) { x.classList.remove('active'); });
       b.classList.add('active');
-      selectDrug(s.d);
-      Object.entries(s.p).forEach(function (kv) {
-        if (kv[0] === 'mic') { document.getElementById('mic').value = sliderFromMic(kv[1]); document.getElementById('mic-n').value = kv[1]; return; }
-        const sl = document.getElementById(kv[0]);
-        const nm = document.getElementById(kv[0] + '-n');
-        if (sl) { sl.value = kv[1]; if (nm) nm.value = kv[1]; }
-      });
-      const scInt = s.p.int || s.p['int'];
-      if (scInt) { document.getElementById('int-btns').querySelectorAll('.int-btn').forEach(function (b2) { b2.classList.toggle('on', parseInt(b2.dataset.v) === scInt); }); }
-      if (s.p.ld && s.p.ld > 0) { ldContent.style.display = 'block'; ldToggle.classList.add('open'); }
-      syncDoseBtns();
-      syncIntBtns();
-      syncInfBtns();
-      syncMgKgBadge();
       update();
     });
     scEl.appendChild(b);
@@ -430,8 +430,10 @@ export function initControls() {
   });
 
   // Weight → dose sync
-  document.getElementById('wt-n').addEventListener('change', function () { updateMgKgDose(); update(); });
-  document.getElementById('wt').addEventListener('change', function () { updateMgKgDose(); update(); });
+  ['input', 'change'].forEach(function (eventName) {
+    document.getElementById('wt-n').addEventListener(eventName, function () { updateMgKgDose(); update(); });
+    document.getElementById('wt').addEventListener(eventName, function () { updateMgKgDose(); update(); });
+  });
   document.getElementById('dose-n').addEventListener('input', function () {
     const drug = D[sel]; if (!drug.mgkg) return;
     const wt = parseFloat(document.getElementById('wt-n').value) || 70;
@@ -454,9 +456,9 @@ export function initControls() {
 
   // Loading dose toggle
   ldToggle.addEventListener('click', function () {
+    if (!_restoringUndo) pushUndo();
     const open = ldContent.style.display !== 'none';
-    ldContent.style.display = open ? 'none' : 'block';
-    ldToggle.classList.toggle('open', !open);
+    setLoadingDoseVisibility(!open);
   });
 
   // Compare
@@ -498,7 +500,7 @@ export function initControls() {
   });
 
   // Undo hooks for sliders
-  ['dose', 'int', 'inf', 'gfr', 'wt', 'ld', 'ldc', 'ldi'].forEach(function (id) {
+  ['dose', 'int', 'inf', 'gfr', 'wt', 'ld', 'ldc', 'ldi', 'mic'].forEach(function (id) {
     const sl = document.getElementById(id);
     sl.addEventListener('mousedown', function () { if (!_restoringUndo) pushUndo(); });
     sl.addEventListener('touchstart', function () { if (!_restoringUndo) pushUndo(); }, { passive: true });

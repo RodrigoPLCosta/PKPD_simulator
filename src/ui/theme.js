@@ -1,13 +1,18 @@
+// @ts-check
+
 /**
  * Theme toggle — MD3 tokens + accessibility font boost.
+ */
+
+/**
+ * @typedef {import('../types/contracts.js').ThemeTokens} ThemeTokens
  */
 
 const DEFAULT_THEME = 'dark';
 let currentTheme = DEFAULT_THEME;
 
-const THEME_TOKEN_MAP = {
+const FALLBACK_THEME_TOKENS = {
   dark: {
-    theme: 'dark',
     themeColor: '#18212c',
     axisColor: '#8a9aaf',
     gridColor: 'rgba(138, 154, 175, 0.12)',
@@ -25,7 +30,6 @@ const THEME_TOKEN_MAP = {
     error: '#ffb4ab'
   },
   light: {
-    theme: 'light',
     themeColor: '#ebedf4',
     axisColor: '#5b6878',
     gridColor: 'rgba(91, 104, 120, 0.14)',
@@ -44,20 +48,70 @@ const THEME_TOKEN_MAP = {
   }
 };
 
+const THEME_TOKEN_MAP = {
+  themeColor: '--md-sys-color-surface-container',
+  axisColor: '--md-sys-color-outline',
+  gridColor: '--chart-grid',
+  borderColor: '--chart-border',
+  tooltipBackground: '--chart-tooltip-background',
+  tooltipTitle: '--chart-tooltip-title',
+  tooltipBody: '--chart-tooltip-body',
+  tooltipBorder: '--chart-tooltip-border',
+  narrativeSurface: '--chart-narrative-surface',
+  warningSurface: '--chart-warning-surface',
+  warningOutline: '--chart-warning-outline',
+  warningText: '--chart-warning-text',
+  success: '--gn',
+  warning: '--am',
+  error: '--md-sys-color-error'
+};
+
+/**
+ * @param {string} variableName
+ * @param {keyof typeof FALLBACK_THEME_TOKENS.dark} fallbackKey
+ * @returns {string}
+ */
+function readCssVariable(variableName, fallbackKey) {
+  const target = document.body || document.documentElement;
+  const cssValue = getComputedStyle(target).getPropertyValue(variableName).trim();
+  if (cssValue) return cssValue;
+  return FALLBACK_THEME_TOKENS[currentTheme === 'light' ? 'light' : 'dark'][fallbackKey];
+}
+
 function syncThemeButton(themeBtn) {
   if (!themeBtn) return;
   themeBtn.innerHTML = currentTheme === 'light' ? '&#9789; Tema' : '&#9788; Tema';
 }
 
 function syncThemeMeta() {
-  const meta = document.querySelector('meta[name="theme-color"]');
+  const meta = /** @type {HTMLMetaElement | null} */ (document.querySelector('meta[name="theme-color"]'));
   if (meta) {
     meta.content = readThemeTokens().themeColor;
   }
 }
 
+/**
+ * @returns {ThemeTokens}
+ */
 export function readThemeTokens() {
-  return THEME_TOKEN_MAP[currentTheme] || THEME_TOKEN_MAP.dark;
+  return {
+    theme: currentTheme === 'light' ? 'light' : 'dark',
+    themeColor: readCssVariable(THEME_TOKEN_MAP.themeColor, 'themeColor'),
+    axisColor: readCssVariable(THEME_TOKEN_MAP.axisColor, 'axisColor'),
+    gridColor: readCssVariable(THEME_TOKEN_MAP.gridColor, 'gridColor'),
+    borderColor: readCssVariable(THEME_TOKEN_MAP.borderColor, 'borderColor'),
+    tooltipBackground: readCssVariable(THEME_TOKEN_MAP.tooltipBackground, 'tooltipBackground'),
+    tooltipTitle: readCssVariable(THEME_TOKEN_MAP.tooltipTitle, 'tooltipTitle'),
+    tooltipBody: readCssVariable(THEME_TOKEN_MAP.tooltipBody, 'tooltipBody'),
+    tooltipBorder: readCssVariable(THEME_TOKEN_MAP.tooltipBorder, 'tooltipBorder'),
+    narrativeSurface: readCssVariable(THEME_TOKEN_MAP.narrativeSurface, 'narrativeSurface'),
+    warningSurface: readCssVariable(THEME_TOKEN_MAP.warningSurface, 'warningSurface'),
+    warningOutline: readCssVariable(THEME_TOKEN_MAP.warningOutline, 'warningOutline'),
+    warningText: readCssVariable(THEME_TOKEN_MAP.warningText, 'warningText'),
+    success: readCssVariable(THEME_TOKEN_MAP.success, 'success'),
+    warning: readCssVariable(THEME_TOKEN_MAP.warning, 'warning'),
+    error: readCssVariable(THEME_TOKEN_MAP.error, 'error')
+  };
 }
 
 export function applyChartTheme(chart) {

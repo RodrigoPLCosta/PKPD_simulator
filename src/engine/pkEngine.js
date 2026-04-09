@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * PK Engine — pure monocompartmental IV infusion model.
  * No DOM access. All functions are pure and testable.
@@ -6,6 +8,13 @@
  *   Infusion phase:  C(t) = (R₀ / ke·Vd) × (1 − e^(−ke·t))
  *   Post-infusion:   C(t) = C_end × e^(−ke·(t − tInf))
  *   Renal adjustment: t½adj = ln2 / (ke × (fr × GFR/120 + (1 − fr)))
+ */
+
+/**
+ * @typedef {import('../types/contracts.js').Drug} Drug
+ * @typedef {import('../types/contracts.js').ScheduleEntry} ScheduleEntry
+ * @typedef {import('../types/contracts.js').SimulationPoint} SimulationPoint
+ * @typedef {import('../types/contracts.js').SimulationResult} SimulationResult
  */
 
 /**
@@ -117,7 +126,7 @@ export function calcFtMIC(freePoints, mic, interval, ssStart) {
  * @param {number} [ldCount=0] - Number of loading doses
  * @param {number} [ldInt=12] - Loading dose interval (hours)
  * @param {string} [drugKey=''] - Drug key for determining totalH
- * @returns {object} Simulation results
+ * @returns {SimulationResult} Simulation results
  */
 export function simulate(dose, intH, infMin, drug, gfr, micV, wt, ldose = 0, ldCount = 0, ldInt = 12, drugKey = '') {
   const ah = adjustedHalfLife(drug.hl, drug.fr, gfr);
@@ -129,6 +138,7 @@ export function simulate(dose, intH, infMin, drug, gfr, micV, wt, ldose = 0, ldC
   const dt = totalH > 60 ? 0.25 : 0.05;
 
   // Build dose schedule
+  /** @type {ScheduleEntry[]} */
   const schedule = [];
   let t_cursor = 0;
   const nLd = ldose > 0 ? Math.max(ldCount, 1) : 0;
@@ -146,7 +156,9 @@ export function simulate(dose, intH, infMin, drug, gfr, micV, wt, ldose = 0, ldC
     maintStart += intH;
   }
 
+  /** @type {SimulationPoint[]} */
   const pts = [];
+  /** @type {SimulationPoint[]} */
   const fpts = [];
   let cmax = 0, cmin = Infinity;
 

@@ -52,7 +52,7 @@ O motor de simulação utiliza um modelo monocompartimental de infusão IV inter
 - **Fase pós-infusão:** C(t) = C(end) × e^(-ke·(t - tInf))
 - **Ajuste renal:** a meia-vida é recalculada pela fração de eliminação renal e a TFG do paciente: t1/2adj = ln2 / (ke × (fr × GFR/120 + (1 - fr)))
 
-A simulação gera pontos de concentração total e livre (fração não-ligada = 1 - ligação proteica) a cada 0.05h (ou 0.25h para teicoplanina), ao longo de 48h (168h para teicoplanina).
+A simulação gera pontos de concentração total e livre (fração não-ligada = 1 - ligação proteica) a cada 0.05h (ou 0.25h para horizontes longos), ao longo de 48h por padrão, 72h para anfotericina B lipossomal, 96h para fluconazol e 168h para teicoplanina.
 
 ### Parâmetros PK/PD calculados
 
@@ -98,7 +98,7 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 - **Tema claro/escuro:** alternância de tema com contrato MD3 consistente entre UI e gráfico.
 - **Fundação MD3:** tokens tonais, superfícies semânticas e escala tipográfica base para as próximas etapas da migração.
 - **Undo (Ctrl+Z):** desfazer a última alteração de parâmetro.
-- **PWA offline:** manifest e service worker prontos para instalação local.
+- **PWA offline:** build com precache via Vite PWA, manifest público e assets essenciais disponíveis offline após a primeira carga.
 
 ---
 
@@ -107,12 +107,12 @@ A simulação gera pontos de concentração total e livre (fração não-ligada 
 | Componente | Detalhes |
 |------------|----------|
 | **Arquitetura** | ES Modules com Vite 6 |
-| **Gráficos** | Chart.js 4.4.1 (CDN) |
+| **Gráficos** | Chart.js 4.5 local via bundle Vite |
 | **Tema** | Tokens CSS semânticos em Material Design 3 (`tokens.css` + `theme.css`) |
 | **Tipografia** | Google Fonts — DM Sans + JetBrains Mono |
 | **Testes** | Vitest para domínio, integração e UI DOM com `jsdom` + Testing Library |
 | **CI/CD** | GitHub Actions — test -> build -> deploy GitHub Pages |
-| **PWA** | Service Worker para uso offline |
+| **PWA** | `vite-plugin-pwa` com precache dos assets gerados e estáticos |
 | **Responsivo** | Desktop (sidebar + gráfico) e mobile (drawer inferior) |
 
 ---
@@ -192,6 +192,9 @@ npm run dev
 # Rodar toda a suíte
 npm test
 
+# Verificação de contratos tipados em JS
+npm run typecheck
+
 # Build de produção
 npm run build
 
@@ -203,6 +206,15 @@ npm run preview
 
 A suíte de UI monta o shell real da aplicação em `jsdom` e usa Testing Library para validar contratos de apresentação e interações básicas.
 
+### Specs narrativas
+
+As claims públicas e contratos centrais agora têm uma camada dedicada em `tests/specs/`, usada como documentação executável inspirada na abordagem de Matt Pocock.
+
+- `tests/specs/catalog/`: contrato de catálogo clínico, incluindo defaults `mg/kg` e coerência da copy dos cenários.
+- `tests/specs/domain/`: contratos de regimes clínicos e invariantes do motor PK/PD.
+- `tests/specs/ui-contracts/`: contratos de interação, como `undo` e dose dependente de peso reagindo em `input`.
+- `tests/specs/product-claims/`: claims de produto, como bootstrap sem CDN e suporte PWA no build.
+
 Cobertura atual:
 
 - `tests/ui/app-shell.test.js`: smoke test do shell atual.
@@ -211,6 +223,12 @@ Cobertura atual:
 - `tests/ui/theme-contract.test.js`: propagação do tema para o gráfico sem quebrar o shell.
 - `tests/ui/tokens.test.js`: presença dos tokens obrigatórios claro/escuro.
 - `tests/ui/typography.test.js`: aplicação da escala tipográfica nas regiões críticas.
+- `tests/specs/catalog/mgkg-catalog-contract.spec.js`: defaults `mg/kg` canônicos e expostos nos quick presets.
+- `tests/specs/catalog/scenario-copy-contract.spec.js`: copy dos cenários coerente com os patches aplicados.
+- `tests/specs/domain/clinical-regimen-contracts.spec.js`: deltas clínicos relevantes continuam verdadeiros.
+- `tests/specs/ui-contracts/undo-contract.spec.js`: `undo` cobre presets rápidos, MIC e cenários.
+- `tests/specs/ui-contracts/weight-based-dosing-contract.spec.js`: dose por peso reage sem depender de blur.
+- `tests/specs/product-claims/offline-runtime-contract.spec.js`: app sobe sem CDN e com suporte PWA no build.
 
 ---
 

@@ -9,16 +9,22 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/user-event": "^14.6.1",
     "jsdom": "^26.1.0",
+    "typescript": "^6.0.2",
     "vite": "^6.0.0",
+    "vite-plugin-pwa": "^1.2.0",
     "vitest": "^3.0.0"
   },
   "author": "Rodrigo Pinheiro Leal Costa",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.5.1"
+  }
 }

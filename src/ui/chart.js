@@ -2,6 +2,7 @@
  * Chart module — Chart.js integration, datasets, and custom plugin.
  */
 import { UNCERTAINTY_DRUGS } from '../engine/pkpdTargets.js';
+import Chart from './chartRuntime.js';
 import { readThemeTokens } from './theme.js';
 
 function getVisibleYMax(sel, drug, r, micv, cmpData) {

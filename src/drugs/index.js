@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Drug database — assembles all drug class JSONs into a single map.
  * Also exports SCENARIOS, ADV (adverse effects), and EDU (educational content).
@@ -15,7 +17,12 @@ import nitroimidazoles from './nitroimidazoles.json';
 import fluoroquinolones from './fluoroquinolones.json';
 import antifungals from './antifungals.json';
 
-export const D = {
+/**
+ * @typedef {import('../types/contracts.js').Drug} Drug
+ * @typedef {import('../types/contracts.js').Scenario} Scenario
+ */
+
+export const D = /** @type {Record<string, Drug>} */ ({
   ...carbapenems,
   ...cephalosporins,
   ...penicillins,
@@ -27,20 +34,21 @@ export const D = {
   ...nitroimidazoles,
   ...fluoroquinolones,
   ...antifungals
-};
+});
 
+/** @type {Scenario[]} */
 export const SCENARIOS = [
   { l: 'Mero IE 3h', d: 'meropenem', p: { inf: 180 }, desc: 'Meropenem infusão estendida 3h' },
-  { l: 'Mero IC 24h', d: 'meropenem', p: { inf: 480, int: 8 }, desc: 'Meropenem infusão contínua-like' },
-  { l: 'Vanco ataque', d: 'vancomycin', p: { ld: 2000, dose: 1000, int: 12 }, desc: 'Vancomicina com dose de ataque 25-30mg/kg' },
+  { l: 'Mero IC-like q8h', d: 'meropenem', p: { inf: 480, int: 8 }, desc: 'Meropenem com infusão contínua-like ao longo do intervalo de 8h' },
+  { l: 'Vanco ataque', d: 'vancomycin', p: { ld: 2000, dose: 1000, int: 12 }, desc: 'Vancomicina 2g de ataque + 1g q12h (25-30mg/kg)' },
   { l: 'Pipe/Tazo IE', d: 'piptazo', p: { inf: 240 }, desc: 'Piperacilina-tazobactam infusão estendida 4h' },
-  { l: 'Amika ODD', d: 'amikacin', p: { dose: 1500, int: 24 }, desc: 'Amicacina once-daily dosing' },
+  { l: 'Amika ODD', d: 'amikacin', p: { dose: 1500, int: 24 }, desc: 'Amicacina 1500mg q24h em dose única diária' },
   { l: 'Sepse + ARC', d: 'meropenem', p: { gfr: 160, dose: 2000, inf: 180 }, desc: 'Sepse com ARC: meropenem 2g IE 3h' },
-  { l: 'DRC G4', d: 'vancomycin', p: { gfr: 20, dose: 1000, int: 24 }, desc: 'Vancomicina em DRC estágio 4' },
+  { l: 'DRC G4', d: 'vancomycin', p: { gfr: 20, dose: 1000, int: 24 }, desc: 'Vancomicina 1g q24h em DRC estágio 4' },
   { l: 'Teico loading', d: 'teicoplanin', p: { ld: 840, ldc: 5, ldi: 12, dose: 400, int: 24 }, desc: 'Teicoplanina 12mg/kg q12h × 5 doses + 6mg/kg q24h (Hanai 2022)' },
-  { l: 'PoliB loading', d: 'polymyxinB', p: { ld: 175, ldc: 1, ldi: 12, dose: 100, int: 12, inf: 60 }, desc: 'Polimixina B loading 2-2.5mg/kg + 1.25mg/kg q12h (Tsuji, Pharmacotherapy 2019)' },
-  { l: 'Levo 750 q24h', d: 'levofloxacin', p: { dose: 750, int: 24, inf: 60 }, desc: 'Levofloxacino 750mg q24h — dose alta padrão' },
-  { l: 'Cipro Pseudo', d: 'ciprofloxacin', p: { dose: 400, int: 8, inf: 60 }, desc: 'Ciprofloxacino 400mg q8h para Pseudomonas' },
+  { l: 'PoliB loading', d: 'polymyxinB', p: { ld: 175, ldc: 1, ldi: 12, dose: 100, int: 12, inf: 60 }, desc: 'Polimixina B loading 2-2.5mg/kg + 1.25mg/kg q12h em 1h (Tsuji, Pharmacotherapy 2019)' },
+  { l: 'Levo 750 q24h', d: 'levofloxacin', p: { dose: 750, int: 24, inf: 60 }, desc: 'Levofloxacino 750mg q24h em 1h — dose alta padrão' },
+  { l: 'Cipro Pseudo', d: 'ciprofloxacin', p: { dose: 400, int: 8, inf: 60 }, desc: 'Ciprofloxacino 400mg q8h em 1h para Pseudomonas' },
   { l: 'Fluco 800 D1', d: 'fluconazole', p: { ld: 800, ldc: 1, ldi: 24, dose: 400, int: 24 }, desc: 'Fluconazol 800mg D1 + 400mg q24h (candidemia)' },
   { l: 'Vori loading', d: 'voriconazole', p: { ld: 420, ldc: 2, ldi: 12, dose: 280, int: 12 }, desc: 'Voriconazol 6mg/kg q12h D1 + 4mg/kg q12h' }
 ];

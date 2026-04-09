@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Main entry point — imports all CSS and initialises UI modules.
  */
@@ -15,14 +17,9 @@ import { initTheme } from './ui/theme.js';
 import { initEducPanel } from './ui/educPanel.js';
 
 /* ── Init ── */
-if (typeof Chart === 'undefined') {
-  document.getElementById('pkC').parentElement.innerHTML =
-    '<p style="color:#f06060;padding:20px;text-align:center">Chart.js não carregou. Conecte-se à internet e recarregue a página.</p>';
-} else {
-  initControls();
-  initEducPanel();
-  initTheme(getChartRef());
-}
+initControls();
+initEducPanel();
+initTheme(getChartRef());
 
 /* ── Service Worker registration ── */
 if ('serviceWorker' in navigator) {

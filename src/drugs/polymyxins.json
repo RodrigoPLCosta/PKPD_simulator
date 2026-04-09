@@ -2,7 +2,7 @@
   "polymyxinB": {
     "l": "Polimixina B",
     "cat": "Polimixina",
-    "dose": 150,
+    "dose": 100,
     "int": 12,
     "inf": 60,
     "mic": 1,

@@ -30,7 +30,7 @@
   "gentamicin": {
     "l": "Gentamicina",
     "cat": "Aminoglicosídeo",
-    "dose": 500,
+    "dose": 480,
     "int": 24,
     "inf": 30,
     "mic": 2,
@@ -47,7 +47,7 @@
     "dMax": 700,
     "dStep": 40,
     "ints": [12, 24, 36, 48],
-    "doses": [80, 160, 240, 320, 400, 500],
+    "doses": [80, 160, 240, 320, 400, 480],
     "infP": [{"l": "30min", "v": 30}, {"l": "60min", "v": 60}],
     "mgkg": 7,
     "std": "5-7 mg/kg dose única diária",
