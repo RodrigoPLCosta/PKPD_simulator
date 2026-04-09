@@ -54,7 +54,7 @@
 .gb-arc{background:var(--acd)!important;color:var(--ac2)!important}
 
 /* EDUCATIONAL PANEL */
-.edu-panel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .2s}
+.edu-panel{background:var(--bg2);border:1px solid transparent;border-radius:var(--r);overflow:hidden;transition:all .2s}
 .edu-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none;transition:background .15s}
 .edu-header:hover{background:var(--bg3)}
 .edu-icon{font-size:10px;flex-shrink:0;transition:color .2s}
