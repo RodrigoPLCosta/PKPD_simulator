@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Simulador PK/PD de Antimicrobianos</title>
 <meta name="description" content="Simulador farmacocinético interativo de antimicrobianos hospitalares com 23 drogas de 11 classes, ajuste renal, cenários clínicos e comparação de regimes.">
-<meta name="theme-color" content="#ebedf4">
+<meta name="theme-color" content="#f0f3fa">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PK/PD Sim">
@@ -18,16 +18,37 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" crossorigin="anonymous">
 </head>
 <body>
-<div class="hd">
-  <h1>Simulador PK/PD</h1><span class="tg">V1.3</span>
-  <div class="tb">
-    <button id="btn-undo" title="Desfazer última alteração (Ctrl+Z)" disabled style="opacity:.4">&#8630; Desfazer</button>
-    <button id="btn-snap" title="Salvar a curva atual como referência">Salvar curva</button>
-    <button id="btn-clear" title="Remover curva de comparação" style="display:none">Limpar</button>
-    <button id="btn-theme" title="Alternar tema claro/escuro">&#9788; Tema</button>
+<header class="hd">
+  <div class="hd-brand">
+    <span class="hd-logo" id="hd-logo" aria-hidden="true"></span>
+    <div class="hd-titles">
+      <div class="hd-titlebar">
+        <h1>Simulador PK/PD</h1>
+        <span class="tg">v1.3</span>
+      </div>
+      <span class="sub">Farmacocinética de antimicrobianos hospitalares</span>
+    </div>
   </div>
-  <span class="sub">Farmacocinética de antimicrobianos hospitalares</span>
-</div>
+  <div class="tb" role="toolbar" aria-label="Ações">
+    <button class="tb-btn" id="btn-undo" title="Desfazer última alteração (Ctrl+Z)" disabled>
+      <span class="lbl">Desfazer</span>
+    </button>
+    <button class="tb-btn" id="btn-snap" title="Salvar a curva atual como referência">
+      <span class="lbl">Salvar curva</span>
+    </button>
+    <button class="tb-btn" id="btn-clear" title="Remover curva de comparação" style="display:none">
+      <span class="lbl">Limpar comparação</span>
+    </button>
+    <div class="tb-theme" role="group" aria-label="Tema">
+      <span class="tb-theme-label">
+        <span class="tb-theme-icon" id="tb-theme-icon" aria-hidden="true"></span>
+        Tema
+      </span>
+      <button class="tb-theme-opt" id="btn-theme-light" data-theme-value="light" title="Tema claro" aria-pressed="true"></button>
+      <button class="tb-theme-opt" id="btn-theme-dark" data-theme-value="dark" title="Tema escuro" aria-pressed="false"></button>
+    </div>
+  </div>
+</header>
 <div class="ly">
 <div class="sb-overlay" id="sb-overlay"></div>
 <div class="sb" id="sidebar">

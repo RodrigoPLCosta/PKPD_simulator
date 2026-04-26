@@ -4,6 +4,8 @@
  * Theme toggle — MD3 tokens + accessibility font boost.
  */
 
+import { icon, setIcon } from './icons.js';
+
 /**
  * @typedef {import('../types/contracts.js').ThemeTokens} ThemeTokens
  */
@@ -78,9 +80,21 @@ function readCssVariable(variableName, fallbackKey) {
   return FALLBACK_THEME_TOKENS[currentTheme === 'light' ? 'light' : 'dark'][fallbackKey];
 }
 
-function syncThemeButton(themeBtn) {
-  if (!themeBtn) return;
-  themeBtn.innerHTML = currentTheme === 'light' ? '&#9789; Tema' : '&#9788; Tema';
+function syncThemeToggle() {
+  const lightBtn = document.getElementById('btn-theme-light');
+  const darkBtn = document.getElementById('btn-theme-dark');
+  const labelIcon = document.getElementById('tb-theme-icon');
+  if (lightBtn) {
+    lightBtn.setAttribute('aria-pressed', currentTheme === 'light' ? 'true' : 'false');
+    lightBtn.innerHTML = icon('sun', { size: 16 });
+  }
+  if (darkBtn) {
+    darkBtn.setAttribute('aria-pressed', currentTheme === 'dark' ? 'true' : 'false');
+    darkBtn.innerHTML = icon('moon', { size: 16 });
+  }
+  if (labelIcon) {
+    labelIcon.innerHTML = icon(currentTheme === 'light' ? 'sun' : 'moon', { size: 16 });
+  }
 }
 
 function syncThemeMeta() {
@@ -88,6 +102,13 @@ function syncThemeMeta() {
   if (meta) {
     meta.content = readThemeTokens().themeColor;
   }
+}
+
+function injectHeaderIcons() {
+  setIcon(document.getElementById('hd-logo'), 'brand', { size: 22 });
+  setIcon(document.getElementById('btn-undo'), 'undo', { size: 16 });
+  setIcon(document.getElementById('btn-snap'), 'save', { size: 16 });
+  setIcon(document.getElementById('btn-clear'), 'trash', { size: 16 });
 }
 
 /**
@@ -137,7 +158,7 @@ function applyTheme(nextTheme, chartRef) {
   currentTheme = nextTheme;
   document.body.dataset.theme = currentTheme;
   document.body.classList.add('a11y');
-  syncThemeButton(document.getElementById('btn-theme'));
+  syncThemeToggle();
   syncThemeMeta();
 
   if (chartRef && chartRef.chart) {
@@ -146,19 +167,18 @@ function applyTheme(nextTheme, chartRef) {
 }
 
 export function initTheme(chartRef) {
-  const themeBtn = document.getElementById('btn-theme');
+  injectHeaderIcons();
 
   currentTheme = document.body.dataset.theme || DEFAULT_THEME;
   document.body.dataset.theme = currentTheme;
   document.body.classList.add('a11y');
-  syncThemeButton(themeBtn);
+  syncThemeToggle();
   syncThemeMeta();
 
-  if (themeBtn) {
-    themeBtn.addEventListener('click', function () {
-      applyTheme(currentTheme === 'light' ? 'dark' : 'light', chartRef);
-    });
-  }
+  const lightBtn = document.getElementById('btn-theme-light');
+  const darkBtn = document.getElementById('btn-theme-dark');
+  if (lightBtn) lightBtn.addEventListener('click', function () { if (currentTheme !== 'light') applyTheme('light', chartRef); });
+  if (darkBtn) darkBtn.addEventListener('click', function () { if (currentTheme !== 'dark') applyTheme('dark', chartRef); });
 
   if (chartRef && chartRef.chart) {
     applyChartTheme(chartRef.chart);
