@@ -107,12 +107,41 @@
 </div>
 <div class="ct-a">
   <div class="ms" id="ms">
-    <div class="mc" id="mc-class"><div class="ml">Classe PK/PD</div><div class="mv" id="m-class" style="font-size:12px;font-family:'DM Sans',sans-serif">—</div><div class="tip">Classificação farmacodinâmica do antimicrobiano: define qual parâmetro PK/PD melhor prediz eficácia clínica.</div></div>
-    <div class="mc" id="mc-cmax"><div class="ml">C<sub>max</sub></div><div class="mv" id="m-cmax">—</div><div class="tip">Concentração sérica máxima atingida. Para aminoglicosídeos, a razão Cmax/MIC é o preditor primário de eficácia.</div></div>
-    <div class="mc" id="mc-cmin"><div class="ml">C<sub>min</sub> (vale)</div><div class="mv" id="m-cmin">—</div><div class="tip">Concentração mínima antes da próxima dose (steady-state). Para teicoplanina, o vale é o parâmetro-alvo primário: 15-30 mg/L em infecções graves.</div></div>
-    <div class="mc" id="mc-tmic"><div class="ml">fT &gt; MIC <small>(SS)</small></div><div class="mv" id="m-tmic">—</div><div class="msb" id="m-tmic-s"></div><div class="tip">Fração do intervalo posológico no steady-state em que a concentração <b>livre</b> permanece acima do MIC. Parâmetro-alvo primário para beta-lactâmicos. Alvo: ≥40-100% dependendo da classe.</div></div>
-    <div class="mc" id="mc-auc"><div class="ml">AUC<sub>24</sub>/MIC</div><div class="mv" id="m-aucmic">—</div><div class="tip">Razão da área sob a curva em 24h pelo MIC. Parâmetro-alvo para vancomicina (400-600, IDSA 2020) e fluoroquinolonas. Reflete exposição cumulativa ao antibiótico.</div></div>
-    <div class="mc" id="mc-cmaxmic"><div class="ml">fC<sub>max</sub>/MIC</div><div class="mv" id="m-cmaxmic">—</div><div class="tip">Razão do pico de concentração livre pelo MIC. Alvo primário para aminoglicosídeos: ≥8-10 para eficácia bactericida máxima.</div></div>
+    <div class="mc" id="mc-class" data-metric="class">
+      <div class="mc-head"><span class="ml">Classe PK/PD</span><span class="mc-info" aria-hidden="true"></span><span class="mc-icon" aria-hidden="true"></span></div>
+      <div class="mv" id="m-class">—</div>
+      <div class="msb" id="m-class-s">Beta-lactâmico</div>
+      <div class="tip">Classificação farmacodinâmica do antimicrobiano: define qual parâmetro PK/PD melhor prediz eficácia clínica.</div>
+    </div>
+    <div class="mc" id="mc-cmax" data-metric="cmax">
+      <div class="mc-head"><span class="ml">C<sub>max</sub></span><span class="mc-icon" aria-hidden="true"></span></div>
+      <div class="mv" id="m-cmax">—</div>
+      <div class="tip">Concentração sérica máxima atingida. Para aminoglicosídeos, a razão Cmax/MIC é o preditor primário de eficácia.</div>
+    </div>
+    <div class="mc" id="mc-cmin" data-metric="cmin">
+      <div class="mc-head"><span class="ml">C<sub>min</sub> (vale)</span><span class="mc-icon" aria-hidden="true"></span></div>
+      <div class="mv" id="m-cmin">—</div>
+      <div class="msb" id="m-cmin-s"></div>
+      <div class="tip">Concentração mínima antes da próxima dose (steady-state). Para teicoplanina, o vale é o parâmetro-alvo primário: 15-30 mg/L em infecções graves.</div>
+    </div>
+    <div class="mc" id="mc-tmic" data-metric="tmic">
+      <div class="mc-head"><span class="ml">fT &gt; MIC <small>(SS)</small></span><span class="mc-icon" aria-hidden="true"></span></div>
+      <div class="mv" id="m-tmic">—</div>
+      <div class="msb" id="m-tmic-s"></div>
+      <div class="tip">Fração do intervalo posológico no steady-state em que a concentração <b>livre</b> permanece acima do MIC. Parâmetro-alvo primário para beta-lactâmicos. Alvo: ≥40-100% dependendo da classe.</div>
+    </div>
+    <div class="mc" id="mc-auc" data-metric="auc">
+      <div class="mc-head"><span class="ml">AUC<sub>24</sub>/MIC</span><span class="mc-icon" aria-hidden="true"></span></div>
+      <div class="mv" id="m-aucmic">—</div>
+      <div class="msb" id="m-auc-s"></div>
+      <div class="tip">Razão da área sob a curva em 24h pelo MIC. Parâmetro-alvo para vancomicina (400-600, IDSA 2020) e fluoroquinolonas. Reflete exposição cumulativa ao antibiótico.</div>
+    </div>
+    <div class="mc" id="mc-cmaxmic" data-metric="cmaxmic">
+      <div class="mc-head"><span class="ml">fC<sub>max</sub>/MIC</span><span class="mc-icon" aria-hidden="true"></span></div>
+      <div class="mv" id="m-cmaxmic">—</div>
+      <div class="msb" id="m-cmaxmic-s"></div>
+      <div class="tip">Razão do pico de concentração livre pelo MIC. Alvo primário para aminoglicosídeos: ≥8-10 para eficácia bactericida máxima.</div>
+    </div>
   </div>
   <div class="edu-panel" id="edu-panel">
     <div class="edu-header" id="edu-header">
