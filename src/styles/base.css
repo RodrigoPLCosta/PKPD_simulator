@@ -38,9 +38,9 @@ body{font-family:var(--md-sys-typescale-body-medium-font);font-size:var(--md-sys
 /* ALERT */
 .al{padding:12px 14px;border-radius:var(--r);font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);line-height:1.7;display:none}
 .al b{font-weight:600}
-.al.warn{display:block;background:var(--amb);color:var(--am);border:1px solid var(--am)}
-.al.danger{display:block;background:var(--md-sys-color-error-container);color:var(--md-sys-color-on-error-container);border:1px solid var(--md-sys-color-error)}
-.al.ok{display:block;background:var(--gnb);color:var(--gn);border:1px solid var(--gn)}
+.al.warn{display:block;background:var(--amb);color:var(--am);border:1px solid var(--am);font-weight:500}
+.al.danger{display:block;background:var(--md-sys-color-error-container);color:var(--md-sys-color-on-error-container);border:1px solid var(--md-sys-color-error);font-weight:500}
+.al.ok{display:block;background:var(--gnb);color:var(--gn);border:1px solid var(--gn);font-weight:500}
 .al-sep{height:1px;background:var(--md-sys-color-outline-variant);margin:8px 0}
 
 /* Value flash animation */
