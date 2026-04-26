@@ -332,6 +332,7 @@ function update() {
   updateEduPanel(sel, drug, r, micv);
 
   // Chart
+  document.getElementById('lg-cmp-item').style.display = cmpData ? 'flex' : 'none';
   updateChart(chartRef, sel, drug, r, micv, intv, cmpData);
 }
 
