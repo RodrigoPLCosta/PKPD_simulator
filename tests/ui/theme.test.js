@@ -9,17 +9,17 @@ describe('theme toggle', () => {
     const { chart, themeModule } = await renderApp();
 
     const button = screen.getByRole('button', { name: /tema/i });
-    const darkTokens = themeModule.readThemeTokens();
+    const lightTokens = themeModule.readThemeTokens();
 
-    expect(document.body.dataset.theme).toBe('dark');
-    expect(document.querySelector('meta[name="theme-color"]').content).toBe(darkTokens.themeColor);
+    expect(document.body.dataset.theme).toBe('light');
+    expect(document.querySelector('meta[name="theme-color"]').content).toBe(lightTokens.themeColor);
 
     await user.click(button);
 
-    const lightTokens = themeModule.readThemeTokens();
-    expect(document.body.dataset.theme).toBe('light');
-    expect(document.querySelector('meta[name="theme-color"]').content).toBe(lightTokens.themeColor);
-    expect(lightTokens.themeColor).not.toBe(darkTokens.themeColor);
+    const darkTokens = themeModule.readThemeTokens();
+    expect(document.body.dataset.theme).toBe('dark');
+    expect(document.querySelector('meta[name="theme-color"]').content).toBe(darkTokens.themeColor);
+    expect(darkTokens.themeColor).not.toBe(lightTokens.themeColor);
     expect(chart.update).toHaveBeenCalled();
   });
 });
