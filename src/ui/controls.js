@@ -14,6 +14,15 @@ import { MIC_STEPS, micFromSlider, sliderFromMic } from './micScale.js';
 import { applyScenarioPatch } from './scenarioState.js';
 import { cloneUIState, uiStatesEqual } from './uiState.js';
 import { buildAlertViewModel, buildPkInfoViewModel, renderAlertHtml, renderPkInfoHtml } from './viewModels.js';
+import {
+  aucStatus,
+  cmaxStatus,
+  familyForCat,
+  injectMetricIcons,
+  renderStatusBadge,
+  tmicStatus,
+  troughStatus
+} from './metricCards.js';
 
 let sel = 'meropenem';
 let cmpData = null;
@@ -298,16 +307,26 @@ function update() {
 
   const r = simulate(dose, intv, infn, drug, gfr, micv, wt, ldv, ldCount, ldInt, sel);
 
-  // Metrics
+  // Metrics — values
   document.getElementById('m-class').textContent = drug.pk;
+  document.getElementById('m-class-s').textContent = familyForCat(drug.cat);
   document.getElementById('m-cmax').innerHTML = r.cmax + ' <span class="mu">mg/L</span>';
   document.getElementById('m-cmin').innerHTML = r.cmin + ' <span class="mu">mg/L</span>';
   document.getElementById('m-tmic').innerHTML = r.pctMIC + '<span class="mu">%</span>';
-  document.getElementById('m-tmic-s').textContent = drug.tt === 'tmic' ? 'Alvo: ' + drug.tgt : '';
   document.getElementById('m-aucmic').textContent = r.aucMic;
   document.getElementById('m-cmaxmic').textContent = r.cmaxMic;
 
-  // Primary metric highlight
+  // Metrics — status badges (only the primary metric for the drug shows a badge)
+  const tmicEl = document.getElementById('m-tmic-s');
+  const aucEl = document.getElementById('m-auc-s');
+  const cmaxmicEl = document.getElementById('m-cmaxmic-s');
+  const cminEl = document.getElementById('m-cmin-s');
+  tmicEl.innerHTML = drug.tt === 'tmic' ? renderStatusBadge(tmicStatus(r.pctMIC)) : '';
+  aucEl.innerHTML = drug.tt === 'auc' ? renderStatusBadge(aucStatus(sel, r)) : '';
+  cmaxmicEl.innerHTML = drug.tt === 'cmax' ? renderStatusBadge(cmaxStatus(r)) : '';
+  cminEl.innerHTML = drug.tt === 'trough' ? renderStatusBadge(troughStatus(sel, r)) : '';
+
+  // Primary metric highlight (drives accent border + value color)
   ['mc-tmic', 'mc-auc', 'mc-cmaxmic', 'mc-cmin'].forEach(function (id) { document.getElementById(id).classList.remove('primary'); });
   if (drug.tt === 'tmic') document.getElementById('mc-tmic').classList.add('primary');
   else if (drug.tt === 'auc') document.getElementById('mc-auc').classList.add('primary');
@@ -367,6 +386,8 @@ function popUndo() {
 
 // ─── Init all controls ───
 export function initControls() {
+  injectMetricIcons();
+
   // Class tabs
   const classes = [...new Set(Object.values(D).map(function (d) { return d.cat; }))];
   const ctEl = document.getElementById('class-tabs');
