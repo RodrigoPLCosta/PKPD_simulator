@@ -1,89 +1,144 @@
-/* ═══ CONTROLS — Sidebar controls, drug buttons, dose/interval/infusion, GFR, mobile drawer ═══ */
+/* ═══ CONTROLS — Sidebar controls, drug card, list, sliders, MIC, mobile drawer ═══ */
 
 /* PANEL SECTIONS */
-.panel-section{background:var(--md-sys-color-surface-container);border-radius:var(--shape-md);padding:14px;margin-bottom:12px;box-shadow:var(--elevation-shadow-1)}
+.panel-section{background:var(--md-sys-color-surface-container-lowest);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);padding:14px;margin-bottom:12px;box-shadow:var(--elevation-shadow-1)}
 
-/* CLASS TABS */
-.drug-select-btn{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.drug-search{width:100%;margin-bottom:10px;padding:8px 10px;border:1px solid var(--bd);border-radius:var(--shape-sm);background:var(--bgi);color:var(--tx);font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);outline:none}
-.drug-search:focus{border-color:transparent;outline:2px solid var(--md-sys-color-primary);outline-offset:-1px;background:var(--bg4)}
-.ct{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
-.ct button{padding:4px 10px;border:1px solid var(--bd);border-radius:999px;background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);font-weight:var(--md-sys-typescale-label-medium-weight);line-height:var(--md-sys-typescale-label-medium-line-height);letter-spacing:var(--md-sys-typescale-label-medium-tracking);cursor:pointer;transition:.12s}
-.ct button:hover{background:var(--md-sys-color-surface-container-high);color:var(--tx)}
-.ct button.on{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
+/* SECTION HEADER (.st) — uppercase pill label with optional leading icon */
+.st{display:flex;align-items:center;gap:6px;font-family:var(--md-sys-typescale-label-medium-font);font-size:11px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.st-icon{display:inline-flex;align-items:center;justify-content:center;color:var(--tx3);opacity:.85}
+.st-icon svg{width:14px;height:14px}
 
-/* DRUG GRID */
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px;max-height:360px;overflow-y:auto;padding-right:3px}
-.dg::-webkit-scrollbar{width:4px}.dg::-webkit-scrollbar-thumb{background:var(--md-sys-color-surface-container-high);border-radius:3px}
-.db{padding:7px 9px;border:1px solid var(--bd);border-radius:var(--shape-md);background:transparent;color:var(--tx2);font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);font-weight:500;cursor:pointer;transition:.12s;text-align:left;line-height:1.3}
-.db:hover{border-color:var(--ac);color:var(--tx);background:var(--md-sys-color-surface-container-high)}
-.db.on{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
-.db .dc{font-family:var(--md-sys-typescale-label-small-font);font-size:var(--md-sys-typescale-label-small-size);color:var(--tx3);display:block;margin-top:1px}.db.on .dc{color:var(--md-sys-color-on-secondary-container)}
+/* DRUG CARD (selected drug pill at the top of the sidebar) */
+.drug-card{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;background:var(--md-sys-color-surface-container);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s;text-align:left}
+.drug-card:hover{border-color:var(--md-sys-color-primary);box-shadow:var(--elevation-shadow-1)}
+.drug-card.open{border-color:var(--md-sys-color-primary);background:var(--md-sys-color-surface-container-lowest);box-shadow:0 0 0 1px var(--md-sys-color-primary), var(--elevation-shadow-1)}
+.drug-card-icon{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container)}
+.drug-card-icon svg{width:20px;height:20px}
+.drug-card-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.drug-card-name{font-family:var(--md-sys-typescale-title-small-font);font-size:14px;font-weight:600;color:var(--tx);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drug-card-cat{font-family:var(--md-sys-typescale-label-small-font);font-size:11px;color:var(--tx3);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drug-card-chev{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;color:var(--tx3);transition:transform .2s}
+.drug-card-chev svg{width:18px;height:18px}
+.drug-card.open .drug-card-chev{transform:rotate(180deg)}
+
+/* DRUG SEARCH */
+.drug-search-wrap{position:relative;margin-bottom:10px}
+.drug-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);display:inline-flex;color:var(--tx3);pointer-events:none}
+.drug-search-icon svg{width:14px;height:14px}
+.drug-search{width:100%;padding:8px 10px 8px 32px;border:1px solid var(--md-sys-color-outline-variant);border-radius:999px;background:var(--md-sys-color-surface-container-lowest);color:var(--tx);font-family:var(--md-sys-typescale-body-small-font);font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s}
+.drug-search:focus{border-color:var(--md-sys-color-primary);box-shadow:0 0 0 1px var(--md-sys-color-primary)}
+.drug-search::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+
+/* CLASS CHIPS */
+.ct{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.ct button{padding:4px 10px;border:1px solid var(--md-sys-color-outline-variant);border-radius:999px;background:transparent;color:var(--tx2);font-family:var(--md-sys-typescale-label-small-font);font-size:11px;font-weight:500;cursor:pointer;transition:.12s;line-height:1.4}
+.ct button:hover{background:var(--md-sys-color-surface-container-high);color:var(--tx);border-color:var(--md-sys-color-outline)}
+.ct button.on{background:var(--md-sys-color-primary);border-color:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary)}
+
+/* DRUG LIST (vertical) */
+.dg{display:flex;flex-direction:column;gap:4px;max-height:340px;overflow-y:auto;padding-right:2px}
+.dg::-webkit-scrollbar{width:6px}
+.dg::-webkit-scrollbar-thumb{background:var(--md-sys-color-surface-container-high);border-radius:3px}
+.dg::-webkit-scrollbar-track{background:transparent}
+.db{display:flex;align-items:center;gap:8px;padding:7px 9px 7px 11px;border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);background:transparent;color:var(--tx);font-family:var(--md-sys-typescale-body-small-font);font-size:13px;font-weight:500;cursor:pointer;transition:.12s;text-align:left;line-height:1.3;min-width:0}
+.db:hover{border-color:var(--md-sys-color-primary);background:var(--md-sys-color-surface-container-low)}
+.db.on{background:var(--md-sys-color-primary-container);border-color:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary-container)}
+.db-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:0}
+.db-name{font-weight:500;color:inherit;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.db-cat{font-family:var(--md-sys-typescale-label-small-font);font-size:10px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.db.on .db-cat{color:var(--md-sys-color-on-primary-container);opacity:.75}
+.db-fav{flex-shrink:0;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:none;background:transparent;border-radius:6px;color:var(--tx3);cursor:pointer;transition:.12s;padding:0}
+.db-fav:hover{background:var(--md-sys-color-surface-container-high);color:var(--metric-accent-auc)}
+.db-fav.on{color:var(--metric-accent-auc)}
+.db-fav svg{width:16px;height:16px}
 
 /* STANDARD DOSE REF */
-.std-ref{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--tx2);padding:6px 8px;background:var(--md-sys-color-surface-container-high);border-radius:var(--shape-sm);margin-bottom:8px;display:none;line-height:1.5}
-.std-ref b{color:var(--tx);font-weight:500}
+.std-ref{font-family:var(--md-sys-typescale-body-small-font);font-size:11.5px;color:var(--tx2);padding:8px 10px;background:var(--md-sys-color-surface-container);border-radius:var(--shape-sm);margin-top:10px;display:none;line-height:1.5;border-left:3px solid var(--md-sys-color-primary)}
+.std-ref b{color:var(--tx);font-weight:600}
 
-/* CONTROLS */
-.cr{margin-bottom:10px}
-.ch{display:flex;align-items:center;gap:5px;margin-bottom:3px;min-width:0;overflow:hidden}
-.cl{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--tx2);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ci{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;color:var(--tx);background:var(--bgi);border:1px solid var(--md-sys-color-outline);border-radius:var(--shape-sm);padding:4px 6px;width:68px;min-width:50px;flex-shrink:0;text-align:right;outline:none;transition:outline .15s,background .15s;-webkit-appearance:none;appearance:none}
-.ci:focus{outline:2px solid var(--md-sys-color-primary);outline-offset:-1px;border-color:transparent;background:var(--bg4)}
-.ci::-webkit-inner-spin-button,.ci::-webkit-outer-spin-button{opacity:.3}
-.cu{font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);color:var(--tx2);flex-shrink:0;white-space:nowrap}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--bg4);outline:none;margin-top:4px;touch-action:manipulation}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--md-sys-color-primary);cursor:pointer;border:2px solid var(--md-sys-color-surface);margin-top:-8px;box-shadow:var(--elevation-shadow-1);transition:box-shadow .2s}
-input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 8px rgba(185, 195, 255, var(--md-sys-state-hover-opacity)), var(--elevation-shadow-1)}
+/* CONTROLS — sliders + value boxes */
+.cr{margin-bottom:14px}
+.cr:last-child{margin-bottom:0}
+.ch{display:flex;align-items:center;gap:6px;margin-bottom:6px;min-width:0}
+.cl{display:inline-flex;align-items:center;gap:5px;font-family:var(--md-sys-typescale-body-small-font);font-size:12.5px;font-weight:500;color:var(--tx2);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cl small{font-size:10.5px;color:var(--tx3);font-weight:400;margin-left:2px}
+.cl-icon{flex-shrink:0;display:inline-flex;color:var(--tx3)}
+.cl-icon svg{width:13px;height:13px}
+.ci{font-family:'JetBrains Mono',monospace;font-size:13.5px;font-weight:600;color:var(--tx);background:var(--md-sys-color-surface-container);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-sm);padding:4px 8px;min-width:56px;width:auto;flex-shrink:0;text-align:right;outline:none;transition:border-color .15s,box-shadow .15s,background .15s;-webkit-appearance:none;appearance:none}
+.ci:hover{border-color:var(--md-sys-color-outline)}
+.ci:focus{border-color:var(--md-sys-color-primary);box-shadow:0 0 0 1px var(--md-sys-color-primary);background:var(--md-sys-color-surface-container-lowest)}
+.ci::-webkit-inner-spin-button,.ci::-webkit-outer-spin-button{opacity:.4}
+.cu{font-family:var(--md-sys-typescale-label-small-font);font-size:11px;color:var(--tx3);flex-shrink:0;white-space:nowrap;min-width:30px;text-align:left}
+
+/* RANGE SLIDERS */
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;background:var(--md-sys-color-surface-container-highest);outline:none;margin-top:6px;touch-action:manipulation}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--md-sys-color-primary);cursor:pointer;border:2px solid var(--md-sys-color-surface);margin-top:-7px;box-shadow:var(--elevation-shadow-1);transition:box-shadow .2s,transform .1s}
+input[type=range]:hover::-webkit-slider-thumb{box-shadow:0 0 0 8px rgba(59,109,255,.12), var(--elevation-shadow-1)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.1)}
 input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:var(--md-sys-color-surface-container-highest)}
-input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--md-sys-color-primary);cursor:pointer;border:2px solid var(--md-sys-color-surface);box-shadow:var(--elevation-shadow-1);transition:box-shadow .2s}
-input[type=range]:hover::-moz-range-thumb{box-shadow:0 0 0 8px rgba(185, 195, 255, var(--md-sys-state-hover-opacity)), var(--elevation-shadow-1)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--md-sys-color-primary);cursor:pointer;border:2px solid var(--md-sys-color-surface);box-shadow:var(--elevation-shadow-1);transition:box-shadow .2s}
+input[type=range]:hover::-moz-range-thumb{box-shadow:0 0 0 8px rgba(59,109,255,.12), var(--elevation-shadow-1)}
 input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--md-sys-color-surface-container-highest)}
 
-/* GFR */
-.gb{display:inline-block;padding:1px 6px;border-radius:999px;font-family:var(--md-sys-typescale-label-small-font);font-size:var(--md-sys-typescale-label-small-size);font-weight:var(--md-sys-typescale-label-small-weight);letter-spacing:var(--md-sys-typescale-label-small-tracking)}
+/* RENAL PILL */
+.renal-pill{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--md-sys-color-surface-container);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);margin-top:10px;transition:border-color .15s,background .15s}
+.renal-pill[data-status="warn"]{background:var(--warn-bg);border-color:var(--warn-fg);color:var(--warn-fg)}
+.renal-pill[data-status="danger"]{background:var(--danger-bg);border-color:var(--danger-fg);color:var(--danger-fg)}
+.renal-icon{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--md-sys-color-surface-container-high);color:var(--tx2)}
+.renal-pill[data-status="warn"] .renal-icon{background:rgba(255,255,255,.55);color:var(--warn-fg)}
+.renal-pill[data-status="danger"] .renal-icon{background:rgba(255,255,255,.55);color:var(--danger-fg)}
+.renal-icon svg{width:16px;height:16px}
+.renal-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.renal-status{font-family:var(--md-sys-typescale-label-small-font);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:inherit;align-self:flex-start;padding:1px 8px;border-radius:999px;background:var(--md-sys-color-surface-container-high)}
+.renal-pill[data-status="warn"] .renal-status{background:var(--warn-fg);color:#fff}
+.renal-pill[data-status="danger"] .renal-status{background:var(--danger-fg);color:#fff}
+.renal-desc{font-family:var(--md-sys-typescale-body-small-font);font-size:12px;color:var(--tx2);line-height:1.4}
+.renal-pill[data-status="warn"] .renal-desc,
+.renal-pill[data-status="danger"] .renal-desc{color:inherit}
 
-/* RENAL REC */
-.rr{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--am);background:var(--amb);border:1px solid var(--am);border-radius:var(--shape-sm);padding:6px 8px;margin-top:6px;line-height:1.5;display:none}
+/* GFR badge legacy id (#gfr-b) — kept inside renal pill, no extra style needed.
+   Original .gb class kept to avoid breaking other consumers. */
+.gb{display:inline-block;padding:1px 8px;border-radius:999px;font-family:var(--md-sys-typescale-label-small-font);font-size:10.5px;font-weight:600;letter-spacing:.04em}
 
 /* LOADING DOSE COLLAPSIBLE */
-.ld-section{margin-top:6px}
-.ld-toggle{font-family:var(--md-sys-typescale-label-large-font);font-size:var(--md-sys-typescale-label-large-size);font-weight:var(--md-sys-typescale-label-large-weight);line-height:var(--md-sys-typescale-label-large-line-height);color:var(--tx3);cursor:pointer;padding:6px 10px;border:1px solid var(--bd);border-radius:var(--shape-sm);background:var(--bg3);transition:all .15s;user-select:none;display:flex;align-items:center;gap:6px}
-.ld-toggle:hover{border-color:var(--ac);color:var(--tx)}
-.ld-toggle.open{color:var(--tx2);border-color:var(--bd);margin-bottom:8px}
-.ld-toggle .ld-arrow{display:inline-block;transition:transform .2s;font-size:9px}
+.ld-section{margin-top:8px}
+.ld-toggle{display:flex;align-items:center;gap:6px;width:100%;padding:7px 10px;border:1px dashed var(--md-sys-color-outline-variant);border-radius:var(--shape-sm);background:transparent;color:var(--tx2);cursor:pointer;transition:.15s;font-family:var(--md-sys-typescale-label-medium-font);font-size:12px;font-weight:500;text-align:left}
+.ld-toggle:hover{border-color:var(--md-sys-color-primary);color:var(--tx);background:var(--md-sys-color-surface-container)}
+.ld-toggle.open{border-style:solid;border-color:var(--md-sys-color-primary);color:var(--tx);background:var(--md-sys-color-surface-container);margin-bottom:10px}
+.ld-arrow{display:inline-flex;align-items:center;justify-content:center;color:currentColor;transition:transform .2s}
+.ld-arrow svg{width:14px;height:14px}
 .ld-toggle.open .ld-arrow{transform:rotate(90deg)}
+.ld-label{flex:1}
+.ld-hint{font-size:10.5px;color:var(--tx3);font-weight:400}
 .ld-content{padding:0}
 
 /* INTERVAL BUTTONS */
-.int-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
-.int-btn{padding:5px 12px;border:1px solid var(--bd);border-radius:999px;background:transparent;color:var(--tx2);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all .12s;min-width:44px;text-align:center}
-.int-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--bg4)}
-.int-btn.on{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
-
-/* DOSE QUICK BUTTONS */
-.dose-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
-.dose-btn{padding:4px 10px;border:1px solid var(--bd);border-radius:999px;background:transparent;color:var(--tx2);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .12s;text-align:center}
-.dose-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--bg4)}
-.dose-btn.on{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
-.dose-btn .dose-sub{font-size:8px;color:var(--tx3);display:block;margin-top:-1px;font-family:var(--md-sys-typescale-label-medium-font)}
-
-/* INFUSION PRESETS */
-.inf-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
-.inf-btn{padding:4px 10px;border:1px solid var(--bd);border-radius:999px;background:transparent;color:var(--tx2);font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);cursor:pointer;transition:all .12s}
-.inf-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--bg4)}
-.inf-btn.on{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
+.int-btns,.dose-btns,.inf-btns{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.int-btn,.dose-btn,.inf-btn{padding:4px 10px;border:1px solid var(--md-sys-color-outline-variant);border-radius:999px;background:transparent;color:var(--tx2);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .12s;text-align:center}
+.int-btn{min-width:42px}
+.int-btn:hover,.dose-btn:hover,.inf-btn:hover{border-color:var(--md-sys-color-primary);color:var(--tx);background:var(--md-sys-color-surface-container)}
+.int-btn.on,.dose-btn.on,.inf-btn.on{background:var(--md-sys-color-primary);border-color:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary)}
+.dose-btn .dose-sub{font-size:8.5px;color:var(--tx3);display:block;margin-top:-1px;font-family:var(--md-sys-typescale-label-small-font)}
+.dose-btn.on .dose-sub{color:var(--md-sys-color-on-primary);opacity:.85}
+.inf-btn{font-family:var(--md-sys-typescale-label-medium-font);font-size:11px}
 
 /* MGKG BADGE */
-.mgkg-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--tx3);margin-left:auto;white-space:nowrap}
+.mgkg-badge{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tx3);font-weight:500;padding:1px 6px;border-radius:999px;background:var(--md-sys-color-surface-container-high);white-space:nowrap}
+.mgkg-badge:empty{display:none}
 
 /* SCENARIOS */
-.sc-row{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:6px}
-.sc-btn{padding:7px 9px;border:1px solid var(--bd);border-radius:var(--shape-sm);background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.sc-btn::after{content:attr(data-impact);font-size:9px;color:var(--tx3);white-space:nowrap;font-weight:400}
-.sc-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--bg4)}
-.sc-btn.active{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
-.sc-btn.active::after{color:var(--md-sys-color-on-secondary-container)}
+.sc-row{display:flex;flex-direction:column;gap:6px}
+.sc-btn{padding:8px 10px;border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-sm);background:transparent;color:var(--tx2);font-family:var(--md-sys-typescale-label-medium-font);font-size:12px;cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px;line-height:1.3}
+.sc-btn::after{content:attr(data-impact);font-size:10px;color:var(--tx3);white-space:nowrap;font-weight:400;opacity:.8}
+.sc-btn:hover{border-color:var(--md-sys-color-primary);color:var(--tx);background:var(--md-sys-color-surface-container-low)}
+.sc-btn.active{background:var(--md-sys-color-primary-container);border-color:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary-container)}
+.sc-btn.active::after{color:var(--md-sys-color-on-primary-container)}
+
+/* MIC STEPPERS */
+.mic-step{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1px solid var(--md-sys-color-outline-variant);border-radius:6px;background:var(--md-sys-color-surface-container);color:var(--tx2);cursor:pointer;transition:.12s;flex-shrink:0;padding:0}
+.mic-step:hover{border-color:var(--md-sys-color-primary);color:var(--md-sys-color-primary);background:var(--md-sys-color-surface-container-low)}
+.mic-step svg{width:14px;height:14px}
+.ci-mic{min-width:46px;text-align:center}
 
 /* ═══ MOBILE DRAWER ═══ */
 .sb-overlay{display:none}
@@ -118,9 +173,9 @@ input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(
 @media(max-width:768px){
   .hd{padding:8px 12px}
   .hd .sub{display:none}
-  .dg{grid-template-columns:1fr 1fr 1fr;gap:3px}
-  .db{padding:5px 6px;font-size:10px}
-  .db .dc{display:none}
+  .dg{max-height:260px}
+  .db{padding:6px 8px;font-size:12px}
+  .db-cat{font-size:9.5px}
   input[type=range]{height:5px}
   input[type=range]::-webkit-slider-thumb{width:20px;height:20px;margin-top:-7px}
   .ms{display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:visible;padding-bottom:0;scroll-snap-type:none}
@@ -128,44 +183,44 @@ input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(
   .mc .mv{font-size:14px}
   .clg{font-size:9px;gap:6px}
   .ct{gap:3px}
-  .ct button{font-size:9px;padding:3px 7px}
-  .sc-btn{font-size:10px;padding:6px 8px}
-  .sc-btn::after{font-size:8px}
-  .cr{margin-bottom:8px}
-  .ch{gap:3px}
-  .cl{font-size:11px}
-  .ci{font-size:14px;width:54px;min-width:44px;padding:3px 4px}
+  .ct button{font-size:9.5px;padding:3px 8px}
+  .sc-btn{font-size:11px;padding:7px 9px}
+  .sc-btn::after{font-size:9px}
+  .cr{margin-bottom:10px}
+  .ch{gap:5px}
+  .cl{font-size:11.5px}
+  .ci{font-size:12.5px;min-width:48px;padding:3px 6px}
   .pk{font-size:10px;padding:8px 10px}
   .pk-grid{grid-template-columns:1fr 1fr;gap:3px}
   .pk-cell .pk-v{font-size:10px}
   .al{font-size:11px;padding:8px 10px}
   .ft{font-size:9px;padding:10px 12px}
   .tb button{font-size:9px;padding:3px 8px}
-  .std-ref{font-size:9px}
-  .rr{font-size:9px;padding:5px 7px}
-  .gb{font-size:8px;padding:1px 4px}
-  #mic-dn,#mic-up{width:22px!important;height:22px!important;font-size:12px!important}
+  .std-ref{font-size:10.5px}
+  .renal-pill{padding:8px 10px;gap:8px}
+  .renal-icon{width:24px;height:24px}
   .ctp{flex-direction:column;align-items:flex-start;gap:4px}
-  .int-btn{padding:4px 10px;font-size:11px;min-width:38px}
-  .ld-toggle{font-size:10px;padding:4px 7px}
-  .dose-btn{padding:3px 8px;font-size:10px}
-  .inf-btn{padding:3px 8px;font-size:9px}
+  .int-btn,.dose-btn,.inf-btn{padding:3px 9px;font-size:10.5px}
+  .ld-toggle{font-size:11px;padding:5px 8px}
   .pk-below{font-size:9px;padding:8px 10px}
   .pk-below-toggle{font-size:10px}
-  .mgkg-badge{font-size:8px}
+  .mgkg-badge{font-size:9px}
+  .drug-card{padding:8px 10px;gap:8px}
+  .drug-card-icon{width:32px;height:32px}
+  .drug-card-name{font-size:13px}
+  .drug-card-cat{font-size:10.5px}
 }
 @media(max-width:400px){
-  .dg{grid-template-columns:1fr 1fr;gap:3px}
   .cw{height:clamp(240px,48vh,300px)}
   .mc{min-width:85px}
   .mc .mv{font-size:13px}
   .hd h1{font-size:14px}
-  .ci{width:48px;min-width:40px;font-size:13px}
+  .ci{min-width:44px;font-size:12px}
   .ct-a{padding:8px 6px}
   .cp{padding:8px}
-  .cl{font-size:10px}
-  .ch{gap:2px}
-  #mic-dn,#mic-up{width:20px!important;height:20px!important;font-size:11px!important}
+  .cl{font-size:11px}
+  .ch{gap:4px}
+  .mic-step{width:24px;height:24px}
 }
 
 /* body.mob override — drawer version */
@@ -180,9 +235,8 @@ body.mob .fab-params{display:flex}
 body.mob .sb-overlay.show{display:block;opacity:1}
 body.mob .hd{padding:8px 12px}
 body.mob .hd .sub{display:none}
-body.mob .dg{grid-template-columns:1fr 1fr 1fr;gap:3px}
-body.mob .db{padding:5px 6px;font-size:10px}
-body.mob .db .dc{display:none}
+body.mob .dg{max-height:260px}
+body.mob .db{padding:6px 8px;font-size:12px}
 body.mob input[type=range]{height:5px}
 body.mob input[type=range]::-webkit-slider-thumb{width:20px;height:20px;margin-top:-7px}
 body.mob .ms{display:grid;grid-template-columns:1fr 1fr;gap:6px;overflow:visible;padding-bottom:0;scroll-snap-type:none}
@@ -192,5 +246,4 @@ body.mob .ct-a{padding:10px 8px;gap:10px}
 body.mob .cp{padding:10px;min-height:280px}
 body.mob .cw{height:clamp(240px,48vh,320px)}
 body.mob .clg{font-size:9px;gap:6px}
-body.mob .ci{font-size:14px;width:54px;min-width:44px}
-
+body.mob .ci{font-size:12.5px;min-width:48px}

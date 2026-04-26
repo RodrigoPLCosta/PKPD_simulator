@@ -53,56 +53,98 @@
 <div class="sb-overlay" id="sb-overlay"></div>
 <div class="sb" id="sidebar">
   <div class="panel-section">
-    <button id="btn-select-drug" class="drug-select-btn">Selecionar Antibiótico: <span id="selected-drug-name">...</span></button>
-    <div id="drug-selection-content" style="display:none; margin-top: 12px;">
-      <input id="drug-search" class="drug-search" type="search" placeholder="Buscar antibiótico" autocomplete="off">
-      <div class="st">Classe</div>
+    <div class="st"><span class="st-icon" data-ic="pill"></span>Antimicrobiano</div>
+    <button id="btn-select-drug" class="drug-card open" aria-expanded="true">
+      <span class="drug-card-icon" data-ic="shield"></span>
+      <span class="drug-card-info">
+        <span class="drug-card-name" id="selected-drug-name">Meropenem</span>
+        <span class="drug-card-cat" id="selected-drug-cat">Carbapenem</span>
+      </span>
+      <span class="drug-card-chev" data-ic="chevronDown"></span>
+    </button>
+    <div id="drug-selection-content" style="margin-top:10px;">
+      <div class="drug-search-wrap">
+        <span class="drug-search-icon" data-ic="search"></span>
+        <input id="drug-search" class="drug-search" type="search" placeholder="Buscar antimicrobiano" autocomplete="off">
+      </div>
       <div class="ct" id="class-tabs"></div>
-      <div class="st" style="margin-top: 12px;">Antimicrobiano</div>
       <div class="dg" id="dg"></div>
     </div>
-    <div class="std-ref" id="std-ref" style="margin-top:12px;"></div>
+    <div class="std-ref" id="std-ref"></div>
   </div>
-  <div class="panel-section">
-    <div class="st">Cenários Clínicos</div>
+  <div class="panel-section" id="panel-scenarios">
+    <div class="st"><span class="st-icon" data-ic="flask"></span>Cenários clínicos</div>
     <div class="sc-row" id="scenarios"></div>
   </div>
   <div class="panel-section">
-    <div class="st">Paciente</div>
-    <div class="cr"><div class="ch"><span class="cl">Peso</span><input class="ci" type="number" id="wt-n" min="30" max="200" step="1" value="70"><span class="cu">kg</span></div>
-    <input type="range" min="30" max="200" step="1" value="70" id="wt"></div>
-    <div class="cr"><div class="ch"><span class="cl">TFG (CrCl)</span><input class="ci" type="number" id="gfr-n" min="5" max="250" step="5" value="120"><span class="cu">mL/min</span><span class="gb" id="gfr-b" style="background:var(--gnb);color:var(--gn)">Normal</span></div>
-    <input type="range" min="5" max="180" step="5" value="120" id="gfr"></div>
-    <div class="rr" id="renal-rec"></div>
-  </div>
-  <div class="panel-section">
-    <div class="st">Dosagem</div>
-    <div class="cr"><div class="ch"><span class="cl">Dose manutenção</span><span class="mgkg-badge" id="mgkg-badge"></span><input class="ci" type="number" id="dose-n" min="50" max="6000" step="50" value="1000"><span class="cu">mg</span></div>
-    <div class="dose-btns" id="dose-btns"></div>
-    <input type="range" min="100" max="6000" step="50" value="1000" id="dose"></div>
-    <div class="cr"><div class="ch"><span class="cl">Intervalo</span><input class="ci" type="number" id="int-n" min="1" max="48" step="1" value="8" style="width:48px"><span class="cu">h</span></div>
-    <div class="int-btns" id="int-btns"></div>
-    <input type="range" min="4" max="48" step="1" value="8" id="int" style="display:none"></div>
-    <div class="cr"><div class="ch"><span class="cl">Infusão</span><input class="ci" type="number" id="inf-n" min="1" max="1440" step="5" value="30"><span class="cu">min</span></div>
-    <div class="inf-btns" id="inf-btns"></div>
-    <input type="range" min="5" max="1440" step="5" value="30" id="inf" style="display:none"></div>
-    <div class="ld-section">
-      <div class="ld-toggle" id="ld-toggle"><span class="ld-arrow">▸</span> Dose de ataque <span style="font-size:9px;color:var(--tx3)">(opcional)</span></div>
-      <div class="ld-content" id="ld-content" style="display:none">
-        <div class="cr"><div class="ch"><span class="cl">Dose de ataque</span><input class="ci" type="number" id="ld-n" min="0" max="6000" step="50" value="0"><span class="cu">mg</span></div>
-        <input type="range" min="0" max="6000" step="50" value="0" id="ld"></div>
-        <div class="cr"><div class="ch"><span class="cl">Nº doses ataque</span><input class="ci" type="number" id="ldc-n" min="0" max="10" step="1" value="0"><span class="cu">doses</span></div>
-        <input type="range" min="0" max="10" step="1" value="0" id="ldc"></div>
-        <div class="cr"><div class="ch"><span class="cl">Intervalo ataque</span><input class="ci" type="number" id="ldi-n" min="4" max="24" step="1" value="12"><span class="cu">h</span></div>
-        <input type="range" min="4" max="24" step="1" value="12" id="ldi"></div>
+    <div class="st"><span class="st-icon" data-ic="user"></span>Paciente</div>
+    <div class="cr">
+      <div class="ch"><span class="cl"><span class="cl-icon" data-ic="weight"></span>Peso</span><input class="ci" type="number" id="wt-n" min="30" max="200" step="1" value="70"><span class="cu">kg</span></div>
+      <input type="range" min="30" max="200" step="1" value="70" id="wt">
+    </div>
+    <div class="cr">
+      <div class="ch"><span class="cl"><span class="cl-icon" data-ic="kidney"></span>TFG <small>(CrCl)</small></span><input class="ci" type="number" id="gfr-n" min="5" max="250" step="5" value="120"><span class="cu">mL/min</span></div>
+      <input type="range" min="5" max="180" step="5" value="120" id="gfr">
+    </div>
+    <div class="renal-pill" id="renal-pill">
+      <span class="renal-icon" data-ic="kidney"></span>
+      <div class="renal-body">
+        <span class="renal-status" id="gfr-b">Normal</span>
+        <span class="renal-desc" id="renal-rec">Sem ajuste de dose recomendado</span>
       </div>
     </div>
   </div>
   <div class="panel-section">
-    <div class="cr" style="margin-bottom:0;"><div class="ch"><span class="cl">MIC</span><input class="ci" type="text" id="mic-n" value="2" readonly style="cursor:pointer"><span class="cu">mg/L</span>
-      <button id="mic-dn" style="width:26px;height:26px;border:1px solid var(--md-sys-color-outline);border-radius:4px;background:transparent;color:var(--tx2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
-      <button id="mic-up" style="width:26px;height:26px;border:1px solid var(--md-sys-color-outline);border-radius:4px;background:transparent;color:var(--tx2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button></div>
-    <input type="range" min="0" max="12" step="1" value="5" id="mic"></div>
+    <div class="st"><span class="st-icon" data-ic="syringe"></span>Dosagem</div>
+    <div class="cr">
+      <div class="ch"><span class="cl"><span class="cl-icon" data-ic="pill"></span>Dose manutenção <span class="mgkg-badge" id="mgkg-badge"></span></span><input class="ci" type="number" id="dose-n" min="50" max="6000" step="50" value="1000"><span class="cu">mg</span></div>
+      <input type="range" min="100" max="6000" step="50" value="1000" id="dose">
+      <div class="dose-btns" id="dose-btns"></div>
+    </div>
+    <div class="cr">
+      <div class="ch"><span class="cl"><span class="cl-icon" data-ic="clock"></span>Intervalo</span><input class="ci" type="number" id="int-n" min="1" max="48" step="1" value="8"><span class="cu">h</span></div>
+      <input type="range" min="4" max="48" step="1" value="8" id="int" style="display:none">
+      <div class="int-btns" id="int-btns"></div>
+    </div>
+    <div class="cr">
+      <div class="ch"><span class="cl"><span class="cl-icon" data-ic="drop"></span>Infusão</span><input class="ci" type="number" id="inf-n" min="1" max="1440" step="5" value="30"><span class="cu">min</span></div>
+      <input type="range" min="5" max="1440" step="5" value="30" id="inf" style="display:none">
+      <div class="inf-btns" id="inf-btns"></div>
+    </div>
+    <div class="ld-section">
+      <button class="ld-toggle" id="ld-toggle" type="button" aria-expanded="false">
+        <span class="ld-arrow" data-ic="chevronRight"></span>
+        <span class="ld-label">Dose de ataque</span>
+        <span class="ld-hint">(opcional)</span>
+      </button>
+      <div class="ld-content" id="ld-content" style="display:none">
+        <div class="cr">
+          <div class="ch"><span class="cl">Dose de ataque</span><input class="ci" type="number" id="ld-n" min="0" max="6000" step="50" value="0"><span class="cu">mg</span></div>
+          <input type="range" min="0" max="6000" step="50" value="0" id="ld">
+        </div>
+        <div class="cr">
+          <div class="ch"><span class="cl">Nº doses ataque</span><input class="ci" type="number" id="ldc-n" min="0" max="10" step="1" value="0"><span class="cu">doses</span></div>
+          <input type="range" min="0" max="10" step="1" value="0" id="ldc">
+        </div>
+        <div class="cr">
+          <div class="ch"><span class="cl">Intervalo ataque</span><input class="ci" type="number" id="ldi-n" min="4" max="24" step="1" value="12"><span class="cu">h</span></div>
+          <input type="range" min="4" max="24" step="1" value="12" id="ldi">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-section">
+    <div class="st"><span class="st-icon" data-ic="target"></span>MIC</div>
+    <div class="cr cr-mic">
+      <div class="ch">
+        <span class="cl">Concentração inibitória</span>
+        <button id="mic-dn" class="mic-step" type="button" aria-label="Diminuir MIC" data-ic="minus"></button>
+        <input class="ci ci-mic" type="text" id="mic-n" value="2" readonly>
+        <button id="mic-up" class="mic-step" type="button" aria-label="Aumentar MIC" data-ic="plus"></button>
+        <span class="cu">mg/L</span>
+      </div>
+      <input type="range" min="0" max="12" step="1" value="5" id="mic">
+    </div>
   </div>
 </div>
 <div class="ct-a">
