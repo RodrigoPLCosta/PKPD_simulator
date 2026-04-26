@@ -50,10 +50,10 @@
   --md-sys-typescale-headline-medium-weight: 600;
   --md-sys-typescale-headline-medium-tracking: -0.02em;
   --md-sys-typescale-title-large-font: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --md-sys-typescale-title-large-size: 1.125rem;
+  --md-sys-typescale-title-large-size: 1.25rem;
   --md-sys-typescale-title-large-line-height: 1.5rem;
   --md-sys-typescale-title-large-weight: 600;
-  --md-sys-typescale-title-large-tracking: -0.01em;
+  --md-sys-typescale-title-large-tracking: -0.015em;
   --md-sys-typescale-title-medium-font: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --md-sys-typescale-title-medium-size: 1rem;
   --md-sys-typescale-title-medium-line-height: 1.5rem;
@@ -93,39 +93,43 @@
 
 body[data-theme="light"] {
   color-scheme: light;
-  --md-sys-color-primary: #4659a9;
+  /* Primary: vivid blue used for highlights, sliders, focus rings */
+  --md-sys-color-primary: #3b6dff;
   --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #dde1ff;
-  --md-sys-color-on-primary-container: #001453;
-  --md-sys-color-secondary: #585e71;
+  --md-sys-color-primary-container: #dde6ff;
+  --md-sys-color-on-primary-container: #0a2a8a;
+  /* Secondary: soft slate for chips and selected states */
+  --md-sys-color-secondary: #4d5a78;
   --md-sys-color-on-secondary: #ffffff;
-  --md-sys-color-secondary-container: #dce2f9;
-  --md-sys-color-on-secondary-container: #151b2c;
-  --md-sys-color-tertiary: #735572;
+  --md-sys-color-secondary-container: #e1e8ff;
+  --md-sys-color-on-secondary-container: #1a2756;
+  /* Tertiary: warm tone for warnings/TDM accent */
+  --md-sys-color-tertiary: #b85c00;
   --md-sys-color-on-tertiary: #ffffff;
-  --md-sys-color-tertiary-container: #ffd7fa;
-  --md-sys-color-on-tertiary-container: #2a132c;
-  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-tertiary-container: #ffe6cc;
+  --md-sys-color-on-tertiary-container: #5c2c00;
+  --md-sys-color-error: #d12d2d;
   --md-sys-color-on-error: #ffffff;
-  --md-sys-color-error-container: #ffdad6;
-  --md-sys-color-on-error-container: #410002;
-  --md-sys-color-background: #fdfbff;
-  --md-sys-color-on-background: #1a1b21;
-  --md-sys-color-surface: #fdfbff;
-  --md-sys-color-on-surface: #1a1b21;
-  --md-sys-color-surface-dim: #dcd9de;
-  --md-sys-color-surface-bright: #fdfbff;
+  --md-sys-color-error-container: #ffdcdc;
+  --md-sys-color-on-error-container: #5c0808;
+  /* Surfaces: cream-blue background, white cards */
+  --md-sys-color-background: #f0f3fa;
+  --md-sys-color-on-background: #1a2030;
+  --md-sys-color-surface: #f0f3fa;
+  --md-sys-color-on-surface: #1a2030;
+  --md-sys-color-surface-dim: #dde2ec;
+  --md-sys-color-surface-bright: #ffffff;
   --md-sys-color-surface-container-lowest: #ffffff;
-  --md-sys-color-surface-container-low: #f7f3f8;
-  --md-sys-color-surface-container: #f1edf2;
-  --md-sys-color-surface-container-high: #ebe7ec;
-  --md-sys-color-surface-container-highest: #e5e1e6;
-  --md-sys-color-surface-variant: #e3e1ec;
-  --md-sys-color-on-surface-variant: #46464f;
-  --md-sys-color-outline: #767680;
-  --md-sys-color-outline-variant: #c6c5d0;
-  --md-sys-color-inverse-surface: #313036;
-  --md-sys-color-inverse-on-surface: #f3f0f4;
-  --md-sys-color-shadow: #000000;
-  --md-sys-color-scrim: #000000;
+  --md-sys-color-surface-container-low: #f7f9fd;
+  --md-sys-color-surface-container: #ffffff;
+  --md-sys-color-surface-container-high: #f1f4fa;
+  --md-sys-color-surface-container-highest: #e8ecf4;
+  --md-sys-color-surface-variant: #eef1f7;
+  --md-sys-color-on-surface-variant: #4c5872;
+  --md-sys-color-outline: #8693ad;
+  --md-sys-color-outline-variant: #d6dde8;
+  --md-sys-color-inverse-surface: #2c3344;
+  --md-sys-color-inverse-on-surface: #eef1f7;
+  --md-sys-color-shadow: #0a1a36;
+  --md-sys-color-scrim: #0a1a36;
 }

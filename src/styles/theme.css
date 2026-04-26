@@ -19,6 +19,26 @@ body {
   --am: var(--md-sys-color-tertiary);
   --amb: var(--md-sys-color-tertiary-container);
   --bd: var(--md-sys-color-outline-variant);
+  /* Soft status palette (info / ok / warn / danger) for cards and pills */
+  --info-bg: #1f2c4a;
+  --info-fg: #aac4ff;
+  --info-bd: #2c3f6e;
+  --ok-bg: #1a3a26;
+  --ok-fg: #7bdba2;
+  --ok-bd: #265036;
+  --warn-bg: #3a2a10;
+  --warn-fg: #ffc78a;
+  --warn-bd: #5a3f1a;
+  --danger-bg: #3a1818;
+  --danger-fg: #ffb4ab;
+  --danger-bd: #5a2828;
+  /* Metric accent bars (bottom underline of each KPI card) */
+  --metric-accent-class: #94a3b8;
+  --metric-accent-cmax: #3b6dff;
+  --metric-accent-cmin: #6e85b7;
+  --metric-accent-tmic: #16a34a;
+  --metric-accent-auc: #f59e0b;
+  --metric-accent-cmaxmic: #a855f7;
   --chart-grid: rgba(138, 154, 175, 0.12);
   --chart-border: rgba(138, 154, 175, 0.22);
   --chart-tooltip-background: var(--md-sys-color-surface-container-high);
@@ -34,8 +54,8 @@ body {
   --elevation-shadow-2: 0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shape-xs: 4px;
   --shape-sm: 8px;
-  --shape-md: 12px;
-  --shape-lg: 16px;
+  --shape-md: 14px;
+  --shape-lg: 20px;
   --shape-xl: 28px;
   --shape-full: 9999px;
   --r: var(--shape-md);
@@ -43,19 +63,40 @@ body {
 }
 
 body[data-theme="light"] {
-  --gn: #156d31;
-  --gnb: #d6f8df;
-  --chart-grid: rgba(91, 104, 120, 0.14);
-  --chart-border: rgba(91, 104, 120, 0.24);
-  --chart-tooltip-background: var(--md-sys-color-surface-container-lowest);
+  --gn: #16a34a;
+  --gnb: #e6f7ec;
+  /* Soft pastel status palette */
+  --info-bg: #eaf0ff;
+  --info-fg: #1d4ed8;
+  --info-bd: #c7d6ff;
+  --ok-bg: #e7f6ec;
+  --ok-fg: #15803d;
+  --ok-bd: #b8e2c5;
+  --warn-bg: #fff3e0;
+  --warn-fg: #b45309;
+  --warn-bd: #ffd9a8;
+  --danger-bg: #fde8e8;
+  --danger-fg: #b91c1c;
+  --danger-bd: #f3c2c2;
+  /* Metric accent bars (light theme) */
+  --metric-accent-class: #94a3b8;
+  --metric-accent-cmax: #3b6dff;
+  --metric-accent-cmin: #6e85b7;
+  --metric-accent-tmic: #16a34a;
+  --metric-accent-auc: #f59e0b;
+  --metric-accent-cmaxmic: #a855f7;
+  --chart-grid: rgba(91, 104, 120, 0.10);
+  --chart-border: rgba(91, 104, 120, 0.18);
+  --chart-tooltip-background: #ffffff;
   --chart-tooltip-border: var(--md-sys-color-outline-variant);
   --chart-tooltip-title: var(--md-sys-color-on-surface);
   --chart-tooltip-body: var(--md-sys-color-on-surface-variant);
-  --chart-narrative-surface: rgba(255, 255, 255, 0.92);
-  --chart-warning-surface: #fff2d2;
-  --chart-warning-outline: #a86e00;
-  --chart-warning-text: #704900;
-  --overlay-scrim: rgba(0, 0, 0, 0.3);
-  --elevation-shadow-1: 0 1px 3px 1px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  --elevation-shadow-2: 0 2px 6px 2px rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --chart-narrative-surface: rgba(255, 255, 255, 0.95);
+  --chart-warning-surface: #fff3e0;
+  --chart-warning-outline: #f59e0b;
+  --chart-warning-text: #92400e;
+  --overlay-scrim: rgba(15, 23, 42, 0.35);
+  /* Softer multi-layer shadow used on the reference design */
+  --elevation-shadow-1: 0 1px 2px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.05);
+  --elevation-shadow-2: 0 2px 4px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
 }
