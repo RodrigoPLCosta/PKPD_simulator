@@ -259,6 +259,15 @@ function updateDrugFilter() {
   });
 }
 
+function scenarioImpactText(scenario) {
+  if (scenario.p.gfr && scenario.p.gfr >= 150) return 'Simula ARC';
+  if (scenario.p.inf && scenario.p.inf >= 180) return 'Aumenta fT>MIC';
+  if (scenario.p.ld || scenario.p.ldc) return 'Dose de ataque';
+  if (scenario.p.int && scenario.p.int >= 24) return 'Intervalo longo';
+  if (scenario.p.dose) return 'Dose otimizada';
+  return 'Preset clínico';
+}
+
 // ─── Shared chart reference ───
 const chartRef = { chart: null };
 export function getChartRef() { return chartRef; }
@@ -398,7 +407,10 @@ export function initControls() {
   // Scenarios
   SCENARIOS.forEach(function (s) {
     const b = document.createElement('button');
-    b.className = 'sc-btn'; b.textContent = s.l; b.title = s.desc; b.dataset.drug = s.d;
+    b.className = 'sc-btn';
+    b.textContent = s.l;
+    b.dataset.impact = scenarioImpactText(s);
+    b.title = s.desc; b.dataset.drug = s.d;
     b.addEventListener('click', function () {
       if (!_restoringUndo) pushUndo();
       const currentState = getCurrentUIState();
