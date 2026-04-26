@@ -88,10 +88,10 @@ export const pkLabelPlugin = {
 
     const cxMax = xScale.getPixelForValue(a.cmax.x);
     const cyMax = yScale.getPixelForValue(a.cmax.y);
-    ctx.font = '500 10px "JetBrains Mono",monospace';
+    ctx.font = '500 9px "JetBrains Mono",monospace';
     ctx.fillStyle = a.drug.col;
     ctx.textAlign = 'left';
-    const cmaxLabel = 'Cmax ' + a.cmax.y + ' mg/L';
+    const cmaxLabel = 'Cmax ' + a.cmax.y;
     let labelX = cxMax + 10;
     let labelY = cyMax - 2;
     if (labelX + 80 > chart.chartArea.right) { ctx.textAlign = 'right'; labelX = cxMax - 10; }
@@ -102,7 +102,7 @@ export const pkLabelPlugin = {
     const cyMin = yScale.getPixelForValue(a.cmin.y);
     ctx.fillStyle = theme.error;
     ctx.textAlign = 'left';
-    const cminLabel = 'Cmin ' + a.cmin.y + ' mg/L';
+    const cminLabel = 'Cmin ' + a.cmin.y;
     let cminLX = cxMin + 10;
     let cminLY = cyMin + 14;
     if (cminLX + 80 > chart.chartArea.right) { ctx.textAlign = 'right'; cminLX = cxMin - 10; }
@@ -126,14 +126,14 @@ export const pkLabelPlugin = {
       narrColor = a.r.cmaxMic >= 8 ? theme.success : theme.warning;
     }
     if (narr) {
-      ctx.font = '600 12px "DM Sans",-apple-system,sans-serif';
+      ctx.font = '600 11px "DM Sans",-apple-system,sans-serif';
       ctx.textAlign = 'right';
       const tw = ctx.measureText(narr).width;
       const px = chart.chartArea.right - 8;
       const py = chart.chartArea.top + 18;
       ctx.globalAlpha = 0.92;
       ctx.fillStyle = theme.narrativeSurface;
-      ctx.fillRect(px - tw - 12, py - 12, tw + 20, 20);
+      ctx.fillRect(px - tw - 10, py - 12, tw + 18, 20);
       ctx.globalAlpha = 1;
       ctx.fillStyle = narrColor;
       ctx.fillText(narr, px, py);
