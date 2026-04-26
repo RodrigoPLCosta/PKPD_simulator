@@ -8,7 +8,7 @@
  * @typedef {import('../types/contracts.js').ThemeTokens} ThemeTokens
  */
 
-const DEFAULT_THEME = 'dark';
+const DEFAULT_THEME = 'light';
 let currentTheme = DEFAULT_THEME;
 
 const FALLBACK_THEME_TOKENS = {
