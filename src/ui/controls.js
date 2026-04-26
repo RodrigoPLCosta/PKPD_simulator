@@ -17,6 +17,8 @@ import { buildAlertViewModel, buildPkInfoViewModel, renderAlertHtml, renderPkInf
 
 let sel = 'meropenem';
 let cmpData = null;
+let activeClassFilter = 'all';
+let activeDrugSearch = '';
 
 // DOM references
 const ldToggle = document.getElementById('ld-toggle');
@@ -204,6 +206,7 @@ function updateMgKgDose() {
 function selectDrug(k) {
   sel = k;
   const d = D[k];
+  document.getElementById('selected-drug-name').textContent = d.l;
   const currentState = getCurrentUIState();
   const nextState = getDefaultDrugState(k, d, currentState.wt, { gfr: currentState.gfr });
   const doseSlider = document.getElementById('dose');
@@ -242,6 +245,18 @@ function selectDrug(k) {
   document.getElementById('dg').querySelectorAll('.db').forEach(function (b) { b.classList.toggle('on', b.dataset.k === k); });
   applyUIState(nextState);
   update();
+}
+
+function updateDrugFilter() {
+  const query = activeDrugSearch.trim().toLowerCase();
+  document.querySelectorAll('.db').forEach(function (b) {
+    const dk = b.dataset.k;
+    const d = D[dk];
+    const matchesClass = activeClassFilter === 'all' || d.cat === activeClassFilter;
+    const haystack = (d.l + ' ' + d.cat + ' ' + dk).toLowerCase();
+    const matchesSearch = !query || haystack.includes(query);
+    b.style.display = matchesClass && matchesSearch ? '' : 'none';
+  });
 }
 
 // ─── Shared chart reference ───
@@ -356,12 +371,16 @@ export function initControls() {
   });
 
   function filterClass(c) {
+    activeClassFilter = c;
     ctEl.querySelectorAll('button').forEach(function (b) { b.classList.toggle('on', b.dataset.c === c); });
-    document.querySelectorAll('.db').forEach(function (b) {
-      const dk = b.dataset.k;
-      b.style.display = (c === 'all' || D[dk].cat === c) ? '' : 'none';
-    });
+    updateDrugFilter();
   }
+
+  const drugSearch = document.getElementById('drug-search');
+  drugSearch.addEventListener('input', function () {
+    activeDrugSearch = this.value;
+    updateDrugFilter();
+  });
 
   // Drug buttons
   const dg = document.getElementById('dg');
@@ -369,6 +388,8 @@ export function initControls() {
     const d = D[k];
     const b = document.createElement('button');
     b.className = 'db'; b.dataset.k = k;
+    b.dataset.name = d.l;
+    b.dataset.cat = d.cat;
     b.innerHTML = d.l + '<span class="dc">' + d.cat + '</span>';
     b.addEventListener('click', function () { if (!_restoringUndo) pushUndo(); selectDrug(k); });
     dg.appendChild(b);
