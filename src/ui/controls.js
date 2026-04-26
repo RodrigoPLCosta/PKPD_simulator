@@ -23,6 +23,38 @@ import {
   tmicStatus,
   troughStatus
 } from './metricCards.js';
+import { icon, setIcon } from './icons.js';
+import { isFavorite, sortByFavorite, toggleFavorite } from './favorites.js';
+
+/**
+ * Map a GFR value to a {level, label, desc} for the renal pill.
+ * Drug-specific recommendation overrides desc when present and gfr<90.
+ */
+function getRenalPillState(drug, gfr) {
+  const cls = classifyGFR(gfr);
+  let level = 'ok';
+  if (cls.t === 'DRC G2' || cls.t === 'DRC G3') level = 'warn';
+  else if (cls.t === 'DRC G4' || cls.t === 'G5/Dial.') level = 'danger';
+  else if (cls.t === 'ARC') level = 'warn';
+  const rec = renalRec(drug, gfr);
+  let desc;
+  if (gfr < 90 && rec) desc = rec;
+  else if (cls.t === 'ARC') desc = 'Clearance aumentado — considerar dose otimizada ou infusão prolongada';
+  else desc = 'Sem ajuste de dose recomendado';
+  return { level, label: cls.t, desc };
+}
+
+/**
+ * Inject an inline SVG icon for every element with a `data-ic` attribute.
+ * Idempotent — re-running won't double-inject because setIcon replaces innerHTML.
+ */
+function injectDataIcons(root = document) {
+  const els = root.querySelectorAll('[data-ic]');
+  els.forEach((el) => {
+    const name = el.getAttribute('data-ic');
+    if (name && el instanceof HTMLElement) setIcon(el, name);
+  });
+}
 
 let sel = 'meropenem';
 let cmpData = null;
@@ -216,6 +248,8 @@ function selectDrug(k) {
   sel = k;
   const d = D[k];
   document.getElementById('selected-drug-name').textContent = d.l;
+  const catEl = document.getElementById('selected-drug-cat');
+  if (catEl) catEl.textContent = d.cat;
   const currentState = getCurrentUIState();
   const nextState = getDefaultDrugState(k, d, currentState.wt, { gfr: currentState.gfr });
   const doseSlider = document.getElementById('dose');
@@ -294,16 +328,14 @@ function update() {
   const ldInt = parseFloat(document.getElementById('ldi-n').value) || 12;
   const drug = D[sel];
 
-  // GFR badge
-  const gl = classifyGFR(gfr);
+  // Renal pill (status + description)
+  const renalState = getRenalPillState(drug, gfr);
+  const renalPill = document.getElementById('renal-pill');
+  if (renalPill) renalPill.setAttribute('data-status', renalState.level);
   const gb = document.getElementById('gfr-b');
-  gb.textContent = gl.t; gb.style.background = gl.bg; gb.style.color = gl.c;
-
-  // Renal recommendation
-  const rrEl = document.getElementById('renal-rec');
-  const rec = renalRec(drug, gfr);
-  if (rec && gfr < 90) { rrEl.style.display = 'block'; rrEl.innerHTML = '<b>Ajuste renal sugerido (CrCl ' + gfr + '):</b> ' + rec; }
-  else rrEl.style.display = 'none';
+  gb.textContent = renalState.label;
+  gb.removeAttribute('style');
+  document.getElementById('renal-rec').textContent = renalState.desc;
 
   const r = simulate(dose, intv, infn, drug, gfr, micv, wt, ldv, ldCount, ldInt, sel);
 
@@ -387,6 +419,7 @@ function popUndo() {
 // ─── Init all controls ───
 export function initControls() {
   injectMetricIcons();
+  injectDataIcons();
 
   // Class tabs
   const classes = [...new Set(Object.values(D).map(function (d) { return d.cat; }))];
@@ -413,18 +446,58 @@ export function initControls() {
     updateDrugFilter();
   });
 
-  // Drug buttons
+  // Drug buttons — vertical list with favorite stars
   const dg = document.getElementById('dg');
-  Object.keys(D).forEach(function (k) {
-    const d = D[k];
-    const b = document.createElement('button');
-    b.className = 'db'; b.dataset.k = k;
-    b.dataset.name = d.l;
-    b.dataset.cat = d.cat;
-    b.innerHTML = d.l + '<span class="dc">' + d.cat + '</span>';
-    b.addEventListener('click', function () { if (!_restoringUndo) pushUndo(); selectDrug(k); });
-    dg.appendChild(b);
-  });
+  function renderDrugList() {
+    dg.innerHTML = '';
+    const ordered = sortByFavorite(Object.keys(D));
+    ordered.forEach(function (k) {
+      const d = D[k];
+      const fav = isFavorite(k);
+      const b = document.createElement('button');
+      b.className = 'db' + (k === sel ? ' on' : '');
+      b.type = 'button';
+      b.dataset.k = k;
+      b.dataset.name = d.l;
+      b.dataset.cat = d.cat;
+      b.innerHTML =
+        '<span class="db-info">' +
+          '<span class="db-name">' + d.l + '</span>' +
+          '<span class="db-cat">' + d.cat + '</span>' +
+        '</span>' +
+        '<span class="db-fav' + (fav ? ' on' : '') + '" role="button" tabindex="0" ' +
+          'aria-label="' + (fav ? 'Remover dos favoritos' : 'Adicionar aos favoritos') + '">' +
+          icon(fav ? 'starFilled' : 'star', { size: 16 }) +
+        '</span>';
+      b.addEventListener('click', function (ev) {
+        const target = /** @type {HTMLElement} */ (ev.target);
+        if (target && target.closest('.db-fav')) {
+          ev.stopPropagation();
+          toggleFavorite(k);
+          renderDrugList();
+          updateDrugFilter();
+          return;
+        }
+        if (!_restoringUndo) pushUndo();
+        selectDrug(k);
+      });
+      const favBtn = b.querySelector('.db-fav');
+      if (favBtn) {
+        favBtn.addEventListener('keydown', function (ev) {
+          const ke = /** @type {KeyboardEvent} */ (ev);
+          if (ke.key === 'Enter' || ke.key === ' ') {
+            ke.preventDefault();
+            ke.stopPropagation();
+            toggleFavorite(k);
+            renderDrugList();
+            updateDrugFilter();
+          }
+        });
+      }
+      dg.appendChild(b);
+    });
+  }
+  renderDrugList();
 
   // Scenarios
   SCENARIOS.forEach(function (s) {
