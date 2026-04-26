@@ -19,7 +19,7 @@
 .mc:hover .tip,.mc:active .tip{display:block}
 
 /* CHART PANEL */
-.cp{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rl);padding:16px 18px 14px;min-height:380px;display:flex;flex-direction:column;overflow:hidden}
+.cp{order:-2;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rl);padding:16px 18px 14px;min-height:380px;display:flex;flex-direction:column;overflow:hidden}
 .ctp{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .cdn{font-family:var(--md-sys-typescale-title-medium-font);font-size:var(--md-sys-typescale-title-medium-size);font-weight:var(--md-sys-typescale-title-medium-weight);color:var(--tx)}
 .cdc{font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);color:var(--tx3);margin-left:6px}
