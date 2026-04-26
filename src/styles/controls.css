@@ -78,10 +78,12 @@ input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(
 .mgkg-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--tx3);margin-left:auto;white-space:nowrap}
 
 /* SCENARIOS */
-.sc-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
-.sc-btn{padding:3px 8px;border:1px solid var(--bd);border-radius:999px;background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);cursor:pointer;transition:all .15s}
+.sc-row{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:6px}
+.sc-btn{padding:7px 9px;border:1px solid var(--bd);border-radius:var(--shape-sm);background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:var(--md-sys-typescale-label-medium-size);cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sc-btn::after{content:attr(data-impact);font-size:9px;color:var(--tx3);white-space:nowrap;font-weight:400}
 .sc-btn:hover{border-color:var(--ac);color:var(--tx);background:var(--bg4)}
 .sc-btn.active{background:var(--md-sys-color-secondary-container);border-color:transparent;color:var(--md-sys-color-on-secondary-container)}
+.sc-btn.active::after{color:var(--md-sys-color-on-secondary-container)}
 
 /* ═══ MOBILE DRAWER ═══ */
 .sb-overlay{display:none}
@@ -127,7 +129,8 @@ input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(
   .clg{font-size:9px;gap:6px}
   .ct{gap:3px}
   .ct button{font-size:9px;padding:3px 7px}
-  .sc-btn{font-size:9px;padding:2px 6px}
+  .sc-btn{font-size:10px;padding:6px 8px}
+  .sc-btn::after{font-size:8px}
   .cr{margin-bottom:8px}
   .ch{gap:3px}
   .cl{font-size:11px}
