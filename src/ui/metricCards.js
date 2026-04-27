@@ -5,7 +5,7 @@
  *
  * Pure helpers (no DOM access) plus a one-time icon-injection helper used
  * during init. The render-on-update logic lives in controls.js but delegates
- * status computation here so educPanel and the cards stay in sync.
+ * status computation here so clinicalPanel and the cards stay in sync.
  */
 
 import { icon, setIcon } from './icons.js';
@@ -44,7 +44,7 @@ export function familyForCat(cat) {
 
 /**
  * Compute the status badge for fT > MIC.
- * Mirrors the thresholds in educPanel.js.
+ * Mirrors the thresholds in clinicalPanel.js.
  * @param {number} pctMIC
  * @returns {{ level: 'ok'|'warn'|'danger', text: string }}
  */

@@ -91,33 +91,47 @@
 /* ARC COLOR */
 .gb-arc{background:var(--acd)!important;color:var(--ac2)!important}
 
-/* EDUCATIONAL PANEL */
-.edu-panel{background:var(--bg2);border:1px solid transparent;border-radius:var(--r);overflow:hidden;transition:all .2s}
-.edu-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none;transition:background .15s}
-.edu-header:hover{background:var(--bg3)}
-.edu-icon{font-size:10px;flex-shrink:0;transition:color .2s}
-.edu-icon.ok{color:var(--gn)}.edu-icon.warn{color:var(--am)}.edu-icon.danger{color:var(--rd)}
-.edu-summary{font-family:var(--md-sys-typescale-body-medium-font);font-size:var(--md-sys-typescale-body-medium-size);font-weight:500;color:var(--tx);flex:1;line-height:1.4}
-.edu-summary .edu-val{font-family:'JetBrains Mono',monospace;font-weight:600}
-.edu-summary .edu-status{font-family:var(--md-sys-typescale-label-small-font);font-size:var(--md-sys-typescale-label-small-size);font-weight:600;margin-left:6px;padding:2px 6px;border-radius:999px;letter-spacing:var(--md-sys-typescale-label-small-tracking)}
-.edu-summary .edu-status.ok{background:var(--gnb);color:var(--gn)}
-.edu-summary .edu-status.warn{background:var(--amb);color:var(--am)}
-.edu-summary .edu-status.danger{background:var(--rdb);color:var(--md-sys-color-on-error-container)}
-.edu-arrow{font-size:8px;color:var(--tx3);transition:transform .2s;flex-shrink:0}
-.edu-panel.open .edu-arrow{transform:rotate(180deg)}
-.edu-body{max-height:0;overflow:hidden;transition:max-height .3s ease-out}
-.edu-panel.open .edu-body{max-height:500px;transition:max-height .4s ease-in}
-.edu-text{padding:0 14px 14px;font-family:var(--md-sys-typescale-body-medium-font);font-size:var(--md-sys-typescale-body-medium-size);color:var(--tx2);line-height:1.7;border-top:1px solid var(--bd)}
-.edu-text p{margin:8px 0}
-.edu-text p:first-child{margin-top:10px}
-.edu-text strong{color:var(--tx);font-weight:600}
-.edu-text .edu-ref{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--tx3);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
-.edu-text .edu-tip{font-family:var(--md-sys-typescale-body-small-font);font-size:var(--md-sys-typescale-body-small-size);color:var(--md-sys-color-on-secondary-container);background:var(--md-sys-color-secondary-container);padding:8px 12px;border-radius:var(--shape-md);margin-top:8px;line-height:1.5;opacity:0.9}
+/* CLINICAL INFO CARDS — three colored summary cards above the tabs */
+.info-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:980px){.info-cards{grid-template-columns:1fr}}
+.info-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);background:var(--md-sys-color-surface-container-lowest);box-shadow:var(--elevation-shadow-1);transition:border-color .15s, background .15s}
+.info-card[data-level="ok"]{background:var(--ok-bg);border-color:transparent;color:var(--ok-fg)}
+.info-card[data-level="warn"]{background:var(--warn-bg);border-color:transparent;color:var(--warn-fg)}
+.info-card[data-level="danger"]{background:var(--danger-bg);border-color:transparent;color:var(--danger-fg)}
+.info-card[data-level="info"]{background:var(--info-bg);border-color:transparent;color:var(--info-fg)}
+.info-card-icon{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.6);color:currentColor}
+.info-card-icon svg{width:18px;height:18px}
+.info-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.info-card-title{font-family:var(--md-sys-typescale-label-small-font);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:currentColor;opacity:.85}
+.info-card-text{font-family:var(--md-sys-typescale-body-medium-font);font-size:13px;line-height:1.45;color:var(--tx);font-weight:500;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.info-card[data-level] .info-card-text{color:inherit}
+.info-card-text b{font-family:'JetBrains Mono',monospace;font-weight:600}
+.info-card-text sub,.info-card-text sup{font-family:'JetBrains Mono',monospace}
+.info-pill{font-family:var(--md-sys-typescale-label-small-font);font-size:10.5px;font-weight:600;padding:1px 8px;border-radius:999px;letter-spacing:.04em;background:rgba(255,255,255,.55);color:inherit;white-space:nowrap}
+.info-pill.ok{background:var(--ok-fg);color:#fff}
+.info-pill.warn{background:var(--warn-fg);color:#fff}
+.info-pill.danger{background:var(--danger-fg);color:#fff}
+
+/* TABS — Interpretação clínica · Limitações · Referências */
+.tabs{background:var(--md-sys-color-surface-container-lowest);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);box-shadow:var(--elevation-shadow-1);overflow:hidden}
+.tabs-bar{display:flex;border-bottom:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:1;min-width:0;padding:10px 14px;border:none;background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:13px;font-weight:600;cursor:pointer;transition:color .15s,background .15s,box-shadow .15s;border-bottom:2px solid transparent;white-space:nowrap;letter-spacing:0}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--md-sys-color-primary);border-bottom-color:var(--md-sys-color-primary);background:var(--md-sys-color-surface-container-lowest)}
+.tab-pane{display:none;padding:14px 16px;font-family:var(--md-sys-typescale-body-medium-font);font-size:13px;color:var(--tx2);line-height:1.6}
+.tab-pane.on{display:block}
+.tab-pane p{margin:8px 0}
+.tab-pane p:first-child{margin-top:0}
+.tab-pane p:last-child{margin-bottom:0}
+.tab-pane strong{color:var(--tx);font-weight:600}
+.tab-pane .edu-tip{display:block;font-family:var(--md-sys-typescale-body-small-font);font-size:12.5px;color:var(--md-sys-color-on-secondary-container);background:var(--md-sys-color-secondary-container);padding:10px 12px;border-radius:var(--shape-sm);margin:10px 0;line-height:1.55}
+.tab-alerts{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding:10px 12px;background:var(--warn-bg);color:var(--warn-fg);border-radius:var(--shape-sm)}
+.tab-alerts p{margin:0;color:inherit}
+
 @media(max-width:768px){
-  .edu-summary{font-size:11px}
-  .edu-text{font-size:11px;padding:0 10px 10px}
+  .info-card{padding:10px 12px}
+  .info-card-title{font-size:10px}
+  .info-card-text{font-size:12px}
+  .tab{font-size:12px;padding:8px 10px}
+  .tab-pane{font-size:12px;padding:12px}
 }
-.a11y .edu-summary{font-size:13px}
-.a11y .edu-text{font-size:13px}
-.a11y .edu-text .edu-ref{font-size:11px}
-.a11y .edu-text .edu-tip{font-size:12px}

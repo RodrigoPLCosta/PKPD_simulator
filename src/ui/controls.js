@@ -2,18 +2,17 @@
  * Controls module — event listeners, input sync, undo, mobile drawer.
  * This is the "glue" module that connects UI inputs to the PK engine.
  */
-import { D, SCENARIOS, ADV } from '../drugs/index.js';
+import { D, SCENARIOS } from '../drugs/index.js';
 import { simulate } from '../engine/pkEngine.js';
 import { classifyGFR, renalRec } from '../engine/renalAdjust.js';
-import { getAlerts } from '../engine/pkpdTargets.js';
 import { updateChart } from './chart.js';
-import { updateEduPanel } from './educPanel.js';
+import { updateClinicalCards, updateClinicalTabs } from './clinicalPanel.js';
 import { clampInfusionMinutes, getContinuousInfusionMinutes, getWeightBasedDose } from './controlLogic.js';
 import { getDefaultDrugState } from './drugState.js';
 import { MIC_STEPS, micFromSlider, sliderFromMic } from './micScale.js';
 import { applyScenarioPatch } from './scenarioState.js';
 import { cloneUIState, uiStatesEqual } from './uiState.js';
-import { buildAlertViewModel, buildPkInfoViewModel, renderAlertHtml, renderPkInfoHtml } from './viewModels.js';
+import { buildPkInfoViewModel, renderPkInfoHtml } from './viewModels.js';
 import {
   aucStatus,
   cmaxStatus,
@@ -373,14 +372,9 @@ function update() {
   // Flash animation
   document.querySelectorAll('.mv').forEach(function (el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
 
-  // Alerts
-  const al = buildAlertViewModel(getAlerts(sel, drug, r, gfr, ADV));
-  const ab = document.getElementById('al');
-  ab.className = 'al ' + al.level;
-  ab.innerHTML = renderAlertHtml(al);
-
-  // Educational panel
-  updateEduPanel(sel, drug, r, micv);
+  // Clinical summary cards + tabbed deep-dive
+  updateClinicalCards(sel, drug, r, gfr);
+  updateClinicalTabs(sel, drug, r, gfr);
 
   // Chart
   document.getElementById('lg-cmp-item').style.display = cmpData ? 'flex' : 'none';

@@ -14,11 +14,11 @@ import './styles/controls.css';
 /* ── UI bootstrap ── */
 import { initControls, getChartRef } from './ui/controls.js';
 import { initTheme } from './ui/theme.js';
-import { initEducPanel } from './ui/educPanel.js';
+import { initClinicalPanel } from './ui/clinicalPanel.js';
 
 /* ── Init ── */
+initClinicalPanel();
 initControls();
-initEducPanel();
 initTheme(getChartRef());
 
 /* ── Service Worker registration ── */

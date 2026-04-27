@@ -185,15 +185,38 @@
       <div class="tip">Razão do pico de concentração livre pelo MIC. Alvo primário para aminoglicosídeos: ≥8-10 para eficácia bactericida máxima.</div>
     </div>
   </div>
-  <div class="edu-panel" id="edu-panel">
-    <div class="edu-header" id="edu-header">
-      <span class="edu-icon" id="edu-icon">&#9679;</span>
-      <span class="edu-summary" id="edu-summary">—</span>
-      <span class="edu-arrow" id="edu-arrow">&#9660;</span>
+  <div class="info-cards" id="info-cards">
+    <div class="info-card" id="info-status" data-card="status" data-level="ok">
+      <span class="info-card-icon" aria-hidden="true"></span>
+      <div class="info-card-body">
+        <div class="info-card-title">Status PK/PD</div>
+        <div class="info-card-text">—</div>
+      </div>
     </div>
-    <div class="edu-body" id="edu-body">
-      <div class="edu-text" id="edu-text"></div>
+    <div class="info-card" id="info-alert" data-card="alert" data-level="info">
+      <span class="info-card-icon" aria-hidden="true"></span>
+      <div class="info-card-body">
+        <div class="info-card-title">Alerta clínico</div>
+        <div class="info-card-text">—</div>
+      </div>
     </div>
+    <div class="info-card" id="info-model" data-card="model" data-level="info">
+      <span class="info-card-icon" aria-hidden="true"></span>
+      <div class="info-card-body">
+        <div class="info-card-title">Modelo</div>
+        <div class="info-card-text">—</div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs" id="tabs">
+    <div class="tabs-bar" id="tabs-bar" role="tablist">
+      <button class="tab on" type="button" role="tab" data-tab="interp" aria-selected="true">Interpretação clínica</button>
+      <button class="tab" type="button" role="tab" data-tab="limits" aria-selected="false">Limitações</button>
+      <button class="tab" type="button" role="tab" data-tab="refs" aria-selected="false">Referências</button>
+    </div>
+    <div class="tab-pane on" data-pane="interp" id="tab-interp" role="tabpanel"></div>
+    <div class="tab-pane" data-pane="limits" id="tab-limits" role="tabpanel"></div>
+    <div class="tab-pane" data-pane="refs" id="tab-refs" role="tabpanel"></div>
   </div>
   <div class="cp">
     <div class="ctp">
@@ -234,7 +257,6 @@
     <div class="pk-below-toggle"><span class="pk-arrow">▸</span> <span id="pk-below-title">Parâmetros farmacocinéticos</span></div>
     <div class="pk-below-body" id="pk-info"></div>
   </div>
-  <div class="al" id="al"></div>
   <div class="ft">
     Simulador educacional — não substitui avaliação clínica individualizada e TDM.<br>
     Modelo monocompartimental IV. Parâmetros populacionais de adultos, função hepática normal. Limitações: fase de distribuição (α) não modelada — Cmax pós-infusão pode ser superestimado para drogas bicompartimentais (vancomicina, teicoplanina).
