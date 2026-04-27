@@ -38,7 +38,7 @@
 .mc:hover{border-color:var(--md-sys-color-outline)}
 
 /* CHART PANEL */
-.cp{order:-2;background:var(--md-sys-color-surface-container-lowest);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--rl);padding:16px 18px 14px;min-height:380px;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--elevation-shadow-1)}
+.cp{order:-2;background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:var(--rl);padding:16px 18px 14px;min-height:380px;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--glass-shadow)}
 .ctp{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:8px}
 .ch-title{display:flex;align-items:baseline;gap:8px;min-width:0}
 .cdn{font-family:var(--md-sys-typescale-title-medium-font);font-size:18px;font-weight:600;color:var(--tx);letter-spacing:-0.01em}
