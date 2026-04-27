@@ -194,7 +194,6 @@ input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(
   .pk-grid{grid-template-columns:1fr 1fr;gap:3px}
   .pk-cell .pk-v{font-size:10px}
   .al{font-size:11px;padding:8px 10px}
-  .ft{font-size:9px;padding:10px 12px}
   .tb button{font-size:9px;padding:3px 8px}
   .std-ref{font-size:10.5px}
   .renal-pill{padding:8px 10px;gap:8px}
