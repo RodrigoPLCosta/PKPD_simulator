@@ -12,7 +12,7 @@ describe('theme contract', () => {
     expect(chart.options.scales.x.grid.color).toBe(lightTokens.gridColor);
     expect(document.body.dataset.theme).toBe('light');
 
-    await user.click(screen.getByRole('button', { name: /tema/i }));
+    await user.click(screen.getByRole('button', { name: /tema escuro/i }));
 
     const darkTokens = themeModule.readThemeTokens();
     expect(darkTokens.gridColor).not.toBe(lightTokens.gridColor);
