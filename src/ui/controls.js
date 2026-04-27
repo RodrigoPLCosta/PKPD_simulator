@@ -384,7 +384,10 @@ function update() {
 
   // Chart
   document.getElementById('lg-cmp-item').style.display = cmpData ? 'flex' : 'none';
-  updateChart(chartRef, sel, drug, r, micv, intv, cmpData);
+  const viewSel = document.getElementById('chart-view');
+  const viewVal = viewSel ? viewSel.value : 'auto';
+  const viewMaxH = viewVal === 'auto' ? null : parseInt(viewVal, 10);
+  updateChart(chartRef, sel, drug, r, micv, intv, cmpData, viewMaxH);
 }
 
 // ─── Undo system ───
@@ -668,6 +671,10 @@ export function initControls() {
 
   // PK-below toggle
   document.getElementById('pk-below').addEventListener('click', function () { this.classList.toggle('open'); });
+
+  // Chart view-window dropdown
+  const chartViewSel = document.getElementById('chart-view');
+  if (chartViewSel) chartViewSel.addEventListener('change', function () { update(); });
 
   // Drug selection toggle
   const btnSelectDrug = document.getElementById('btn-select-drug');
