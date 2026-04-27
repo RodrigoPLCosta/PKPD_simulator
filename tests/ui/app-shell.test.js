@@ -7,7 +7,8 @@ describe('app shell', () => {
     await renderApp();
 
     expect(screen.getByRole('heading', { name: /simulador pk\/pd/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /tema/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /tema claro/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /tema escuro/i })).toBeInTheDocument();
     expect(document.getElementById('sidebar')).toBeInTheDocument();
     expect(document.getElementById('pkC')).toBeInTheDocument();
     expect(document.getElementById('class-tabs')).toBeInTheDocument();

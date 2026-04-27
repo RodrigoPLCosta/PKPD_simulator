@@ -8,13 +8,13 @@ describe('theme toggle', () => {
     const user = userEvent.setup();
     const { chart, themeModule } = await renderApp();
 
-    const button = screen.getByRole('button', { name: /tema/i });
+    const darkButton = screen.getByRole('button', { name: /tema escuro/i });
     const lightTokens = themeModule.readThemeTokens();
 
     expect(document.body.dataset.theme).toBe('light');
     expect(document.querySelector('meta[name="theme-color"]').content).toBe(lightTokens.themeColor);
 
-    await user.click(button);
+    await user.click(darkButton);
 
     const darkTokens = themeModule.readThemeTokens();
     expect(document.body.dataset.theme).toBe('dark');

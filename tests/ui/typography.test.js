@@ -16,7 +16,7 @@ describe('typography contract', () => {
 
     expect(base).toMatch(/\.hd h1\{[^}]*var\(--md-sys-typescale-title-large-size\)/);
     expect(base).toMatch(/\.st\{[^}]*var\(--md-sys-typescale-label-small-size\)/);
-    expect(controls).toMatch(/\.ct button\{[^}]*var\(--md-sys-typescale-label-medium-size\)/);
-    expect(chart).toMatch(/\.edu-summary\{[^}]*var\(--md-sys-typescale-body-medium-size\)/);
+    expect(base).toMatch(/body\{[^}]*var\(--md-sys-typescale-body-medium-size\)/);
+    expect(chart).toMatch(/\.cmp-bar label\{[^}]*var\(--md-sys-typescale-label-medium-size\)/);
   });
 });
