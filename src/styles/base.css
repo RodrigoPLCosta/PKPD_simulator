@@ -52,7 +52,7 @@ body[data-theme="dark"] .tb-theme-opt[aria-pressed="true"]{background:var(--md-s
 @media(max-width:768px){.ly{grid-template-columns:1fr}}
 
 /* SIDEBAR */
-.sb{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-right:1px solid var(--glass-border);padding:14px 16px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.sb{background:transparent;padding:14px 16px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 .sb::-webkit-scrollbar{width:4px}
 .sb::-webkit-scrollbar-thumb{background:var(--md-sys-color-surface-container-high);border-radius:3px}
 .st{font-family:var(--md-sys-typescale-label-small-font);font-size:var(--md-sys-typescale-label-small-size);font-weight:var(--md-sys-typescale-label-small-weight);line-height:var(--md-sys-typescale-label-small-line-height);letter-spacing:var(--md-sys-typescale-label-small-tracking);text-transform:none;color:var(--tx2);margin:10px 0 10px}.st:first-child{margin-top:0}
