@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.3-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/version-1.9-blue?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/antimicrobianos-23-orange?style=flat-square" alt="Drugs">
   <img src="https://img.shields.io/badge/classes-11-teal?style=flat-square" alt="Classes">
   <img src="https://img.shields.io/badge/testes-vitest%20%2B%20jsdom-success?style=flat-square" alt="Tests">
@@ -273,7 +273,7 @@ Se você utilizar este simulador em atividades acadêmicas ou educacionais, por 
 @software{costa2026pkpd,
   author    = {Costa, Rodrigo Pinheiro Leal},
   title     = {Simulador PK/PD de Antimicrobianos: ferramenta interativa para simulação farmacocinética hospitalar},
-  version   = {1.3},
+  version   = {1.9},
   year      = {2026},
   url       = {https://rodrigoplcosta.github.io/PKPD_simulator/},
   note      = {Ferramenta educacional — não substitui avaliação clínica individualizada}
