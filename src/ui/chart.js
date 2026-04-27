@@ -17,9 +17,9 @@ function getVisibleYMax(sel, drug, r, micv, cmpData) {
 /**
  * Build Chart.js datasets from simulation results.
  */
-export function buildDatasets(sel, drug, r, micv, intv, cmpData) {
+export function buildDatasets(sel, drug, r, micv, intv, cmpData, viewMaxH) {
   const theme = readThemeTokens();
-  const maxT = r.totalH;
+  const maxT = viewMaxH || r.totalH;
   const fillAlpha = drug.tt === 'tmic' ? '28' : '10';
 
   const ds = [
@@ -41,15 +41,6 @@ export function buildDatasets(sel, drug, r, micv, intv, cmpData) {
   }
 
   const yMax = getVisibleYMax(sel, drug, r, micv, cmpData);
-  const markedTimes = {};
-  for (let i = 0; i < r.schedule.length; i++) {
-    const st = r.schedule[i].t;
-    if (st > maxT) break;
-    if (!markedTimes[st]) {
-      markedTimes[st] = true;
-      ds.push({ label: 'D' + (i + 1), data: [{ x: st, y: 0 }, { x: st, y: yMax * 0.92 }], borderColor: theme.borderColor, borderWidth: 1, pointRadius: 0, showLine: true, fill: false, order: 9, borderDash: [2, 4] });
-    }
-  }
 
   const cmaxPt = r.pts.reduce(function (a, b) { return b.y > a.y ? b : a; }, { x: 0, y: 0 });
   const ssRange = r.pts.filter(function (p) { return p.x >= r.ssStart && p.x <= r.ssStart + intv; });
@@ -72,6 +63,40 @@ export function buildDatasets(sel, drug, r, micv, intv, cmpData) {
 }
 
 /**
+ * Draw a small dose marker (filled circle on top of the chart with a short
+ * vertical drop-line). One per scheduled dose, drug-coloured.
+ */
+function drawDoseMarkers(ctx, chart, schedule, maxT, color) {
+  const xScale = chart.scales.x;
+  const top = chart.chartArea.top;
+  const left = chart.chartArea.left;
+  const right = chart.chartArea.right;
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.25;
+  const seen = new Set();
+  for (let i = 0; i < schedule.length; i++) {
+    const t = schedule[i].t;
+    if (t > maxT) break;
+    if (seen.has(t)) continue;
+    seen.add(t);
+    const px = xScale.getPixelForValue(t);
+    if (px < left - 1 || px > right + 1) continue;
+    ctx.globalAlpha = 0.9;
+    ctx.beginPath();
+    ctx.arc(px, top + 5, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 0.45;
+    ctx.beginPath();
+    ctx.moveTo(px, top + 9);
+    ctx.lineTo(px, top + 16);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/**
  * Custom Chart.js plugin for PK labels and banners.
  */
 export const pkLabelPlugin = {
@@ -85,6 +110,8 @@ export const pkLabelPlugin = {
     const xScale = chart.scales.x;
     const yScale = chart.scales.y;
     ctx.save();
+
+    if (a.schedule) drawDoseMarkers(ctx, chart, a.schedule, a.maxT, a.drug.col);
 
     const cxMax = xScale.getPixelForValue(a.cmax.x);
     const cyMax = yScale.getPixelForValue(a.cmax.y);
@@ -192,16 +219,16 @@ export const pkLabelPlugin = {
 /**
  * Create or update Chart.js instance.
  */
-export function updateChart(chartRef, sel, drug, r, micv, intv, cmpData) {
+export function updateChart(chartRef, sel, drug, r, micv, intv, cmpData, viewMaxH) {
   const theme = readThemeTokens();
-  const { ds, yMax, cmaxPt, cminPt } = buildDatasets(sel, drug, r, micv, intv, cmpData);
-  const maxT = r.totalH;
+  const { ds, yMax, cmaxPt, cminPt } = buildDatasets(sel, drug, r, micv, intv, cmpData, viewMaxH);
+  const maxT = Math.min(viewMaxH || r.totalH, r.totalH);
 
   const hasUnc = !!UNCERTAINTY_DRUGS[sel];
   const annotations = {
     cmax: cmaxPt, cmin: cminPt, drug, r, micv, intv, maxT, yMax,
     hasUncertainty: hasUnc, uncReason: hasUnc ? UNCERTAINTY_DRUGS[sel].reason : '',
-    sel
+    sel, schedule: r.schedule
   };
 
   document.getElementById('lg-unc').style.display = hasUnc ? '' : 'none';
@@ -211,11 +238,13 @@ export function updateChart(chartRef, sel, drug, r, micv, intv, cmpData) {
     document.getElementById('lg-unc').style.borderColor = drug.col + '40';
   }
 
+  const tickStep = maxT > 96 ? 24 : maxT > 48 ? 12 : maxT > 24 ? 8 : 4;
+
   if (chartRef.chart) {
     chartRef.chart.data.datasets = ds;
     chartRef.chart._pkAnnotations = annotations;
     chartRef.chart.options.scales.x.max = maxT;
-    chartRef.chart.options.scales.x.ticks.stepSize = maxT > 60 ? 24 : maxT > 24 ? 8 : 4;
+    chartRef.chart.options.scales.x.ticks.stepSize = tickStep;
     chartRef.chart.options.scales.y.max = Math.ceil(yMax);
     chartRef.chart.update('none');
   } else {
@@ -243,7 +272,7 @@ export function updateChart(chartRef, sel, drug, r, micv, intv, cmpData) {
           x: {
             type: 'linear', min: 0, max: maxT,
             title: { display: true, text: 'Tempo (horas)', color: theme.axisColor, font: { family: 'DM Sans', size: 12, weight: '500' } },
-            ticks: { stepSize: maxT > 60 ? 24 : 4, color: theme.axisColor, font: { family: 'JetBrains Mono', size: 10 }, padding: 4 },
+            ticks: { stepSize: tickStep, color: theme.axisColor, font: { family: 'JetBrains Mono', size: 10 }, padding: 4 },
             grid: { color: theme.gridColor }, border: { color: theme.borderColor }
           },
           y: {
