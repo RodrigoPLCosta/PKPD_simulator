@@ -81,7 +81,7 @@ input[type=range]:hover::-moz-range-thumb{box-shadow:0 0 0 8px rgba(59,109,255,.
 input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--md-sys-color-surface-container-highest)}
 
 /* RENAL PILL */
-.renal-pill{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:var(--shape-md);margin-top:10px;transition:border-color .15s,background .15s}
+.renal-pill{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:var(--shape-md);margin-top:10px;box-shadow:var(--glass-shadow);transition:border-color .15s,background .15s}
 .renal-pill[data-status="warn"]{background:color-mix(in srgb, var(--warn-bg) 75%, transparent);border-color:var(--warn-fg);color:var(--warn-fg)}
 .renal-pill[data-status="danger"]{background:color-mix(in srgb, var(--danger-bg) 75%, transparent);border-color:var(--danger-fg);color:var(--danger-fg)}
 .renal-icon{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--md-sys-color-surface-container-high);color:var(--tx2)}
