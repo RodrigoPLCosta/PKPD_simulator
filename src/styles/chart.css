@@ -4,7 +4,7 @@
 .ms{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
 @media(max-width:980px){.ms{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:560px){.ms{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.mc{background:var(--md-sys-color-surface-container-lowest);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--r);padding:12px 12px 0;transition:border-color .2s, box-shadow .2s;position:relative;cursor:default;overflow:hidden;display:flex;flex-direction:column;min-height:104px;box-shadow:var(--elevation-shadow-1);min-width:0;container-type:inline-size}
+.mc{background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:var(--r);padding:12px 12px 0;transition:border-color .2s, box-shadow .2s;position:relative;cursor:default;overflow:hidden;display:flex;flex-direction:column;min-height:104px;box-shadow:var(--glass-shadow);min-width:0;container-type:inline-size}
 .mc::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--metric-accent,var(--md-sys-color-outline-variant));opacity:.85}
 .mc[data-metric="class"]{--metric-accent:var(--metric-accent-class)}
 .mc[data-metric="cmax"]{--metric-accent:var(--metric-accent-cmax)}
@@ -32,8 +32,8 @@
 .mc .msb .badge.ok{background:var(--ok-bg);color:var(--ok-fg)}
 .mc .msb .badge.warn{background:var(--warn-bg);color:var(--warn-fg)}
 .mc .msb .badge.danger{background:var(--danger-bg);color:var(--danger-fg)}
-.mc .tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--md-sys-color-surface-container-lowest);border:1px solid var(--md-sys-color-outline-variant);border-radius:8px;padding:8px 10px;font-family:var(--md-sys-typescale-body-small-font);font-size:12px;font-weight:400;color:var(--tx2);line-height:1.5;width:220px;z-index:10;pointer-events:none;box-shadow:var(--elevation-shadow-2)}
-.mc .tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--md-sys-color-surface-container-lowest)}
+.mc .tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:8px;padding:8px 10px;font-family:var(--md-sys-typescale-body-small-font);font-size:12px;font-weight:400;color:var(--tx2);line-height:1.5;width:220px;z-index:10;pointer-events:none;box-shadow:var(--glass-shadow)}
+.mc .tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--glass-bg-strong)}
 .mc:hover .tip,.mc:active .tip{display:block}
 .mc:hover{border-color:var(--md-sys-color-outline)}
 
@@ -48,7 +48,7 @@
 .cv-window{display:flex;align-items:center;gap:8px}
 .cv-label{font-family:var(--md-sys-typescale-label-small-font);font-size:11px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
 .cv-select-wrap{position:relative;display:inline-flex;align-items:center}
-.cv-select{appearance:none;-webkit-appearance:none;-moz-appearance:none;background:var(--md-sys-color-surface-container);color:var(--tx);font-family:var(--md-sys-typescale-label-medium-font);font-size:12.5px;font-weight:600;border:1px solid var(--md-sys-color-outline-variant);border-radius:999px;padding:5px 28px 5px 12px;cursor:pointer;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+.cv-select{appearance:none;-webkit-appearance:none;-moz-appearance:none;background:color-mix(in srgb, var(--md-sys-color-surface-container) 55%, transparent);color:var(--tx);font-family:var(--md-sys-typescale-label-medium-font);font-size:12.5px;font-weight:600;border:1px solid var(--glass-border);border-radius:999px;padding:5px 28px 5px 12px;cursor:pointer;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
 .cv-select:hover{border-color:var(--md-sys-color-outline)}
 .cv-select:focus{border-color:var(--md-sys-color-primary);box-shadow:0 0 0 1px var(--md-sys-color-primary)}
 .cv-chev{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:inline-flex;color:var(--tx3);pointer-events:none}
@@ -81,7 +81,7 @@
 .pk .warn-model{font-family:var(--md-sys-typescale-body-small-font);font-size:9.5px;color:var(--am);margin-top:4px;padding-top:4px;border-top:1px solid var(--bd)}
 
 /* PK INFO IN CONTENT AREA */
-.pk-below{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px;cursor:pointer;user-select:none}
+.pk-below{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:var(--r);padding:10px 12px;cursor:pointer;user-select:none;box-shadow:var(--glass-shadow)}
 .pk-below-toggle{display:flex;align-items:center;gap:6px;font-family:var(--md-sys-typescale-label-large-font);font-size:var(--md-sys-typescale-label-large-size);color:var(--tx2)}
 .pk-below-toggle .pk-arrow{font-size:9px;transition:transform .2s}
 .pk-below.open .pk-arrow{transform:rotate(90deg)}
@@ -94,11 +94,11 @@
 /* CLINICAL INFO CARDS — three colored summary cards above the tabs */
 .info-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 @media(max-width:980px){.info-cards{grid-template-columns:1fr}}
-.info-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);background:var(--md-sys-color-surface-container-lowest);box-shadow:var(--elevation-shadow-1);transition:border-color .15s, background .15s}
-.info-card[data-level="ok"]{background:var(--ok-bg);border-color:transparent;color:var(--ok-fg)}
-.info-card[data-level="warn"]{background:var(--warn-bg);border-color:transparent;color:var(--warn-fg)}
-.info-card[data-level="danger"]{background:var(--danger-bg);border-color:transparent;color:var(--danger-fg)}
-.info-card[data-level="info"]{background:var(--info-bg);border-color:transparent;color:var(--info-fg)}
+.info-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--glass-border);border-radius:var(--shape-md);background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:var(--glass-shadow);transition:border-color .15s, background .15s}
+.info-card[data-level="ok"]{background:color-mix(in srgb, var(--ok-bg) 78%, transparent);border-color:transparent;color:var(--ok-fg)}
+.info-card[data-level="warn"]{background:color-mix(in srgb, var(--warn-bg) 78%, transparent);border-color:transparent;color:var(--warn-fg)}
+.info-card[data-level="danger"]{background:color-mix(in srgb, var(--danger-bg) 78%, transparent);border-color:transparent;color:var(--danger-fg)}
+.info-card[data-level="info"]{background:color-mix(in srgb, var(--info-bg) 78%, transparent);border-color:transparent;color:var(--info-fg)}
 .info-card-icon{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.6);color:currentColor}
 .info-card-icon svg{width:18px;height:18px}
 .info-card-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
@@ -113,19 +113,19 @@
 .info-pill.danger{background:var(--danger-fg);color:#fff}
 
 /* TABS — Interpretação clínica · Limitações · Referências */
-.tabs{background:var(--md-sys-color-surface-container-lowest);border:1px solid var(--md-sys-color-outline-variant);border-radius:var(--shape-md);box-shadow:var(--elevation-shadow-1);overflow:hidden}
-.tabs-bar{display:flex;border-bottom:1px solid var(--md-sys-color-outline-variant);background:var(--md-sys-color-surface-container);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs{background:var(--glass-bg-strong);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border:1px solid var(--glass-border);border-radius:var(--shape-md);box-shadow:var(--glass-shadow);overflow:hidden}
+.tabs-bar{display:flex;border-bottom:1px solid var(--glass-border);background:transparent;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tab{flex:1;min-width:0;padding:10px 14px;border:none;background:transparent;color:var(--tx3);font-family:var(--md-sys-typescale-label-medium-font);font-size:13px;font-weight:600;cursor:pointer;transition:color .15s,background .15s,box-shadow .15s;border-bottom:2px solid transparent;white-space:nowrap;letter-spacing:0}
 .tab:hover{color:var(--tx)}
-.tab.on{color:var(--md-sys-color-primary);border-bottom-color:var(--md-sys-color-primary);background:var(--md-sys-color-surface-container-lowest)}
+.tab.on{color:var(--md-sys-color-primary);border-bottom-color:var(--md-sys-color-primary);background:transparent}
 .tab-pane{display:none;padding:14px 16px;font-family:var(--md-sys-typescale-body-medium-font);font-size:13px;color:var(--tx2);line-height:1.6}
 .tab-pane.on{display:block}
 .tab-pane p{margin:8px 0}
 .tab-pane p:first-child{margin-top:0}
 .tab-pane p:last-child{margin-bottom:0}
 .tab-pane strong{color:var(--tx);font-weight:600}
-.tab-pane .edu-tip{display:block;font-family:var(--md-sys-typescale-body-small-font);font-size:12.5px;color:var(--md-sys-color-on-secondary-container);background:var(--md-sys-color-secondary-container);padding:10px 12px;border-radius:var(--shape-sm);margin:10px 0;line-height:1.55}
-.tab-alerts{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding:10px 12px;background:var(--warn-bg);color:var(--warn-fg);border-radius:var(--shape-sm)}
+.tab-pane .edu-tip{display:block;font-family:var(--md-sys-typescale-body-small-font);font-size:12.5px;color:var(--md-sys-color-on-secondary-container);background:color-mix(in srgb, var(--md-sys-color-secondary-container) 70%, transparent);padding:10px 12px;border-radius:var(--shape-sm);margin:10px 0;line-height:1.55}
+.tab-alerts{display:flex;flex-direction:column;gap:6px;margin-top:10px;padding:10px 12px;background:color-mix(in srgb, var(--warn-bg) 75%, transparent);color:var(--warn-fg);border-radius:var(--shape-sm)}
 .tab-alerts p{margin:0;color:inherit}
 
 @media(max-width:768px){
